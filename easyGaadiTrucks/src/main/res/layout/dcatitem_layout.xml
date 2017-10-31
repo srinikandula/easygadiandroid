@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         card_view:cardBackgroundColor="#ffffff"
-        card_view:cardCornerRadius="10dp"
+        card_view:cardCornerRadius="5dp"
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="true">
 
@@ -39,7 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:drawablePadding="10dp"
-                        android:drawableTop="@drawable/tratruck_icon"
+                        android:drawableTop="@drawable/erpdriver"
                         android:ems="6"
                         android:gravity="center"
                         android:textAppearance="?android:attr/textAppearanceMedium"

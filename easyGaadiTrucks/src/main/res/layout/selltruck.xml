@@ -1,0 +1,796 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" >
+
+        <TabHost
+            android:id="@+id/tabHost"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" >
+
+                <TabWidget
+                    android:id="@android:id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+                </TabWidget>
+
+                <FrameLayout
+                    android:id="@android:id/tabcontent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                    <LinearLayout
+                        android:id="@+id/tab1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:id="@+id/scrollView1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical" >
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="30dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <TextView
+                                        android:id="@+id/uname"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Vehicle Reg No"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <EditText
+                                        android:id="@+id/et_VehicleRegNo"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.55"
+                                        android:paddingLeft="10dp"
+                                        android:singleLine="true" 
+                                        android:focusable="true"/>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <TextView
+                                        android:id="@+id/tvvtype"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Vehicle Type"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <Spinner
+                                        android:id="@+id/sp_VehicleType"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.55"
+                                        android:entries="@array/Vehicletype"
+                                        android:paddingLeft="10dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <TextView
+                                        android:id="@+id/tv12"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Contact Name"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <EditText
+                                        android:id="@+id/et_ContacNamet"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.55"
+                                        android:paddingLeft="10dp"
+                                        android:singleLine="true" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <TextView
+                                        android:id="@+id/tv13"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Mobile Number"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <EditText
+                                        android:id="@+id/et_Mobile"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.55"
+                                        android:inputType="phone"
+                                        android:maxLength="10"
+                                        android:paddingLeft="10dp"
+                                        android:singleLine="true" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <TextView
+                                        android:id="@+id/tv14"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Registration State"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <Spinner
+                                        android:id="@+id/sp_State"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.55"
+                                        android:entries="@array/States"
+                                        android:paddingLeft="10dp" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <TextView
+                                        android:id="@+id/tv15"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Insurance Exp Date"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <EditText
+                                        android:id="@+id/et_InsuranceExpdate"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.55"
+                                        android:focusableInTouchMode="false"
+                                        android:paddingLeft="10dp"
+                                        android:singleLine="true" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <TextView
+                                        android:id="@+id/tv16"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Fitness Exp Date"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <EditText
+                                        android:id="@+id/et_FitnessExpDate"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.55"
+                                        android:focusableInTouchMode="false"
+                                        android:paddingLeft="10dp"
+                                        android:singleLine="true" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <TextView
+                                        android:id="@+id/tv17"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Year Of Mfg"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <EditText
+                                        android:id="@+id/et_YearOfManufacture"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.55"
+                                        android:hint="Eg: 2005"
+                                        android:inputType="number"
+                                        android:maxLength="4"
+                                        android:paddingLeft="10dp"
+                                        android:singleLine="true" />
+
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <TextView
+                                        android:id="@+id/tv18"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Odometer"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <EditText
+                                        android:id="@+id/et_Odometer"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.55"
+                                        android:hint="Eg: 10000"
+                                        android:inputType="number"
+                                        android:paddingLeft="10dp"
+                                        android:singleLine="true" />
+
+                                </LinearLayout>
+                                
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <TextView
+                                        android:id="@+id/tv19"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Any accidents"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <RadioGroup
+                                        android:id="@+id/radioaccGroup"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.5"
+                                        android:orientation="horizontal" >
+
+                                        <RadioButton
+                                            android:id="@+id/RB_accident_yes"
+                                            android:layout_width="70dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_horizontal"
+                                            android:layout_marginLeft="5dp"
+                                            android:checked="false"
+                                            android:text="Yes" />
+
+                                        <RadioButton
+                                            android:id="@+id/RB_accident_no"
+                                            android:layout_width="70dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_horizontal"
+                                            android:checked="true"
+                                            android:text="No" />
+                                    </RadioGroup>
+                                </LinearLayout>
+
+                                
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="20dp"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal" >
+
+                                    <TextView
+                                        android:id="@+id/tv22"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="In Finance"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <RadioGroup
+                                        android:id="@+id/radiofinaceGroup"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.46"
+                                        android:orientation="horizontal" >
+
+                                        <RadioButton
+                                            android:id="@+id/RB_finance_yes"
+                                            android:layout_width="70dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_horizontal"
+                                            android:checked="false"
+                                            android:text="Yes" />
+
+                                        <RadioButton
+                                            android:id="@+id/RB_finance_no"
+                                            android:layout_width="70dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_gravity="center_horizontal"
+                                            android:checked="true"
+                                            android:text="No" />
+                                    </RadioGroup>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:orientation="horizontal" >
+
+                                    <TextView
+                                        android:id="@+id/tv20"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.4"
+                                        android:text="Expected Price"
+                                        android:textSize="14sp" />
+
+                                    <TextView
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="0.1"
+                                        android:text="@string/colon1"
+                                        android:textStyle="bold" />
+
+                                    <EditText
+                                        android:id="@+id/et_ExpectedPrice"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.55"
+                                        android:hint="Eg: 50000"
+                                        android:inputType="number"
+                                        android:paddingLeft="10dp"
+                                        android:singleLine="true" >
+
+                                        <requestFocus />
+                                    </EditText>
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="right"
+                                    android:layout_marginBottom="15dp"
+                                    android:layout_marginTop="20dp"
+                                    android:orientation="horizontal" >
+
+                                    <Button
+                                        android:id="@+id/btn_selltruck_submit"
+                                        android:layout_width="160dp"
+                                        android:layout_height="35dp"
+                                        android:layout_gravity="right"
+                                        android:layout_marginLeft="180dp"
+                                        android:background="@drawable/login_btn"
+                                        android:text="Next"
+                                        android:textColor="@android:color/white"
+                                        android:textSize="14sp" />
+                                </LinearLayout>
+                            </LinearLayout>
+                        </ScrollView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/tab2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical" >
+
+                        <ScrollView
+                            android:id="@+id/scrollView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" >
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical" >
+
+                                <TextView
+                                    android:id="@+id/tv_truckpics"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginTop="10dp"
+                                    android:text="Truck Pics :"
+                                    android:textSize="25sp" />
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="10dp" >
+
+                                    <TextView
+                                        android:id="@+id/tv_truckfronpic"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="1"
+                                        android:text="Truck Front Pic" />
+
+                                    <TextView
+                                        android:id="@+id/tv_truckbackpic"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="1"
+                                        android:text="Truck Back Pic" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:layout_marginRight="10dp"
+                                    android:layout_marginTop="15dp"
+                                    android:orientation="horizontal"
+                                    android:weightSum="1" >
+
+                                    <ImageView
+                                        android:id="@+id/img_UploadTruckFront"
+                                        android:layout_width="0dp"
+                                        android:layout_height="100dp"
+                                        android:layout_marginRight="20dp"
+                                        android:layout_weight="0.5"
+                                        android:src="@drawable/uploadpicicon" />
+
+                                    <ImageView
+                                        android:id="@+id/img_UploadTruckBack"
+                                        android:layout_width="0dp"
+                                        android:layout_height="100dp"
+                                        android:layout_marginLeft="20dp"
+                                        android:layout_weight="0.5"
+                                        android:src="@drawable/uploadpicicon" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical" >
+
+                                    <TextView
+                                        android:id="@+id/textView4"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:text="Tyres Pics :"
+                                        android:textSize="25sp" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="10dp"
+                                        android:layout_marginTop="10dp" >
+
+                                        <TextView
+                                            android:id="@+id/textView5"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_weight="1"
+                                            android:text="Tyre Front Left Pic" />
+
+                                        <TextView
+                                            android:id="@+id/textView6"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_weight="1"
+                                            android:text="Tyre Front Right Pic" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="10dp"
+                                        android:layout_marginTop="15dp"
+                                        android:orientation="horizontal"
+                                        android:weightSum="1" >
+
+                                        <ImageView
+                                            android:id="@+id/img_UploadfrontTyresLeft"
+                                            android:layout_width="0dp"
+                                            android:layout_height="100dp"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_weight="0.5"
+                                            android:src="@drawable/uploadpicicon" />
+
+                                        <ImageView
+                                            android:id="@+id/img_UploadfrontTyresRight"
+                                            android:layout_width="0dp"
+                                            android:layout_height="100dp"
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_weight="0.5"
+                                            android:src="@drawable/uploadpicicon" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="10dp"
+                                        android:layout_marginTop="10dp" >
+
+                                        <TextView
+                                            android:id="@+id/textView8"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_weight="1"
+                                            android:text="Tyre Back Left Pic" />
+
+                                        <TextView
+                                            android:id="@+id/textView9"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_weight="1"
+                                            android:text="Tyre Back Right Pic" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="10dp"
+                                        android:layout_marginTop="15dp"
+                                        android:orientation="horizontal"
+                                        android:weightSum="1" >
+
+                                        <ImageView
+                                            android:id="@+id/img_UploadbackTyresLeft"
+                                            android:layout_width="0dp"
+                                            android:layout_height="100dp"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_weight="0.5"
+                                            android:src="@drawable/uploadpicicon" />
+
+                                        <ImageView
+                                            android:id="@+id/img_UploadbackTyresRight"
+                                            android:layout_width="0dp"
+                                            android:layout_height="100dp"
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_weight="0.5"
+                                            android:src="@drawable/uploadpicicon" />
+                                    </LinearLayout>
+
+                                    <TextView
+                                        android:id="@+id/textView11"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginTop="10dp"
+                                        android:text="Any Other Pics :"
+                                        android:textSize="25sp" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="10dp"
+                                        android:layout_marginTop="10dp" >
+
+                                        <TextView
+                                            android:id="@+id/textView21"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_weight="1"
+                                            android:text="Any Other Pic 1" />
+
+                                        <TextView
+                                            android:id="@+id/textView31"
+                                            android:layout_width="0dp"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_weight="1"
+                                            android:text="Any Other Pic 2" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="fill_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="10dp"
+                                        android:layout_marginTop="15dp"
+                                        android:orientation="horizontal"
+                                        android:weightSum="1" >
+
+                                        <ImageView
+                                            android:id="@+id/img_anyotherpic1"
+                                            android:layout_width="0dp"
+                                            android:layout_height="100dp"
+                                            android:layout_marginRight="20dp"
+                                            android:layout_weight="0.5"
+                                            android:src="@drawable/uploadpicicon" />
+
+                                        <ImageView
+                                            android:id="@+id/img_anyotherpic2"
+                                            android:layout_width="0dp"
+                                            android:layout_height="100dp"
+                                            android:layout_marginLeft="20dp"
+                                            android:layout_weight="0.5"
+                                            android:src="@drawable/uploadpicicon" />
+                                    </LinearLayout>
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="right"
+                                        android:layout_marginBottom="15dp"
+                                        android:layout_marginTop="20dp"
+                                        android:orientation="horizontal" >
+
+                                        <Button
+                                            android:id="@+id/btn_selltruck_finish"
+                                            android:layout_width="160dp"
+                                            android:layout_height="35dp"
+                                            android:layout_gravity="right"
+                                            android:layout_marginLeft="180dp"
+                                            android:background="@drawable/login_btn"
+                                            android:text="Finish"
+                                            android:textColor="@android:color/white"
+                                            android:textSize="14sp" />
+                                    </LinearLayout>
+                                </LinearLayout>
+                            </LinearLayout>
+                        </ScrollView>
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+        </TabHost>
+    </LinearLayout>
+
+</LinearLayout>

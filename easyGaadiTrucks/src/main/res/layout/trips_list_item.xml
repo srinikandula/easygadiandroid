@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:padding="4dp" >
+    <!-- trkNo, src, dest, start_loc, curr_loc, stop_btn, summary_btn  -->
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal" >
+	    <TextView 	     
+	        android:id="@+id/trips_truck_no"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_alignParentStart="true"
+		    android:layout_alignParentLeft="true"
+		    android:padding="5dp"
+		    android:textAppearance="?android:attr/textAppearanceMedium"
+		    android:textColor="@android:color/black"  />
+	    <ImageView 
+	        android:id="@+id/trip_stop_iv"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="20dp"	        
+	        android:layout_marginEnd="20dp"
+	        android:layout_centerVertical="true"
+	        android:layout_toLeftOf="@+id/trip_delete_iv"
+	        android:layout_toStartOf="@+id/trip_delete_iv"
+	        android:src="@drawable/ic_stop_trip"
+	        android:contentDescription="@string/app_name"
+	        />
+	    <ImageView 
+	        android:id="@+id/trip_delete_iv"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginRight="15dp"
+	        android:layout_marginEnd="15dp"
+	        android:layout_centerVertical="true"
+	        android:layout_alignParentEnd="true"
+	        android:layout_alignParentRight="true"
+	        android:src="@drawable/ic_trip_delete"	        
+	        android:contentDescription="@string/app_name"
+	        />	    
+	</RelativeLayout>
+	<LinearLayout
+	    android:id="@+id/trip_clickable_ll"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@android:color/white"
+	    android:orientation="vertical" >
+		<RelativeLayout 
+		    android:id="@+id/trip_src_dest_rl"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal" >
+		    <TextView 
+		        android:id="@+id/trip_src_tv"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+			    android:layout_alignParentLeft="true"
+			    android:layout_alignParentStart="true"
+			    android:layout_toLeftOf="@+id/trip_to_iv"
+			    android:layout_toStartOf="@+id/trip_to_iv"
+			    android:layout_centerVertical="true"
+			    android:gravity="end"
+			    android:padding="5dp"
+			    android:textAppearance="?android:attr/textAppearanceSmall"
+			    android:textColor="#ffffff"	/>
+		    <ImageView 
+		        android:id="@+id/trip_to_iv"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"	     
+			    android:layout_marginLeft="10dp"
+			    android:layout_marginStart="10dp"
+			    android:layout_marginRight="10dp"
+			    android:layout_marginEnd="10dp"
+			    android:gravity="center_vertical"
+			    android:layout_centerInParent="true"
+			    android:padding="5dp"
+			    android:src="@drawable/ic_to1_white"
+			    android:contentDescription="@string/app_name"	/>
+		    <TextView 
+		        android:id="@+id/trip_dest_tv"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+			    android:layout_toRightOf="@+id/trip_to_iv"
+			    android:layout_toEndOf="@+id/trip_to_iv"
+			    android:layout_marginRight="10dp"
+			    android:layout_marginEnd="10dp"
+			    android:padding="5dp"
+			    android:layout_centerVertical="true"
+			    android:textAppearance="?android:attr/textAppearanceSmall"
+			    android:textColor="#ffffff"	/>
+		</RelativeLayout>
+		<RelativeLayout 
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+		     >
+		    <TextView 
+		        android:id="@+id/trip_start_loc_tv"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+			    android:layout_alignParentStart="true"
+			    android:layout_alignParentLeft="true"
+			    android:gravity="center_vertical"
+			    android:padding="5dp"
+			    android:textAppearance="?android:attr/textAppearanceSmall"
+			    android:textColor="#565656"
+		        android:drawableLeft="@drawable/ic_start_location"
+		        android:drawableStart="@drawable/ic_start_location"
+		        android:drawablePadding="5dp"	/>
+		</RelativeLayout>
+		<RelativeLayout 
+		    android:id="@+id/curr_loc_rl"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+		     >
+		    <TextView 
+		        android:id="@+id/trip_curr_loc_tv"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+			    android:layout_alignParentStart="true"
+			    android:layout_alignParentLeft="true"
+			    android:gravity="center_vertical"
+			    android:padding="5dp"
+			    android:textAppearance="?android:attr/textAppearanceSmall"
+			    android:textColor="#353535"
+		        android:drawableLeft="@drawable/ic_current_location"
+		        android:drawableStart="@drawable/ic_current_location"
+		        android:drawablePadding="5dp"	/>
+		</RelativeLayout>
+		<RelativeLayout 
+		    android:id="@+id/trip_stop_loc_rl"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"
+		    android:visibility="gone" >
+		    <TextView 
+		        android:id="@+id/trip_stop_loc_tv"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+			    android:layout_alignParentStart="true"
+			    android:layout_alignParentLeft="true"
+			    android:gravity="center_vertical"
+			    android:padding="5dp"
+			    android:textAppearance="?android:attr/textAppearanceSmall"
+			    android:textColor="#353535" 
+		        android:drawableLeft="@drawable/ic_stop_location"
+		        android:drawableStart="@drawable/ic_stop_location"
+		        android:drawablePadding="5dp"	/>
+		</RelativeLayout>
+		<RelativeLayout 
+		    android:id="@+id/trip_dist_date_rl"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content"
+		    android:orientation="horizontal"  >
+		    <TextView 
+		        android:id="@+id/trip_dist_tv"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+			    android:layout_alignParentStart="true"
+			    android:layout_alignParentLeft="true"
+			    android:gravity="center_vertical"
+			    android:padding="5dp"
+			    android:textAppearance="?android:attr/textAppearanceSmall"
+			    android:textColor="#353535"
+		        android:drawableLeft="@drawable/meter_icon"
+		        android:drawableStart="@drawable/meter_icon"
+		        android:drawablePadding="5dp"
+		        android:visibility="gone"	/>
+		    <TextView 
+		        android:id="@+id/trip_created_tv"
+		        android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+			    android:layout_alignParentEnd="true"
+			    android:layout_alignParentRight="true"
+			    android:gravity="center_vertical"
+			    android:padding="5dp"
+			    android:textAppearance="?android:attr/textAppearanceSmall"
+			    android:textColor="#555555"
+		        android:drawablePadding="5dp"	/>
+		</RelativeLayout>
+	</LinearLayout>
+</LinearLayout>

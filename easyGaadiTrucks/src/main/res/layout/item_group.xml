@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="@dimen/item_default_margin"
+    android:layout_marginLeft="@dimen/item_default_margin"
+    android:layout_marginRight="@dimen/item_default_margin"
+    android:layout_marginStart="@dimen/item_default_margin"
+    android:layout_marginTop="@dimen/item_default_margin"
+    android:background="@color/white"
+    android:descendantFocusability="blocksDescendants"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="@dimen/item_default_padding">
+
+    <TextView
+        android:id="@+id/group_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/group"
+        android:textSize="@dimen/group_text_size" />
+
+    <ImageButton
+        android:id="@+id/group_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginStart="@dimen/margin_10"
+        android:background="?attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_group_list_black" />
+
+    <ImageButton
+        android:id="@+id/group_maps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_10"
+        android:layout_marginLeft="@dimen/margin_10"
+        android:layout_marginRight="@dimen/margin_10"
+        android:layout_marginStart="@dimen/margin_10"
+        android:background="?attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_group_maps" />
+
+    <ImageButton
+        android:id="@+id/group_add"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="?attr/selectableItemBackground"
+        app:srcCompat="@drawable/ic_add" />
+</LinearLayout>

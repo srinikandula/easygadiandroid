@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:background="@drawable/white_bg"
+    android:padding="13dp" >
+
+    <RelativeLayout
+        android:id="@+id/add_lay"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/city_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_marginRight="@dimen/margin_5"
+            android:layout_marginTop="@dimen/margin_5"
+            android:layout_marginBottom="2dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <TextView
+                android:id="@+id/src_city_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingEnd="5dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="5dp"
+                android:paddingStart="0dp"
+                android:text="@string/src_str"
+                android:layout_gravity="top"
+                android:gravity="left"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/red_shade" />
+
+            <TextView
+                android:id="@+id/des_city_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:layout_gravity="top"
+                android:paddingEnd="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="0dp"
+                android:paddingStart="5dp"
+                android:text="@string/des_str"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/violet_shade" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/statelay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/city_lay"
+            android:layout_marginLeft="@dimen/margin_5"
+            android:layout_marginRight="@dimen/margin_5"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:weightSum="2" >
+
+            <TextView
+                android:id="@+id/src_state_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingEnd="5dp"
+                android:paddingLeft="0dp"
+                android:paddingRight="5dp"
+                android:paddingStart="0dp"
+                android:text="@string/src_str"
+                android:layout_gravity="top"
+                android:gravity="left"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/red_shade" />
+
+            <TextView
+                android:id="@+id/des_state_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left"
+                android:layout_gravity="top"
+                android:paddingEnd="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="0dp"
+                android:paddingStart="5dp"
+                android:text="@string/des_str"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/violet_shade" />
+        </LinearLayout>
+        <View
+            android:layout_below="@+id/statelay"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@color/dark_violet_shade"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/truckType_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_lay"
+        android:layout_margin="5dp"
+        android:weightSum="2">
+        <TextView
+            android:id="@+id/trucktype_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="2dp"
+            android:drawableLeft="@drawable/icon_truck_type"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/text_color" />
+
+        <TextView
+            android:id="@+id/date_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="2dp"
+            android:drawableLeft="@drawable/icon_calendar"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/text_color"  />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/bottomlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/truckType_lay"
+        android:layout_margin="5dp"
+        android:weightSum="2">
+        <TextView
+            android:id="@+id/price_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="2dp"
+            android:drawableLeft="@drawable/icon_rupee"
+            android:layout_gravity="center|left"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/text_color"  />
+
+
+        <ImageView
+            android:id="@+id/btn_apply"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="start"
+            android:src="@drawable/icon_phone"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/message_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bottomlayout"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginStart="3dp"
+        android:visibility="gone"
+        android:drawableLeft="@drawable/icon_info"
+        android:layout_toEndOf="@+id/messagetit"
+        android:layout_toRightOf="@+id/messagetit"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/text_color"  />
+</RelativeLayout>

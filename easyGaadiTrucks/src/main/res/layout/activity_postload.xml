@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:focusable="true"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:padding="10dp" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:focusableInTouchMode="true"
+        android:padding="5dp" >
+
+        <AutoCompleteTextView
+            android:id="@+id/srcactv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="5dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:ems="10"
+            android:hint="@string/src_str"
+            android:padding="10dp" >
+        </AutoCompleteTextView>
+
+        <AutoCompleteTextView
+            android:id="@+id/desactv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/srcactv"
+            android:layout_marginBottom="5dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:ems="10"
+            android:hint="@string/des_str"
+            android:padding="10dp" >
+        </AutoCompleteTextView>
+
+        <LinearLayout
+            android:id="@+id/goodslayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/desactv"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="4"
+                android:text="@string/goodstype_str1"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <Spinner
+                android:id="@+id/goodstype_spn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_dropdown_light_frame" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/truckslayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/goodslayout"
+            android:layout_marginBottom="5dp"
+            android:orientation="horizontal"
+            android:padding="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="4"
+                android:text="@string/trucktypes_str1"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+
+            <Spinner
+                android:id="@+id/trucktype_spn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:drawable/editbox_dropdown_light_frame"
+                android:padding="8dp" />
+        </LinearLayout>
+        
+        <EditText
+            android:id="@+id/nooftrucks_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/truckslayout"
+            android:layout_marginBottom="5dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:ems="10"
+            android:hint="@string/nooftrucks"
+            android:inputType="number"
+            android:padding="10dp" />
+        
+
+        <EditText
+            android:id="@+id/expprc_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/nooftrucks_et"
+            android:layout_marginBottom="5dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:ems="10"
+            android:hint="@string/expectedprice"
+            android:inputType="numberDecimal"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/date_btn"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/expprc_et"
+            android:layout_marginBottom="5dp"
+            android:background="@android:drawable/spinner_background"
+            android:gravity="start|center"
+            android:padding="5dp"
+            android:text="@string/daterequired"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+
+        <AutoCompleteTextView
+            android:id="@+id/pickuppoint_actv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date_btn"
+            android:layout_marginBottom="5dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:gravity="top|start"
+            android:hint="@string/pickuppoint"
+            android:inputType="text"
+            android:singleLine="true"
+            android:padding="8dp" />
+        
+        <EditText
+            android:id="@+id/comment_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/pickuppoint_actv"
+            android:layout_marginBottom="5dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:gravity="top|start"
+            android:hint="@string/comment"
+            android:inputType="text"
+            android:maxLines="4"
+            android:padding="8dp" />
+
+        <EditText
+            android:id="@+id/loadingcharges_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/comment_et"
+            android:layout_marginBottom="5dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:gravity="start|center"
+            android:hint="@string/loadingcharges"
+            android:inputType="numberDecimal"
+            android:padding="8dp" />
+
+        <EditText
+            android:id="@+id/unloadingcharges_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/loadingcharges_et"
+            android:layout_marginBottom="5dp"
+            android:background="@android:drawable/editbox_background_normal"
+            android:gravity="start|center"
+            android:hint="@string/unloadingcharges"
+            android:inputType="numberDecimal"
+            android:padding="8dp" />
+
+        <Button
+            android:id="@+id/submit_btn"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/unloadingcharges_et"
+            android:layout_margin="5dp"
+            android:background="@drawable/alertbtnbg"
+            android:padding="10dp"
+            android:text="@string/submit_str"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+</ScrollView>

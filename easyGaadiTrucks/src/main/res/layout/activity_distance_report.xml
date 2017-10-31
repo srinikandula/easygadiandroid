@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.easygaadi.trucksmobileapp.DistanceReport">
+    <RelativeLayout
+        android:id="@+id/date_picker_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/searchdiabg"
+        android:padding="5dp" >
+
+        <TextView
+            android:id="@+id/tv_regno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:text="@string/distance_travelled_tit"
+            android:gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/yellowdclr" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/tv_regno"
+            android:layout_marginBottom="3dp"
+            android:background="@color/greyd_clr" />
+
+        <LinearLayout
+            android:id="@+id/fromLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/searchetbg"
+            android:orientation="horizontal"
+            android:padding="7dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:ems="4"
+                android:text="@string/fromdate"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blackblueshade"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/fromdate_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blackblueshade"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/toLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fromLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/searchetbg"
+            android:orientation="horizontal"
+            android:padding="7dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:ems="4"
+                android:text="@string/todate"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blackblueshade"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/todate_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blackblueshade"
+                android:textSize="17sp" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/generate_report_tbn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/toLayout"
+            android:background="@drawable/searchbtnbg"
+            android:padding="5dp"
+            android:text="@string/generate_report"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:drawable/editbox_background"
+        android:layout_below="@+id/date_picker_layout"
+        android:layout_above="@+id/download_report">
+        <LinearLayout
+            android:id="@+id/title_layout"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4">
+     
+            <TextView
+                android:id="@+id/start_point_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/start_date"
+                android:gravity="center"
+                android:padding="2dp"
+                android:layout_weight="1" />
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@android:color/black" />
+            <TextView
+                android:id="@+id/end_point_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/end_date"
+                android:gravity="center"
+                android:padding="2dp"
+                android:layout_weight="1" />
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@android:color/black" />
+            <TextView
+                android:id="@+id/device_tv"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vehicle_no"
+                android:padding="2dp"
+                android:layout_weight="1"
+                />
+            <View
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:background="@android:color/black" />
+            <TextView
+                android:id="@+id/distance_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/dis_tra_str"
+                android:gravity="center"
+                android:padding="2dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+        <View
+            android:id="@+id/line1"
+            android:layout_below="@+id/title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@android:color/black" />
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/line1"
+            android:id="@+id/distance_report_rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/download_report"
+        android:text="@string/download_report"
+        android:padding="10dp"
+        android:textColor="@color/yellow"
+        android:background="@color/white"
+        android:layout_margin="5dp"
+        android:layout_above="@+id/adView"/>
+
+    <com.google.android.gms.ads.AdView
+        xmlns:ads="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/adView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        ads:adSize="BANNER"
+        ads:adUnitId="@string/eg_banner">
+    </com.google.android.gms.ads.AdView>
+
+</RelativeLayout>

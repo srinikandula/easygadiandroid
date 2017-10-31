@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/trucks_update_dlg_rootview"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:focusable="true"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:paddingBottom="5dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:padding="5dp" >
+        		
+		<RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/trucks_select_city_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"    
+                android:layout_alignBaseline="@+id/city_actv"
+                android:gravity="center_vertical|start"
+                android:text="@string/truckcity"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/black" />
+                
+                <AutoCompleteTextView
+                    android:id="@+id/city_actv"
+	                android:layout_width="0dp"
+	                android:layout_height="wrap_content"	                
+	                android:layout_toEndOf="@+id/trucks_select_city_tv"
+	                android:layout_toRightOf="@+id/trucks_select_city_tv"                
+	                android:layout_alignParentEnd="true"
+	                android:layout_alignParentRight="true"
+	                android:layout_marginRight="5dp"	
+	                android:layout_marginLeft="10dp"
+	                android:layout_marginEnd="5dp"	
+	                android:layout_marginStart="10dp"
+	                android:background="@android:drawable/editbox_dropdown_light_frame"
+	                android:singleLine="true"
+	                android:layout_centerVertical="true"
+                	android:gravity="start" />
+        </RelativeLayout>
+		
+		
+        <DatePicker
+            android:id="@+id/date_picker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:calendarViewShown="false"
+            android:scaleX=".92"
+            android:scaleY=".92" />
+
+        <Button
+            android:id="@+id/update_data_btn"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="@string/update" />
+    </LinearLayout>
+
+</ScrollView>

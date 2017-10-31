@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:id="@+id/titlelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/quotestit_header_bg"
+        android:orientation="horizontal"
+        android:padding="2dp"
+        android:weightSum="4" >
+
+        <TextView
+            android:id="@+id/id_tv"
+            style="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1.15"
+            android:background="@android:color/white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="5dp"
+            android:text="@string/id_tit"
+            android:textColor="@color/actionbar_clr"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/quote_tv"
+            style="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight="1.1"
+            android:background="@android:color/white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="5dp"
+            android:text="@string/quote_tit"
+            android:textColor="@color/actionbar_clr"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/comment_tv"
+            style="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="1dp"
+            android:layout_marginRight="1dp"
+            android:layout_weight=".73"
+            android:background="@android:color/white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="5dp"
+            android:text="@string/comment_head"
+            android:textColor="@color/actionbar_clr"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/confirm_tv"
+            style="?android:attr/textAppearanceSmall"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.02"
+            android:background="@android:color/white"
+            android:paddingBottom="5dp"
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:paddingTop="5dp"
+            android:text="@string/confirm_tit"
+            android:textColor="@color/actionbar_clr"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/quotesLV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titlelayout"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="2dp"
+        android:padding="2dp" >
+    </ListView>
+
+</RelativeLayout>

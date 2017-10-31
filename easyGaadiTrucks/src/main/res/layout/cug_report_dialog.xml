@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
+    android:background="@drawable/errordialog_bg"
+    android:padding="5dp" >
+
+    <TextView
+        android:id="@+id/dialogtitle_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/recharge_close"
+        android:layout_toStartOf="@+id/recharge_close"
+        android:ems="6"
+        android:padding="5dp"
+        android:text="@string/report"
+        android:textColor="@color/actionbar_clr"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <View
+        android:id="@+id/gray1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/dialogtitle_tv"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/defaultIconsColor"
+        android:orientation="horizontal" />
+
+    <LinearLayout
+        android:id="@+id/forgotpwd_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gray1"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp"
+        android:orientation="vertical" >
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content">
+            <EditText
+                android:background="@android:color/transparent"
+                android:id="@+id/fromDate_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:inputType="number"
+                android:focusable="false"
+                android:hint="@string/fromdate"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/defaultIconsColor"/>
+        </android.support.design.widget.TextInputLayout>
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content">
+            <EditText
+                android:inputType="number"
+                android:background="@android:color/transparent"
+                android:focusable="false"
+                android:id="@+id/toDate_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:hint="@string/todate"
+                android:textColor="@android:color/black"
+                android:textColorHint="@color/defaultIconsColor"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@android:color/darker_gray"
+            android:orientation="horizontal" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/go_btn"
+        android:layout_width="100dp"
+        android:layout_height="37dp"
+        android:layout_below="@+id/forgotpwd_lay"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/alertbtnbg"
+        android:text="@string/go_str"
+        android:layout_marginBottom="5dp"
+        android:textColor="@android:color/white" />
+
+    <ImageView
+        android:id="@+id/recharge_close"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_margin="5dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:contentDescription="@string/close"
+        android:src="@drawable/closebtn_s" />
+
+</RelativeLayout>

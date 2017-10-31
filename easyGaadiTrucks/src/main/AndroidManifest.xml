@@ -1,0 +1,368 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.easygaadi.trucksmobileapp"
+    android:versionCode="16"
+    android:versionName="2.2">
+
+    <uses-sdk
+        android:minSdkVersion="11"
+        android:targetSdkVersion="20" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <permission
+        android:name="com.easygaadi.trucksmobileapp.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.easygaadi.trucksmobileapp.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="false"
+        android:xlargeScreens="true" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application
+        android:name=".TruckApp"
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:theme="@style/Theme.AppCompat.Light"
+        android:vmSafeMode="true">
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyCd0ifbJjaQoMN66oY3Vyjh43r2gH9kPxA" />
+
+        <!-- AIzaSyDDmFsYW410r5KB8ssqL3R_bxbxrmKz-oU -->
+
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".LoyaltyPointsActivity"
+            android:label="@string/rewardpoints"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".LocateTrucksActivity"
+            android:label="@string/loc_trucks"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".ListOfTrackingTrucks"
+            android:label="@string/trucks_location"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".TrackTruckActivity"
+            android:label="@string/track_truck"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".TrackOrderActivity"
+            android:label="@string/track_order"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".HomeScreenActivity"
+            android:label="@string/company_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".TrucksActivity"
+            android:label="@string/trucks"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".LoadActivity"
+            android:label="@string/loads_tit"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme" />
+        <activity
+            android:name=".PostLoadActivity"
+            android:label="@string/postload_tit"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".LoadsStatus"
+            android:label="@string/loadstatus_str"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme" />
+        <activity
+            android:name=".QuotesActivity"
+            android:label="@string/quotes_tit"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".OrdersActivity"
+            android:label="@string/orders_str"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".AvaliableTrucksActivity"
+            android:label="@string/avaliabletrucks_str"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".SearchDialogActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Holo.Dialog.NoActionBar" />
+        <activity
+            android:name=".BuyorSellTruckActivity"
+            android:label="@string/buyselltruck_str"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme" />
+        <activity
+            android:name=".BuyTruckActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme" />
+        <activity
+            android:name=".SellTruckActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme" />
+        <activity
+            android:name="com.easygaadi.activities.GroupsActivity"
+            android:label="@string/groups"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".ExpectedPriceDialogActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".ImageCaptureActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".UploadActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base" />
+        <activity
+            android:name=".TripsActivity"
+            android:label="@string/trips_list_title"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden" />
+
+        <receiver
+            android:name=".gcm.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND">
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
+
+                <category android:name="com.easygaadi.trucksmobileapp" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.easygaadi.network.CustomRetrofitSpiceService"
+            android:enabled="true"
+            android:exported="false" />
+        <service android:name=".gcm.GCMNotificationIntentService" />
+
+        <!--
+          Optionally, register AnalyticsReceiver and AnalyticsService to support background
+          dispatching on non-Google Play devices
+        -->
+        <receiver
+            android:name="com.google.android.gms.analytics.AnalyticsReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.google.android.gms.analytics.ANALYTICS_DISPATCH" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name="com.google.android.gms.analytics.AnalyticsService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!--
+             Optionally, register CampaignTrackingReceiver and CampaignTrackingService to enable
+             installation campaign reporting
+        -->
+        <receiver
+            android:name="com.google.android.gms.analytics.CampaignTrackingReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <service android:name="com.google.android.gms.analytics.CampaignTrackingService" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/settings"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".CreateGroupActivity"
+            android:label="@string/create_group"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".DistanceReport"
+            android:label="@string/distance_report"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".TruckDetailsActivity"
+            android:label="@string/truck_details"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".DashboardActivity"
+            android:label="@string/dashboard"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".NotificationsActivity"
+            android:label="@string/notifications"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".ShareActivity"
+            android:label="@string/share_title"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".InsuranceActivity"
+            android:label="@string/insurance"
+            android:screenOrientation="portrait"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".Erp_Activity"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppMaterialTheme.Base"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+
+        <activity
+            android:name=".VideoPlayback"
+            android:label="@string/title_activity_video_playback"
+            android:theme="@style/NewAppTheme" />
+        <activity android:name=".RootActivity" />
+        <activity
+            android:name=".FuelCardActivity"
+            android:label="@string/fuel_card"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".WebActivity"
+            android:theme="@style/NewAppTheme" />
+        <activity
+            android:name=".ReportActivity"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".TollActivity"
+            android:label="@string/toll_gate"
+            android:theme="@style/NewAppTheme"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+
+        <!-- Included this AdActivity with configChanges and theme. -->
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
+            android:theme="@android:style/Theme.Translucent" />
+        <activity
+            android:name=".Trips_Activty"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Trunck_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Maintenance_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Party_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Driver_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".TruckDetails"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden"/>
+    </application>
+
+</manifest>

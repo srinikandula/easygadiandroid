@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- End current session if app sleeps for a period of time -->
+    <integer name="ga_sessionTimeout">300</integer>
+
+    <!-- Enable automatic Activity measurement -->
+    <bool name="ga_autoActivityTracking">true</bool>
+
+    <!-- The property id associated with this analytics tracker -->
+    <string name="ga_trackingId">UA-71868869-1</string>
+    <string name="ga_sampleFrequency">100.0</string>
+
+    <bool name="ga_reportUncaughtExceptions">true</bool>
+
+    <screenName name="com.easygaadi.trucksmobileapp.SplashActivity">Splash Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.LoginActivity">Login Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.LocateTrucksActivity">LocateTrucks Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.TrackTruckActivity">TrackTruck Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.TrackOrderActivity">TrackOrder Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.HomeScreenActivity">Home Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.TrucksActivity">Trucks Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.LoadActivity">Loads Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.PostLoadActivity">PostLoad Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.ListOfTrackingTrucks">TrucksLocationList Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.LoadsStatus">LoadsStatus Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.QuotesActivity">Quotes Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.OrdersActivity">Orders Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.AvaliableTrucksActivity">AvaliableTrucks Screen</screenName>
+    <screenName name="com.easygaadi.trucksmobileapp.LoyaltyPointsActivity">LoyaltyPoints Screen</screenName>
+
+</resources>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "430869336352",
+    "firebase_url": "https://easygaadi-dd6c1.firebaseio.com",
+    "project_id": "easygaadi-dd6c1",
+    "storage_bucket": "easygaadi-dd6c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:430869336352:android:a80472d85921a730",
+        "android_client_info": {
+          "package_name": "com.easygaadi.trucksmobileapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "430869336352-nde0j722j59eimkhakk3tk7nfpbm65eq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.easygaadi.trucksmobileapp",
+            "certificate_hash": "a9a3cc2f4cbce2ed7263394253df08431ece6a57"
+          }
+        },
+        {
+          "client_id": "430869336352-fe82gm9g16h6kbrvu8p3b6ffsonbqqfg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjgEzp-LdzxuE9X9uHvN1UQhWSmZy7bjQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "430869336352-fe82gm9g16h6kbrvu8p3b6ffsonbqqfg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

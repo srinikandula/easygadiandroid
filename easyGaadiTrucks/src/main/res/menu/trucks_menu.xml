@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" >
+
+    <item
+        android:id="@+id/action_rewards"
+        android:icon="@drawable/ic_gift_icon"
+        android:orderInCategory="0"
+        android:showAsAction="ifRoom"
+        android:title="@string/rewardpoints"
+        app:showAsAction="always"/>
+    
+    <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/action_refresh"
+        android:orderInCategory="0"
+        android:showAsAction="ifRoom"
+        android:title="@string/refresh"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/action_add"
+        android:icon="@drawable/action_add"
+        android:orderInCategory="0"
+        android:showAsAction="ifRoom"
+        android:title="@string/action_add"
+        app:showAsAction="always"/>
+    
+
+</menu>

@@ -1,0 +1,50 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <item
+        android:id="@+id/action_stop_trip"
+        android:icon="@drawable/ic_action_stop_trip"
+        android:orderInCategory="0"
+        android:showAsAction="ifRoom"
+        android:title="stop trip"
+        android:visible="false"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_stops"
+        android:icon="@drawable/ic_action_stops"
+        android:orderInCategory="0"
+        android:showAsAction="ifRoom"
+        android:title="@string/stops"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_refresh"
+        android:icon="@drawable/action_refresh"
+        android:orderInCategory="0"
+        android:showAsAction="ifRoom"
+        android:title="@string/refresh"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_info"
+        android:icon="@drawable/ic_action_info"
+        android:orderInCategory="0"
+        android:showAsAction="ifRoom"
+        android:title="@string/info"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/change_map"
+        android:icon="@drawable/ic_maps"
+        android:orderInCategory="1"
+        android:showAsAction="ifRoom"
+        android:title="@string/change_map"
+        app:showAsAction="always" />
+
+    <!-- <item
+            android:id="@+id/action_report"
+            android:icon="@drawable/ic_action_info"
+            android:orderInCategory="0"
+            android:showAsAction="never"
+            android:title="Report"
+            app:showAsAction="always"/> -->
+</menu>

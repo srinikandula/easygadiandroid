@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_margin="@dimen/margin_5"
+    android:layout_width="match_parent"
+    android:layout_height="350dp"
+    android:padding="5dp"
+    android:background="@drawable/login_bg">
+    <ImageView
+        android:layout_margin="3dp"
+        android:id="@+id/close_iv"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/closebtn_s"/>
+    <TextView
+        android:layout_below="@+id/close_iv"
+        android:id="@+id/title_tv"
+        android:textSize="@dimen/primary_text"
+        android:textColor="@android:color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
+    <View
+        android:id="@+id/seperator"
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="3dp"
+        android:layout_below="@+id/title_tv"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@android:color/black"/>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/od_rc"
+        android:layout_below="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

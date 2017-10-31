@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:background="@drawable/searchdiabg"
+        android:paddingBottom="12dp"
+        android:paddingEnd="2dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingStart="2dp"
+        android:paddingTop="5dp" >
+
+        <TextView
+            android:id="@+id/tv_regno"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="5dp"
+            android:text="@string/tracklocation"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/yellowdclr" />
+
+        <View
+            android:id="@+id/line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/tv_regno"
+            android:layout_marginBottom="5dp"
+            android:background="@color/greyd_clr" />
+
+        <LinearLayout
+            android:id="@+id/fromLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/line"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/searchetbg"
+            android:orientation="horizontal"
+            android:padding="7dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:ems="4"
+                android:text="@string/fromdate"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blackblueshade"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/fromdate_et"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blackblueshade"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/toLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fromLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"
+            android:background="@drawable/searchetbg"
+            android:orientation="horizontal"
+            android:padding="7dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:layout_marginRight="5dp"
+                android:ems="4"
+                android:text="@string/todate"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blackblueshade"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/todate_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/blackblueshade"
+                android:textSize="17sp" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/cancel_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignLeft="@+id/toLayout"
+            android:layout_alignStart="@+id/toLayout"
+            android:layout_below="@+id/toLayout"
+            android:background="@drawable/searchbtnbg"
+            android:padding="1dp"
+            android:text="@android:string/cancel"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white" />
+
+        <Button
+            android:id="@+id/tracktruck_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_alignEnd="@+id/toLayout"
+            android:layout_alignRight="@+id/toLayout"
+            android:layout_below="@+id/toLayout"
+            android:background="@drawable/searchbtnbg"
+            android:padding="1dp"
+            android:text="@string/track_str"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
+
+</RelativeLayout>

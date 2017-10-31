@@ -466,5 +466,6 @@
     <string name="truck_perexpiry">Permit Expiry</string>
     <string name="truck_pollexpiry">Pollution Expiry</string>
     <string name="truck_mamt">Maintance Amount</string>
+    <string name="truck_tonnage">Tonnage</string>
 
 </resources>

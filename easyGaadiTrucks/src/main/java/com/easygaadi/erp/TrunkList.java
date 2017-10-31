@@ -30,9 +30,12 @@ import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.DataModel;
 import com.easygaadi.models.PartyVo;
 import com.easygaadi.models.TruckVo;
+import com.easygaadi.trucksmobileapp.Driver_Activity;
+import com.easygaadi.trucksmobileapp.Party_Activity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.TruckApp;
 import com.easygaadi.trucksmobileapp.TruckDetails;
+import com.easygaadi.trucksmobileapp.TrucksActivity;
 import com.easygaadi.trucksmobileapp.Trunck_Activity;
 
 import org.json.JSONArray;
@@ -77,7 +80,7 @@ public class TrunkList extends Fragment {
     JSONParser parser;
     ProgressDialog pDialog;
     EditText etSearch;
-
+    private int requestCode = 123;
     CustomAdapter partyadapter;
 
 
@@ -147,7 +150,7 @@ public class TrunkList extends Fragment {
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), Trunck_Activity.class));
+                startActivityForResult(new Intent(getActivity(), Trunck_Activity.class), requestCode);
             }
         });
 
@@ -219,7 +222,7 @@ public class TrunkList extends Fragment {
             TextView textViewFitness_tv = holder.textViewFitness_tv;
 
             textViewName.setText(dataSet.get(listPosition).getDrivername());
-            textViewTruckREG.setText(dataSet.get(listPosition).getTruckType());
+            textViewTruckREG.setText(dataSet.get(listPosition).getRegistrationNo());
             textViewlastupadate.setText(dataSet.get(listPosition).getTruckType()+ " "+""+dataSet.get(listPosition).getModelAndYear());
 
 
@@ -420,6 +423,36 @@ public class TrunkList extends Fragment {
                 Toast.makeText(getActivity(),
                         getResources().getString(R.string.exceptionmsg),
                         Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //in fragment class callback
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == this.requestCode){
+            String addItem=data.getStringExtra("addItem");
+            try {
+                JSONObject partData = new JSONObject(addItem);
+                TruckVo voData = new TruckVo();
+                voData.setDrivername("Driver Name");
+                voData.setDrivercontact("8801715086");
+                voData.setRegistrationNo(partData.getString("registrationNo"));
+                voData.setTruckType(partData.getString("truckType"));
+                voData.setModelAndYear(partData.getString("modelAndYear"));
+                voData.setFitnessExpiry(partData.getString("fitnessExpiry"));
+                voData.setPermitExpiry(partData.getString("permitExpiry"));
+                voData.setInsuranceExpiry(partData.getString("insuranceExpiry"));
+                voData.setPollutionExpiry(partData.getString("pollutionExpiry"));
+                this.data.add(voData);
+                partyadapter.notifyDataSetChanged();
+
+                /*adapter = new CustomAdapter(this.data);
+                recyclerView.setAdapter(adapter);*/
+            }catch (Exception e)
+            {
+                e.getMessage();
             }
         }
     }

@@ -416,8 +416,6 @@ public class PartList extends Fragment {
             {
                 e.getMessage();
             }
-
-
         }
     }
 

@@ -37,8 +37,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Driver_Activity extends AppCompatActivity {
 
@@ -383,12 +387,22 @@ public class Driver_Activity extends AppCompatActivity {
                     post_dict.put("joiningDate", driverDOJ);
                     post_dict.put("licenseValidity", driverlicval);
                     post_dict.put("salary",Integer.parseInt(driversal));
+                    post_dict.put("_id",lookuup);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 System.out.println("" + String.valueOf(post_dict));
-                String result = parser.easyyExcutePost(context,TruckApp.driverListURL,String.valueOf(post_dict));
+                String result="";
+                if(lookuup.length()> 0) {
+                    result = parser.ERPexcutePut(context, TruckApp.driverListURL, String.valueOf(post_dict));
+                    System.out.println("edit Driver Details" );
+                }else
+                {
+                     result = parser.easyyExcutePost(context, TruckApp.driverListURL, String.valueOf(post_dict));
+                    System.out.println("Add Driver Details");
+                }
+
                 res = new JSONObject(result);
 
             } catch (Exception e) {
@@ -408,15 +422,22 @@ public class Driver_Activity extends AppCompatActivity {
                 try {
                     //JSONObject js = new JSONObject(s);
                     if (!s.getBoolean("status")) {
-
                         Toast.makeText(context, "fail",Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
-
                         Intent intent=new Intent();
-                        intent.putExtra("addItem",s.getJSONObject("driver").toString());
-                        setResult(123,intent);
-                        finish();
+                        if(lookuup.length()> 0) {
+                            intent.putExtra("addItem",s.getJSONObject("driver").toString());
+                            intent.putExtra("updated","update");
+                            setResult(123,intent);
+                            finish();
+                        }else{
+                            intent.putExtra("updated","add");
+                            intent.putExtra("addItem",s.getJSONObject("driver").toString());
+                            setResult(123,intent);
+                            finish();
+                        }
+
 
                     }
                 } catch (JSONException e) {
@@ -598,34 +619,40 @@ public class Driver_Activity extends AppCompatActivity {
             if (result != null) {
 
                 try {
-
-
-
                     if (!result.getBoolean("status")) {
                         Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
                     }else
                     {
 
-                                JSONObject partData = new JSONObject("driver");
-                                TruckVo voData = new TruckVo();
-                                voData.set_id(partData.getString("_id"));
-                                voData.setRegistrationNo(""+partData.getString("registrationNo"));
-                                //
+                        JSONObject partData = result.getJSONObject("driver");
+                        // driverFnameET,drivermobET,driverlicnumET,driverSalET
+
+                        driverFnameET.setText(partData.getString("fullName"));
+                        drivermobET.setText(partData.getString("mobile"));
+                        driverlicnumET.setText(partData.getString("licenseNumber"));
+                        driverSalET.setText("");
+                        //drvr_doj.setText(getDate(partData.getString("licenseNumber")));
+                        drvr_doj.setText("");
+                        drvr_lic_date.setText(getDate(partData.getString("licenseValidity")));
+
+
+                        for (int i = 0; i < data.size(); i++) {
+                            TruckVo vo = data.get(i);
+                            System.out.println(vo.get_id()+"riyaz"+partData.getString("truckId"));
+                            if(vo.get_id().contentEquals(partData.getString("truckId"))){
+                                spin.setSelection(i);
+                                break;
+                            }
+                        }
+
 
                             pDialog.dismiss();
-
-                    }
-                    SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),data);
-                    spin.setAdapter(customAdapter);
-
-                    if(lookuup.length()> 0)
-                    {
 
                     }
 
 
                 } catch (Exception e) {
-                    System.out.println("ex in get leads" + e.toString());
+                    System.out.println("ex GetFreshTrucks get leads" + e.toString());
                 }
 
             } else {
@@ -635,6 +662,27 @@ public class Driver_Activity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+
+    private String getDate(String fdate)
+    {
+        Date date;
+        String diff = "";
+        System.out.println("getDate--"+"getDate"+fdate);
+        DateFormat dateFormat,formatter;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        try {
+            date = dateFormat.parse(fdate);
+            formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
+            diff = formatter.format(date);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("err--"+e.getMessage());
+        }
+        return diff;
     }
 
 }

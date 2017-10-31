@@ -366,6 +366,81 @@ public class JSONParser {
 		return result;
 	}
 
+
+	public  String ERPexcutePut(Context context,String targetURL, String urlParameters)
+	{
+		String JsonResponse = null;
+		String erpToken = "";
+		URL url;
+		HttpURLConnection connection = null;
+		BufferedReader reader = null;
+		for (int retries = 0; retries < 5; retries++) {
+
+			try {
+				int time = TIMEOUT * (retries+1);
+
+				SharedPreferences prefs = context.getSharedPreferences(context.getResources().getString(R.string.shareP_erp), MODE_PRIVATE);
+				String restoredText = prefs.getString("token", null);
+				if (restoredText != null) {
+					erpToken = prefs.getString("token", "No name defined");//"No name defined" is the default value.
+
+				}
+				//Create connection
+				url = new URL(targetURL);
+				connection = (HttpURLConnection)url.openConnection();
+				connection.setRequestMethod("PUT");
+				connection.setRequestProperty("Content-Type", "application/json");
+				connection.setRequestProperty("Accept", "application/json");
+				connection.setRequestProperty("token", erpToken);
+				connection.setRequestProperty("Content-Length", "" + Integer.toString(urlParameters.getBytes().length));
+				connection.setUseCaches (false);
+				connection.setDoInput(true);
+				connection.setDoOutput(true);
+				//set headers and method
+				Writer writer = new BufferedWriter(new OutputStreamWriter(connection.getOutputStream(), "UTF-8"));
+				writer.write(urlParameters);
+
+
+				writer.close ();
+				InputStream inputStream = connection.getInputStream();
+				//input stream
+				StringBuffer buffer = new StringBuffer();
+				if (inputStream == null) {
+					// Nothing to do.
+					return null;
+				}
+				reader = new BufferedReader(new InputStreamReader(inputStream));
+
+				String inputLine;
+				while ((inputLine = reader.readLine()) != null)
+					buffer.append(inputLine + "\n");
+				if (buffer.length() == 0) {
+					// Stream was empty. No point in parsing.
+					return null;
+				}
+				//send to post execute
+				JsonResponse = buffer.toString();
+				//response data
+				Log.i("TAG",""+JsonResponse.toString());
+				return JsonResponse;
+
+			}catch(SocketTimeoutException e){
+				System.out.println("SocketException :"+e.toString());
+				continue;
+			} catch (Exception e) {
+				System.out.println("Error in get"+e.toString());
+				e.printStackTrace();
+				return null;
+
+			} finally {
+
+				if(connection != null) {
+					connection.disconnect();
+				}
+			}
+		}
+		return null;
+	}
 }
 
 

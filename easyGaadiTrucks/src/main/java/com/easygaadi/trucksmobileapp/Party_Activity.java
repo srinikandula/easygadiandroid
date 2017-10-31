@@ -125,9 +125,6 @@ public class Party_Activity extends AppCompatActivity {
         });
     }
 
-    public void callback(View view){
-        finish();
-    }
 
 
 
@@ -273,6 +270,24 @@ public class Party_Activity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+
+    public void callback(View view){
+        Intent intent=new Intent();
+        intent.putExtra("addItem","");
+        setResult(124,intent);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent();
+        intent.putExtra("addItem","");
+        setResult(124,intent);
+        finish();
+        super.onBackPressed();
+        // Do extra stuff here
     }
 
 }

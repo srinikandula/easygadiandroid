@@ -219,6 +219,7 @@ public class DriverList extends Fragment {
             Log.v("check",dataSet.get(listPosition).getLicenseNumber()+""+dataSet.get(listPosition).getLicenseValidity());
             System.out.println("check"+dataSet.get(listPosition).getLicenseNumber()+""+dataSet.get(listPosition).getLicenseValidity());
 
+            textViewDriverID.setText(dataSet.get(listPosition).getDriverId());
             textViewDriverID.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -338,6 +339,8 @@ public class DriverList extends Fragment {
                                 JSONObject partData = partArray.getJSONObject(i);
                                 DriverVo voData = new DriverVo();
                                 voData.set_id(partData.getString("_id"));
+                                voData.setDriverId(partData.getString("driverId"));
+
                                 voData.setFullName(partData.getString("fullName"));
                                 voData.setMobile(""+partData.getString("mobile"));
                                 voData.setLicenseNumber(partData.getString("licenseNumber"));
@@ -373,13 +376,40 @@ public class DriverList extends Fragment {
             try {
                 JSONObject partData = new JSONObject(addItem);
                 DriverVo voData = new DriverVo();
-                voData.setFullName(partData.getString("fullName"));
-                voData.setMobile(""+partData.getString("mobile"));
-                voData.setLicenseNumber(partData.getString("licenseNumber"));
 
-                voData.setLicenseValidity(partData.getString("licenseValidity"));
-                this.data.add(voData);
-                partyadapter.notifyDataSetChanged();
+                if(data.getStringExtra("updated").equalsIgnoreCase("update"))
+                {
+                    for (int i = 0; i < this.data.size(); i++) {
+                        if( partData.getString("_id").equalsIgnoreCase(this.data.get(i).get_id()))
+                        {
+                            voData.setDriverId(partData.getString("driverId"));
+                            voData.setFullName(partData.getString("fullName"));
+                            voData.setMobile(""+partData.getString("mobile"));
+                            voData.setLicenseNumber(partData.getString("licenseNumber"));
+                            voData.setLicenseValidity(partData.getString("licenseValidity"));
+                            //this.data.add(voData);
+                            this.data.set(i,voData);
+                            partyadapter.notifyDataSetChanged();
+                            break;
+                        }
+                    }
+
+                }else{
+                    voData.setDriverId(partData.getString("driverId"));
+                    voData.setFullName(partData.getString("fullName"));
+                    voData.setMobile(""+partData.getString("mobile"));
+                    voData.setLicenseNumber(partData.getString("licenseNumber"));
+
+                    voData.setLicenseValidity(partData.getString("licenseValidity"));
+                    this.data.add(voData);
+                    partyadapter.notifyDataSetChanged();
+                }
+
+
+
+
+
+
 
                 /*adapter = new CustomAdapter(this.data);
                 recyclerView.setAdapter(adapter);*/

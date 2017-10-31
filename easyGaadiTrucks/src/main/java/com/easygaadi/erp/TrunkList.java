@@ -249,7 +249,10 @@ public class TrunkList extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    startActivity(new Intent(getActivity(), TruckDetails.class));
+                    Intent intent = new Intent(getActivity(), TruckDetails.class);
+                    intent.putExtra("hitupdate", dataSet.get(listPosition).get_id());
+                    //intent.putExtra("hitupdate", "loo");
+                    startActivity(intent);
                 }
             });
 
@@ -398,6 +401,7 @@ public class TrunkList extends Fragment {
                                 TruckVo voData = new TruckVo();
                                 voData.setDrivername("Driver Name");
                                 voData.setDrivercontact("8801715086");
+                                voData.set_id(partData.getString("_id"));
                                 voData.setRegistrationNo(partData.getString("registrationNo"));
                                 voData.setTruckType(partData.getString("truckType"));
                                 voData.setModelAndYear(partData.getString("modelAndYear"));

@@ -8,6 +8,15 @@ public class DriverVo {
     private String accountId;
 
     private String truckId;
+    private String driverId;
+
+    public String getDriverId() {
+        return driverId;
+    }
+
+    public void setDriverId(String driverId) {
+        this.driverId = driverId;
+    }
 
     private String __v;
 

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,7 +38,11 @@ import com.easygaadi.trucksmobileapp.Trunck_Activity;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A fragment with a Google +1 button.
@@ -73,7 +78,7 @@ public class TrunkList extends Fragment {
     ProgressDialog pDialog;
     EditText etSearch;
 
-    PartList.CustomAdapter partyadapter;
+    CustomAdapter partyadapter;
 
 
     public TrunkList() {
@@ -130,7 +135,7 @@ public class TrunkList extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
         if (detectConnection.isConnectingToInternet()) {
-            //new GetBuyingTrucks().execute();
+            new GetBuyingTrucks().execute();
         }else{
             Toast.makeText(getActivity(),
                     getResources().getString(R.string.internet_str),
@@ -171,16 +176,21 @@ public class TrunkList extends Fragment {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView textViewName;
-            TextView textViewVersion,textViewmore,textViewcall;
+            TextView textViewName,textViewTruckREG,textViewlastupadate;
+            TextView textViewPermit_tv,textViewPoll_tv,textViewIns_tv,textViewFitness_tv,textViewmore,textViewcall;
             LinearLayout moreLL;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
-                this.textViewName = (TextView) itemView.findViewById(R.id.truckRegNo_tv);
-                this.textViewVersion = (TextView) itemView.findViewById(R.id.tv_lastupadate);
+                this.textViewName = (TextView) itemView.findViewById(R.id.trunkDrName_tv);
+                this.textViewTruckREG = (TextView) itemView.findViewById(R.id.truckRegNo_tv);
+                this.textViewlastupadate = (TextView) itemView.findViewById(R.id.tv_lastupadate);
+                this.textViewPermit_tv = (TextView) itemView.findViewById(R.id.permit_tv);
+                this.textViewPoll_tv = (TextView) itemView.findViewById(R.id.poll_tv);
+                this.textViewIns_tv = (TextView) itemView.findViewById(R.id.ins_tv);
                 this.textViewmore = (TextView) itemView.findViewById(R.id.more_tv);
                 this.textViewcall = (TextView) itemView.findViewById(R.id.call_tv);
+                this.textViewFitness_tv = (TextView) itemView.findViewById(R.id.fitness_tv);
             }
         }
 
@@ -199,12 +209,29 @@ public class TrunkList extends Fragment {
         public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
             TextView textViewName = holder.textViewName;
-            TextView textViewVersion = holder.textViewVersion;
+            TextView textViewTruckREG = holder.textViewTruckREG;
+            TextView textViewlastupadate = holder.textViewlastupadate;
+            TextView textViewPermit_tv = holder.textViewPermit_tv;
+            TextView textViewPoll_tv = holder.textViewPoll_tv;
+            TextView textViewIns_tv = holder.textViewIns_tv;
             TextView textViewmore = holder.textViewmore;
             TextView textViewcall = holder.textViewcall;
+            TextView textViewFitness_tv = holder.textViewFitness_tv;
 
-            //textViewName.setText(dataSet.get(listPosition).getName());
-            //textViewVersion.setText(dataSet.get(listPosition).getVersion());
+            textViewName.setText(dataSet.get(listPosition).getDrivername());
+            textViewTruckREG.setText(dataSet.get(listPosition).getTruckType());
+            textViewlastupadate.setText(dataSet.get(listPosition).getTruckType()+ " "+""+dataSet.get(listPosition).getModelAndYear());
+
+
+
+            textViewPermit_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getPermitExpiry()), null, null, null );
+
+            textViewPoll_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getPollutionExpiry()), null, null, null );
+
+            textViewIns_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getInsuranceExpiry()), null, null, null );
+
+            textViewFitness_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getFitnessExpiry()), null, null, null );
+
 
 
 
@@ -212,7 +239,7 @@ public class TrunkList extends Fragment {
                 @Override
                 public void onClick(View v) {
 
-                    onCall(v);
+                    onCall(v,dataSet.get(listPosition).getDrivercontact());
                 }
             });
             textViewmore.setOnClickListener(new View.OnClickListener() {
@@ -234,6 +261,49 @@ public class TrunkList extends Fragment {
     }
 
 
+    public Drawable getDays(String fdate){
+
+        Date date;
+        long diff = 0;
+
+        DateFormat dateFormat,formatter;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        String newDates = null;
+        try {
+            date = dateFormat.parse(fdate);
+            formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
+            newDates = formatter.format(date);
+            Log.d("custom date",newDates);
+
+            Date today = new Date();
+            diff =  today.getTime() - date.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("err--"+e.getMessage());
+        }
+
+        int numOfDays = (int) (diff / (1000 * 60 * 60 * 24));
+        if(numOfDays >  30)
+        {
+            Drawable img = getContext().getResources().getDrawable( R.drawable.green );
+            img.setBounds( 0, 0, 60, 60 );
+            return img;
+        }else if(numOfDays < 30)
+        {
+            Drawable img = getContext().getResources().getDrawable( R.drawable.orange );
+            img.setBounds( 0, 0, 60, 60 );
+            return img;
+        }else
+        {
+            Drawable img = getContext().getResources().getDrawable( R.drawable.red );
+            img.setBounds( 0, 0, 60, 60 );
+            return img;
+
+        }
+    }
+
+
+
 
     public static class MyData {
         static String[] nameArray = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice Cream Sandwich","JellyBean", "Kitkat", "Lollipop", "Marshmallow"};
@@ -249,9 +319,9 @@ public class TrunkList extends Fragment {
 
 
 
-    public void onCall(View view) {
+    public void onCall(View view,String caller) {
         Intent callIntent = new Intent(Intent.ACTION_CALL); //use ACTION_CALL class
-        callIntent.setData(Uri.parse("tel:08801715086"));    //this is the phone number calling
+        callIntent.setData(Uri.parse("tel:"+caller));    //this is the phone number calling
         //check permission
         //If the device is running Android 6.0 (API level 23) and the app's targetSdkVersion is 23 or higher,
         //the system asks the user to grant approval.
@@ -295,7 +365,7 @@ public class TrunkList extends Fragment {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(getActivity(), TruckApp.payListURL);
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.truckListURL);
                 Log.e("paylist",res.toString());
                 json = new JSONObject(res);
 
@@ -317,21 +387,26 @@ public class TrunkList extends Fragment {
                         Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
                     }else
                     {
-                        JSONArray partArray = result.getJSONArray("parties");
+                        JSONArray partArray = result.getJSONArray("trucks");
                         if(partArray.length() > 0)
                         {
                             for (int i = 0; i < partArray.length(); i++) {
                                 JSONObject partData = partArray.getJSONObject(i);
-                                Log.v("contacts",partData.getString("contact"));
-                                /*PartyVo voData = new PartyVo();
-                                voData.setName(partData.getString("name"));
-                                voData.setContact(""+partData.getString("contact"));
-                                Log.v("contact",voData.getContact()+"res"+partData.getInt("contact"));
-                                voData.setOperatingLane(partData.getString("operatingLane"));
-                                data.add(voData);*/
+                                TruckVo voData = new TruckVo();
+                                voData.setDrivername("Driver Name");
+                                voData.setDrivercontact("8801715086");
+                                voData.setRegistrationNo(partData.getString("registrationNo"));
+                                voData.setTruckType(partData.getString("truckType"));
+                                voData.setModelAndYear(partData.getString("modelAndYear"));
+                                voData.setFitnessExpiry(partData.getString("fitnessExpiry"));
+                                voData.setPermitExpiry(partData.getString("permitExpiry"));
+                                voData.setInsuranceExpiry(partData.getString("insuranceExpiry"));
+                                voData.setPollutionExpiry(partData.getString("pollutionExpiry"));
+
+                                data.add(voData);
                             }
 
-                            //partyadapter = new CustomAdapter(data);
+                            partyadapter = new CustomAdapter(data);
                             recyclerView.setAdapter(partyadapter);
                             pDialog.dismiss();
                         }

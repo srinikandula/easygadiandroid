@@ -220,9 +220,21 @@ public class Driver_Activity extends AppCompatActivity {
 
 
     public void callback(View view){
+        Intent intent=new Intent();
+        intent.putExtra("addItem","");
+        setResult(124,intent);
         finish();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent();
+        intent.putExtra("addItem","");
+        setResult(124,intent);
+        finish();
+        super.onBackPressed();
+        // Do extra stuff here
+    }
 
     public void submit(View view){
         //startActivity(new Intent(Driver_Activity.this,Party_Activity.class));
@@ -331,6 +343,8 @@ public class Driver_Activity extends AppCompatActivity {
                 }
             }
         });
+        dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+
         dpd.show();
     }
 

@@ -252,15 +252,15 @@ public class DriverList extends Fragment {
             }
 
             int numOfDays = (int) (diff / (1000 * 60 * 60 * 24));
-            System.out.println("difference--"+numOfDays);
-            if(numOfDays > 6)
-            {
-                Drawable img = getContext().getResources().getDrawable( R.drawable.orange );
-                img.setBounds( 0, 0, 60, 60 );
-                textViewDriverLic_tv.setCompoundDrawables( img, null, null, null );
-            }else if(numOfDays < 6)
+            System.out.println("difference-"+listPosition+""+numOfDays);
+            if(numOfDays < 0)
             {
                 Drawable img = getContext().getResources().getDrawable( R.drawable.red );
+                img.setBounds( 0, 0, 60, 60 );
+                textViewDriverLic_tv.setCompoundDrawables( img, null, null, null );
+            }else if(numOfDays < 30)
+            {
+                Drawable img = getContext().getResources().getDrawable( R.drawable.orange );
                 img.setBounds( 0, 0, 60, 60 );
                 textViewDriverLic_tv.setCompoundDrawables( img, null, null, null );
             }else

@@ -6,6 +6,8 @@ package com.easygaadi.models;
 
 public class TruckVo {
     
+    String drivername;
+    String drivercontact;
     String _id;
     String  updatedAt;
     String  createdAt;
@@ -13,8 +15,80 @@ public class TruckVo {
     String  truckType;
     String  createdBy;
     String  updatedBy;
+
+    public String getDrivercontact() {
+        return drivercontact;
+    }
+
+    public void setDrivercontact(String drivercontact) {
+        this.drivercontact = drivercontact;
+    }
+
     String  accountId;
     String  __v;
+    String  modelAndYear ;
+
+    public String getDrivername() {
+        return drivername;
+    }
+
+    public void setDrivername(String drivername) {
+        this.drivername = drivername;
+    }
+
+    public String getModelAndYear() {
+        return modelAndYear;
+    }
+
+    public void setModelAndYear(String modelAndYear) {
+        this.modelAndYear = modelAndYear;
+    }
+
+    public String getFitnessExpiry() {
+        return fitnessExpiry;
+    }
+
+    public void setFitnessExpiry(String fitnessExpiry) {
+        this.fitnessExpiry = fitnessExpiry;
+    }
+
+    public String getPermitExpiry() {
+        return permitExpiry;
+    }
+
+    public void setPermitExpiry(String permitExpiry) {
+        this.permitExpiry = permitExpiry;
+    }
+
+    public String getInsuranceExpiry() {
+        return insuranceExpiry;
+    }
+
+    public void setInsuranceExpiry(String insuranceExpiry) {
+        this.insuranceExpiry = insuranceExpiry;
+    }
+
+    public String getPollutionExpiry() {
+        return pollutionExpiry;
+    }
+
+    public void setPollutionExpiry(String pollutionExpiry) {
+        this.pollutionExpiry = pollutionExpiry;
+    }
+
+    public String getTaxDueDate() {
+        return taxDueDate;
+    }
+
+    public void setTaxDueDate(String taxDueDate) {
+        this.taxDueDate = taxDueDate;
+    }
+
+    String  fitnessExpiry;
+    String  permitExpiry ;
+    String  insuranceExpiry;
+    String  pollutionExpiry ;
+    String  taxDueDate ;
 
     public String get_id() {
         return _id;

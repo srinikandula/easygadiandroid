@@ -22,10 +22,6 @@ import com.easygaadi.trucksmobileapp.Trunck_Activity;
 
 import java.util.ArrayList;
 
-/**
- * Created by ssv on 26-10-2017.
- */
-
 public class MaintenanceList extends Fragment {
         // TODO: Rename parameter arguments, choose names that match
         // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER

@@ -48,9 +48,8 @@ public class Driver_Activity extends AppCompatActivity {
 
     EditText driverFnameET,drivermobET,driverlicnumET,driverSalET;
     String truckAssigned="",truckID="";
-    Button formLL;
     TextView trip_fnamelbl,maintnce_trunknum_lbl,driver_moblbl,driver_licnumberlbl,trip_dojlbl,trip_liclbl,drvr_sal,drvr_doj,drvr_lic_date;
-    String[] country = { "Assigned Truck","India", "USA", "China", "Japan", "Other",  };
+
      Spinner spin;
     Context context;
     Resources res;
@@ -644,9 +643,7 @@ public class Driver_Activity extends AppCompatActivity {
                                 break;
                             }
                         }
-
-
-                            pDialog.dismiss();
+                        pDialog.dismiss();
 
                     }
 

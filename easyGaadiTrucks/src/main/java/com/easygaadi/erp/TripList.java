@@ -1,25 +1,43 @@
 package com.easygaadi.erp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.easygaadi.gpsapp.utilities.ConnectionDetector;
+import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.DataModel;
+import com.easygaadi.models.TripVo;
+import com.easygaadi.models.TruckVo;
 import com.easygaadi.trucksmobileapp.Party_Activity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.Trips_Activty;
+import com.easygaadi.trucksmobileapp.TruckApp;
+import com.easygaadi.trucksmobileapp.Trunck_Activity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,11 +64,16 @@ public class TripList extends Fragment {
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
-    private static ArrayList<DataModel> data;
+    private static ArrayList<TripVo> data;
     private static ArrayList<Integer> removedItems;
 
+    private ConnectionDetector detectConnection;
     private static ImageView addImage;
-
+    JSONParser parser;
+    ProgressDialog pDialog;
+    EditText etSearch;
+    private int requestCode = 123;
+    CustomAdapter partyadapter;
 
     public TripList() {
         // Required empty public constructor
@@ -98,34 +121,27 @@ public class TripList extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        data = new ArrayList<DataModel>();
-        for (int i = 0; i < com.easygaadi.erp.TrunkList.MyData.nameArray.length; i++) {
-            data.add(new DataModel(
-                    com.easygaadi.erp.TrunkList.MyData.nameArray[i],
-                    com.easygaadi.erp.TrunkList.MyData.versionArray[i],
-                    com.easygaadi.erp.TrunkList.MyData.id_[i],
-                    com.easygaadi.erp.TrunkList.MyData.drawableArray[i],
-                    0
-            ));
+
+        detectConnection = new ConnectionDetector(getActivity());
+        parser = JSONParser.getInstance();
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setCancelable(false);
+        if (detectConnection.isConnectingToInternet()) {
+            new GetBuyingTrucks().execute();
+        }else{
+            Toast.makeText(getActivity(),
+                    getResources().getString(R.string.internet_str),
+                    Toast.LENGTH_LONG).show();
         }
-
-        removedItems = new ArrayList<Integer>();
-
-        adapter = new CustomAdapter(data);
-        recyclerView.setAdapter(adapter);
 
 
 
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), Trips_Activty.class));
+                startActivityForResult(new Intent(getActivity(), Trips_Activty.class), requestCode);
             }
         });
-
-
-
-
         return view;
     }
 
@@ -144,27 +160,32 @@ public class TripList extends Fragment {
 
     public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
-        private ArrayList<DataModel> dataSet;
+        private ArrayList<TripVo> dataSet;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView textViewPName,textVieCon,textViesrctodest_tv;
+            TextView truckRegNo_tv,tv_lastupadate,triperName_tv,dieselamt_tv,tollamt_tv,freightamt_tv,advamt_tv,balanceamt_tv;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
-                this.textViewPName = (TextView) itemView.findViewById(R.id.partyName_tv);
-                this.textVieCon = (TextView) itemView.findViewById(R.id.partyContact_tv);
-                this.textViesrctodest_tv = (TextView) itemView.findViewById(R.id.srctodest_tv);
+                this.truckRegNo_tv = (TextView) itemView.findViewById(R.id.truckRegNo_tv);
+                this.tv_lastupadate = (TextView) itemView.findViewById(R.id.tv_lastupadate);
+                this.triperName_tv = (TextView) itemView.findViewById(R.id.triperName_tv);
+                this.dieselamt_tv = (TextView) itemView.findViewById(R.id.dieselamt_tv);
+                this.tollamt_tv = (TextView) itemView.findViewById(R.id.tollamt_tv);
+                this.freightamt_tv = (TextView) itemView.findViewById(R.id.freightamt_tv);
+                this.advamt_tv = (TextView) itemView.findViewById(R.id.advamt_tv);
+                this.balanceamt_tv = (TextView) itemView.findViewById(R.id.balanceamt_tv);
             }
         }
 
-        public CustomAdapter(ArrayList<DataModel> data) {
+        public CustomAdapter(ArrayList<TripVo> data) {
             this.dataSet = data;
         }
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.pcatitem_layout, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tripcatitem_layout, parent, false);
             MyViewHolder myViewHolder = new MyViewHolder(view);
             return myViewHolder;
         }
@@ -174,13 +195,42 @@ public class TripList extends Fragment {
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
-            TextView textViewPName = holder.textViewPName;
-            TextView textVieCon = holder.textVieCon;
-            TextView textViewmore = holder.textViesrctodest_tv;
+            TextView truckRegNo_tv = holder.truckRegNo_tv;
+            TextView tv_lastupadate = holder.tv_lastupadate;
+            TextView triperName_tv = holder.triperName_tv;
+            TextView dieselamt_tv = holder.dieselamt_tv;
+            TextView tollamt_tv = holder.tollamt_tv;
+            TextView freightamt_tv = holder.freightamt_tv;
+            TextView advamt_tv = holder.advamt_tv;
+            TextView balanceamt_tv = holder.balanceamt_tv;
 
-            textViewPName.setText(dataSet.get(listPosition).getName());
-            textVieCon.setText(dataSet.get(listPosition).getVersion());
+            truckRegNo_tv.setText(dataSet.get(listPosition).getTruckName());
 
+            triperName_tv.setText(dataSet.get(listPosition).getPartyName());
+            dieselamt_tv.setText(dataSet.get(listPosition).getDieselAmount());
+            tollamt_tv.setText(dataSet.get(listPosition).getTollgateAmount());
+            freightamt_tv.setText(dataSet.get(listPosition).getFreightAmount());
+            advamt_tv.setText(dataSet.get(listPosition).getAdvance());
+            balanceamt_tv.setText(dataSet.get(listPosition).getBalance());
+
+
+
+            Date date;
+
+            DateFormat dateFormat,formatter;
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            String newDates = null;
+            try {
+                date = dateFormat.parse(dataSet.get(listPosition).getUpdatedAt());
+                formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
+                newDates = formatter.format(date);
+
+                tv_lastupadate.setText(newDates);
+            } catch (ParseException e) {
+                tv_lastupadate.setText("xx-yyy-zzz");
+                e.printStackTrace();
+                System.out.println("err--"+e.getMessage());
+            }
         }
 
 
@@ -193,16 +243,118 @@ public class TripList extends Fragment {
 
 
 
-    public static class MyData {
-        static String[] nameArray = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice Cream Sandwich","JellyBean", "Kitkat", "Lollipop", "Marshmallow"};
-        static String[] versionArray = {"258711963", "9632887415", "11554465465", "987466212", "22012017", "2105512017", "209632012017", "196985741012017", "1796325012017", "1552682017","6258012017"};
 
-        static Integer[] drawableArray = {R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage,
-                R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage,
-                R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage,R.drawable.car_damage};
+    private class GetBuyingTrucks extends AsyncTask<String, String, JSONObject> {
 
-        static Integer[] id_ = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        //String uid, accountid, offset;
 
+        public GetBuyingTrucks() {
+            //this.uid = uid;
+            //this.accountid = accountid;
+            //this.offset = String.valueOf(offset);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            pDialog.setMessage("Fetching Trips Please..");
+            pDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+
+            JSONObject json = null;
+            try {
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.tripsListURL+"/getAll/1");
+                Log.e("getAll",res.toString());
+                json = new JSONObject(res);
+
+            } catch (Exception e) {
+                Log.e("Login DoIN EX", e.toString());
+            }
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            if (result != null) {
+
+                try {
+                    if (!result.getBoolean("status")) {
+                        Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
+                    }else
+                    {
+                        JSONArray partArray = result.getJSONArray("trips");
+                        if(partArray.length() > 0)
+                        {
+                            data = new ArrayList<TripVo>();
+                            for (int i = 0; i < partArray.length(); i++) {
+                                JSONObject partData = partArray.getJSONObject(i);
+
+                                System.out.println("trips" + partData.toString());
+
+                                TripVo voData = new TripVo();
+                                voData.setAdvance(""+partData.getInt("advance"));
+                                voData.setDieselAmount(""+partData.getInt("dieselAmount"));
+                                voData.setFreightAmount(""+partData.getInt("freightAmount"));
+                                voData.setTollgateAmount(""+partData.getInt("tollgateAmount"));
+                                voData.setBalance(""+partData.getInt("balance"));
+                                voData.setUpdatedAt(""+partData.getString("updatedAt"));
+
+                                JSONObject perObj = partData.getJSONObject("attrs");
+                                voData.setPartyName(perObj.getString("partyName"));
+                                voData.setTruckName(perObj.getString("truckName"));
+
+
+                                data.add(voData);
+                            }
+
+                            partyadapter = new CustomAdapter(data);
+                            recyclerView.setAdapter(partyadapter);
+                            pDialog.dismiss();
+                        }else{
+                            Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
+                            pDialog.dismiss();
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("ex in get leads" + e.toString());
+                    pDialog.dismiss();
+                }
+
+            } else {
+                pDialog.dismiss();
+                Toast.makeText(getActivity(),
+                        getResources().getString(R.string.exceptionmsg),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //in fragment class callback
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == this.requestCode){
+            String addItem=data.getStringExtra("addItem");
+            try {
+
+                if (detectConnection.isConnectingToInternet()) {
+                    new GetBuyingTrucks().execute();
+                }else{
+                    Toast.makeText(getActivity(),
+                            getResources().getString(R.string.internet_str),
+                            Toast.LENGTH_LONG).show();
+                }
+            }catch (Exception e)
+            {
+                e.getMessage();
+            }
+        }
     }
 
 }

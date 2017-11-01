@@ -287,7 +287,7 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
             ids.add(8);
         }
 
-        names.add("Fleet Management");
+        names.add("ERP");
         images.add(R.drawable.n_fms);
         ids.add(9);
         /*names.add("Fuel Card");

@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -55,7 +56,7 @@ import java.util.Date;
  * Use the {@link TrunkList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TrunkList extends Fragment {
+public class TrunkList extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -82,7 +83,6 @@ public class TrunkList extends Fragment {
     EditText etSearch;
     private int requestCode = 123;
     CustomAdapter partyadapter;
-
 
     public TrunkList() {
         // Required empty public constructor
@@ -130,7 +130,10 @@ public class TrunkList extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        data = new ArrayList<TruckVo>();
+
+
+
+
 
 
         detectConnection = new ConnectionDetector(getActivity());
@@ -145,19 +148,23 @@ public class TrunkList extends Fragment {
                     Toast.LENGTH_LONG).show();
         }
 
-
-
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(getActivity(), Trunck_Activity.class), requestCode);
             }
         });
-
-
+       // swipeRefreshLayout.setOnRefreshListener(this);
 
 
         return view;
+    }
+
+
+    private boolean IsRecyclerViewAtTop()   {
+        if(recyclerView.getChildCount() == data.size())
+            return true;
+        return recyclerView.getChildAt(0).getBottom() == 0;
     }
 
 
@@ -225,17 +232,10 @@ public class TrunkList extends Fragment {
             textViewTruckREG.setText(dataSet.get(listPosition).getRegistrationNo());
             textViewlastupadate.setText(dataSet.get(listPosition).getTruckType()+ " "+""+dataSet.get(listPosition).getModelAndYear());
 
-
-
             textViewPermit_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getPermitExpiry()), null, null, null );
-
             textViewPoll_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getPollutionExpiry()), null, null, null );
-
             textViewIns_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getInsuranceExpiry()), null, null, null );
-
             textViewFitness_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getFitnessExpiry()), null, null, null );
-
-
 
 
             textViewcall.setOnClickListener(new View.OnClickListener() {
@@ -388,7 +388,6 @@ public class TrunkList extends Fragment {
             if (result != null) {
 
                 try {
-
                     if (!result.getBoolean("status")) {
                         Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
                     }else
@@ -396,10 +395,11 @@ public class TrunkList extends Fragment {
                         JSONArray partArray = result.getJSONArray("trucks");
                         if(partArray.length() > 0)
                         {
+                            data = new ArrayList<TruckVo>();
                             for (int i = 0; i < partArray.length(); i++) {
                                 JSONObject partData = partArray.getJSONObject(i);
                                 TruckVo voData = new TruckVo();
-                                voData.setDrivername("Driver Name");
+                                voData.setDrivername("Driver Name"+i);
                                 voData.setDrivercontact("8801715086");
                                 voData.set_id(partData.getString("_id"));
                                 voData.setRegistrationNo(partData.getString("registrationNo"));
@@ -415,6 +415,9 @@ public class TrunkList extends Fragment {
 
                             partyadapter = new CustomAdapter(data);
                             recyclerView.setAdapter(partyadapter);
+                            pDialog.dismiss();
+                        }else{
+                            Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
                             pDialog.dismiss();
                         }
                     }
@@ -450,7 +453,13 @@ public class TrunkList extends Fragment {
                 voData.setInsuranceExpiry(partData.getString("insuranceExpiry"));
                 voData.setPollutionExpiry(partData.getString("pollutionExpiry"));
                 this.data.add(voData);
-                partyadapter.notifyDataSetChanged();
+                if(this.data.size() == 0)
+                {
+                    partyadapter = new CustomAdapter(this.data);
+                    recyclerView.setAdapter(partyadapter);
+                }else{
+                    partyadapter.notifyDataSetChanged();
+                }
 
                 /*adapter = new CustomAdapter(this.data);
                 recyclerView.setAdapter(adapter);*/

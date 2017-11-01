@@ -125,12 +125,6 @@ public class DriverList extends Fragment {
 
         data = new ArrayList<DriverVo>();
 
-        addImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(getActivity(), Party_Activity.class), requestCode);
-            }
-        });
 
         detectConnection = new ConnectionDetector(getActivity());
         parser = JSONParser.getInstance();
@@ -139,9 +133,7 @@ public class DriverList extends Fragment {
         if (detectConnection.isConnectingToInternet()) {
             new GetDriverList().execute();
         }else{
-            Toast.makeText(getActivity(),
-                    getResources().getString(R.string.internet_str),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
         }
 
 
@@ -301,7 +293,7 @@ public class DriverList extends Fragment {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Trucks Please..");
+            pDialog.setMessage("Fetching Drivers Please..");
             pDialog.show();
         }
 
@@ -327,11 +319,11 @@ public class DriverList extends Fragment {
             if (result != null) {
 
                 try {
-
                     if (!result.getBoolean("status")) {
                         Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
                     }else
                     {
+                        pDialog.dismiss();
                         JSONArray partArray = result.getJSONArray("drivers");
                         if(partArray.length() > 0)
                         {
@@ -351,11 +343,14 @@ public class DriverList extends Fragment {
 
                             partyadapter = new CustomAdapter(data);
                             recyclerView.setAdapter(partyadapter);
+
+                        }else{
+                            Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
                             pDialog.dismiss();
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println("ex in get leads" + e.toString());
+                    System.out.println("GetDriverList in get leads" + e.toString());
                 }
 
             } else {
@@ -402,23 +397,19 @@ public class DriverList extends Fragment {
 
                     voData.setLicenseValidity(partData.getString("licenseValidity"));
                     this.data.add(voData);
-                    partyadapter.notifyDataSetChanged();
+                    if(this.data.size() == 0)
+                    {
+                        partyadapter = new CustomAdapter(this.data);
+                        recyclerView.setAdapter(partyadapter);
+                    }else{
+                        partyadapter.notifyDataSetChanged();
+                    }
+                    //partyadapter.notifyDataSetChanged();
                 }
-
-
-
-
-
-
-
-                /*adapter = new CustomAdapter(this.data);
-                recyclerView.setAdapter(adapter);*/
             }catch (Exception e)
             {
                 e.getMessage();
             }
-
-
         }
     }
 

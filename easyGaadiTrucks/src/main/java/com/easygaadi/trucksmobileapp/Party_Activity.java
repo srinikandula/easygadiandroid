@@ -254,10 +254,10 @@ public class Party_Activity extends AppCompatActivity {
 
                         Toast.makeText(context, "fail",Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(context, ""+s.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, ""+"Party Added", Toast.LENGTH_SHORT).show();
 
                         Intent intent=new Intent();
-                        intent.putExtra("addItem",s.getJSONObject("drivers").toString());
+                        intent.putExtra("addItem",s.getJSONObject("party").toString());
                         setResult(123,intent);
                         finish();
 

@@ -154,6 +154,7 @@ public class TruckApp extends MultiDexApplication {
     public static String driverFreshURL =  ERP_URL+"drivers/get/";
     public static String truckListURL =  ERP_URL+"trucks";
     public static String maintenanceListURL =  ERP_URL+"maintenance";
+    public static String tripsListURL =  ERP_URL+"trips";
 
 
 

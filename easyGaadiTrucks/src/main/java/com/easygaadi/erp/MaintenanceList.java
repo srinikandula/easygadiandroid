@@ -23,6 +23,7 @@ import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.DataModel;
 import com.easygaadi.models.DriverVo;
 import com.easygaadi.models.MaitenanceVo;
+import com.easygaadi.trucksmobileapp.Driver_Activity;
 import com.easygaadi.trucksmobileapp.Maintenance_Activity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.TruckApp;
@@ -107,19 +108,11 @@ public class MaintenanceList extends Fragment {
             recyclerView = (RecyclerView) view.findViewById(R.id.quotes_rc);
             recyclerView.setHasFixedSize(true);
 
-            data = new ArrayList<MaitenanceVo>();
+
             addImage = (ImageView)view.findViewById(R.id.addImage);
             layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
-            addImage.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getActivity(), Maintenance_Activity.class));
-                }
-            });
 
             detectConnection = new ConnectionDetector(getActivity());
             parser = JSONParser.getInstance();
@@ -130,6 +123,18 @@ public class MaintenanceList extends Fragment {
             }else{
                 Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
             }
+
+            addImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                /*startActivity(new Intent(getActivity(), Driver_Activity.class));*/
+                    Intent intent = new Intent(getActivity(), Maintenance_Activity.class);
+                    intent.putExtra("hitupdate", "");
+
+                    startActivityForResult(intent, requestCode);
+                }
+            });
+
             return view;
         }
 
@@ -222,87 +227,141 @@ public class MaintenanceList extends Fragment {
     }
 
 
-    private class GetMaitenaceList extends AsyncTask<String, String, JSONObject> {
+        private class GetMaitenaceList extends AsyncTask<String, String, JSONObject> {
 
-        //String uid, accountid, offset;
+            //String uid, accountid, offset;
 
-        public GetMaitenaceList() {
-            //this.uid = uid;
-            //this.accountid = accountid;
-            //this.offset = String.valueOf(offset);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            // TODO Auto-generated method stub
-            super.onPreExecute();
-            pDialog.setMessage("Fetching Trucks Please..");
-            pDialog.show();
-        }
-
-        @Override
-        protected JSONObject doInBackground(String... params) {
-
-            JSONObject json = null;
-            try {
-                String res = parser.erpExecuteGet(getActivity(), TruckApp.maintenanceListURL+"/"+moreLoad);
-                Log.e("moreLoad",res.toString());
-                json = new JSONObject(res);
-
-            } catch (Exception e) {
-                Log.e("Login DoIN EX", e.toString());
+            public GetMaitenaceList() {
+                //this.uid = uid;
+                //this.accountid = accountid;
+                //this.offset = String.valueOf(offset);
             }
-            return json;
+
+            @Override
+            protected void onPreExecute() {
+                // TODO Auto-generated method stub
+                super.onPreExecute();
+                pDialog.setMessage("Fetching Trucks Please..");
+                pDialog.show();
+            }
+
+            @Override
+            protected JSONObject doInBackground(String... params) {
+
+                JSONObject json = null;
+                try {
+                    String res = parser.erpExecuteGet(getActivity(), TruckApp.maintenanceListURL+"/"+moreLoad);
+                    Log.e("moreLoad",res.toString());
+                    json = new JSONObject(res);
+
+                } catch (Exception e) {
+                    Log.e("Login DoIN EX", e.toString());
+                }
+                return json;
+            }
+
+            @Override
+            protected void onPostExecute(JSONObject result) {
+                // TODO Auto-generated method stub
+                super.onPostExecute(result);
+                if (result != null) {
+
+                    try {
+
+                        if (!result.getBoolean("status")) {
+                            Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
+                        }else
+                        {
+                            JSONArray partArray = result.getJSONArray("maintanenceCosts");
+                            if(partArray.length() > 0)
+                            {
+                                data = new ArrayList<MaitenanceVo>();
+                                for (int i = 0; i < partArray.length(); i++) {
+                                    JSONObject partData = partArray.getJSONObject(i);
+                                    MaitenanceVo voData = new MaitenanceVo();
+                                    voData.set_id(partData.getString("_id"));
+                                    voData.setVehicleNumber(partData.getString("vehicleNumber"));
+                                    voData.setCostString(partData.getString("cost"));
+                                    if(partData.has("location")){
+                                        voData.setCity(partData.getString("location"));
+                                    }else{
+                                        voData.setCity("Location not found");
+                                    }
+                                    voData.setDate(""+partData.getString("date"));
+                                    voData.setDescription(partData.getString("description"));
+                                    data.add(voData);
+                                }
+
+                                partyadapter = new CustomAdapter(data);
+                                recyclerView.setAdapter(partyadapter);
+                                pDialog.dismiss();
+                            }else{
+                                Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
+                                pDialog.dismiss();
+                            }
+                        }
+                    } catch (Exception e) {
+                        System.out.println("ex in get leads" + e.toString());
+                    }
+
+                } else {
+                    pDialog.dismiss();
+                    Toast.makeText(getActivity(),
+                            getResources().getString(R.string.exceptionmsg),
+                            Toast.LENGTH_LONG).show();
+                }
+            }
         }
 
-        @Override
-        protected void onPostExecute(JSONObject result) {
-            // TODO Auto-generated method stub
-            super.onPostExecute(result);
-            if (result != null) {
-
-                try {
-
-                    if (!result.getBoolean("status")) {
-                        Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
-                    }else
-                    {
-                        JSONArray partArray = result.getJSONArray("maintanenceCosts");
-                        if(partArray.length() > 0)
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //in fragment class callback
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == this.requestCode){
+            String addItem=data.getStringExtra("addItem");
+            try {
+                if(!addItem.isEmpty())
+                {
+                    for (int i = 0; i < this.data.size(); i++) {
+                        JSONObject partData = new JSONObject(addItem);
+                        if( partData.getString("_id").equalsIgnoreCase(this.data.get(i).get_id()))
                         {
-                            for (int i = 0; i < partArray.length(); i++) {
-                                JSONObject partData = partArray.getJSONObject(i);
-                                MaitenanceVo voData = new MaitenanceVo();
-                                voData.set_id(partData.getString("_id"));
-                                voData.setVehicleNumber(partData.getString("vehicleNumber"));
-                                voData.setCostString(partData.getString("cost"));
-                                if(partData.has("location")){
-                                    voData.setCity(partData.getString("location"));
-                                }else{
-                                    voData.setCity("Location not found");
-                                }
-                                voData.setDate(""+partData.getString("date"));
-                                voData.setDescription(partData.getString("description"));
-                                data.add(voData);
+                            MaitenanceVo voData = new MaitenanceVo();
+                            voData.set_id(partData.getString("_id"));
+                            voData.setVehicleNumber(partData.getString("vehicleNumber"));
+                            voData.setCostString(partData.getString("cost"));
+                            if(partData.has("location")){
+                                voData.setCity(partData.getString("location"));
+                            }else{
+                                voData.setCity("Location not found");
                             }
-
-                            partyadapter = new CustomAdapter(data);
-                            recyclerView.setAdapter(partyadapter);
-                            pDialog.dismiss();
+                            voData.setDate(""+partData.getString("date"));
+                            voData.setDescription(partData.getString("description"));
+                            this.data.add(voData);
+                            if(this.data.size() == 0)
+                            {
+                                partyadapter = new CustomAdapter(this.data);
+                                recyclerView.setAdapter(partyadapter);
+                            }else{
+                                partyadapter.notifyDataSetChanged();
+                            }
+                            //partyadapter.notifyDataSetChanged();
+                            break;
                         }
                     }
-                } catch (Exception e) {
-                    System.out.println("ex in get leads" + e.toString());
-                }
 
-            } else {
-                pDialog.dismiss();
-                Toast.makeText(getActivity(),
-                        getResources().getString(R.string.exceptionmsg),
-                        Toast.LENGTH_LONG).show();
+                }else{
+                    if (detectConnection.isConnectingToInternet()) {
+                        new GetMaitenaceList().execute();
+                    }else{
+                        Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
+                    }
+                }
+            }catch (Exception e)
+            {
+                e.getMessage();
             }
         }
     }
-
     }
 

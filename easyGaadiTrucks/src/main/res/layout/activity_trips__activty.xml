@@ -30,7 +30,8 @@
                     android:background="@drawable/erp_back_btn"
                     android:gravity="left|center_vertical"
                     android:layout_centerVertical="true"
-                    android:padding="@dimen/margin_5"/>
+                    android:padding="@dimen/margin_5"
+                    android:onClick="callback"/>
                 <TextView  android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="Add Trip"
@@ -58,6 +59,21 @@
             android:id="@+id/formLL"
             android:layout_marginLeft="@dimen/margin_10"
             android:layout_marginRight="@dimen/margin_10">
+            <FrameLayout
+                android:id="@+id/progressFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:visibility="gone" >
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </FrameLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -146,7 +162,7 @@
                         android:textColorHint="@color/actionbar_clr"
                         android:gravity="left"
                         android:visibility="invisible"/>
-                    <TextView
+                    <EditText
                         android:id="@+id/trip_frm_date"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/erp_height"
@@ -173,7 +189,7 @@
                         android:textColorHint="@color/actionbar_clr"
                         android:gravity="left"
                         android:visibility="invisible"/>
-                    <TextView
+                    <EditText
                         android:id="@+id/trip_to_date"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/erp_height"
@@ -209,15 +225,16 @@
                         android:textColorHint="@color/actionbar_clr"
                         android:gravity="left"
                         android:visibility="invisible"/>
-                    <Spinner
-                        android:id="@+id/spnr_load"
+                    <EditText
+                        android:id="@+id/trip_load"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/erp_height"
                         android:background="@drawable/erp_etborder"
-                        android:hint="@string/erp_trip_date"
-                        android:dropDownWidth="fill_parent"
-                        android:spinnerMode="dropdown"
-                        />
+                        android:hint="@string/erp_bkdload"
+                        android:inputType="number"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:gravity="left|center"
+                        android:paddingLeft="@dimen/margin_5"/>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -505,37 +522,72 @@
                 </LinearLayout>
 
             </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_5">
+                    <TextView
+                        android:id="@+id/trip_remrksl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_5"
+                        android:hint="@string/erp_paymnt_type"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColorHint="@color/actionbar_clr"
+                        android:gravity="left"
+                        android:visibility="invisible"/>
+
+                    <EditText
+                        android:id="@+id/erp_remark"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/erp_height"
+                        android:hint="@string/erp_remarks"
+                        android:gravity="left|center"
+                        android:paddingLeft="@dimen/margin_5"
+                        android:maxLines="5"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:background="@drawable/erp_etborder"
+                        android:layout_weight="1"
+                        android:inputType="textAutoComplete"/>
+                </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:layout_marginRight="@dimen/margin_5">
                 <TextView
-                    android:id="@+id/trip_remrksl"
+                    android:id="@+id/trip_bookbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/padding_5"
-                    android:hint="@string/erp_paymnt_type"
+                    android:hint="@string/erp_book_for"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColorHint="@color/actionbar_clr"
                     android:gravity="left"
                     android:visibility="invisible"/>
-
-                <EditText
-                    android:id="@+id/erp_remark"
+                <Spinner
+                    android:id="@+id/spnr_book"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/search_height"
-                    android:layout_margin="@dimen/padding_5"
-                    android:hint="@string/erp_remarks"
-                    android:gravity="left|center"
-                    android:paddingLeft="@dimen/margin_5"
-                    android:maxLines="5"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_height="@dimen/erp_height"
                     android:background="@drawable/erp_etborder"
-                    android:layout_weight="1"
-                    android:inputType="textAutoComplete"/>
-
+                    android:hint="@string/erp_book_for"
+                    android:dropDownWidth="fill_parent"
+                    android:spinnerMode="dropdown"
+                    />
             </LinearLayout>
+        </LinearLayout>
         </LinearLayout>
     </ScrollView>
     <LinearLayout
@@ -565,6 +617,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:background="@drawable/states_nice_button"
-            android:layout_margin="2dp"/>
+            android:layout_margin="2dp"
+            android:onClick="AddTrip"/>
     </LinearLayout>
 </RelativeLayout>

@@ -418,6 +418,7 @@
     <string name="erp_bal_amt">Balance Amount</string>
     <string name="erp_advnce_givn">Advance Given</string>
     <string name="erp_paymnt_type">Payment Type</string>
+    <string name="erp_book_for">Book For</string>
     <string name="erp_remarks">Remarks</string>
     <string name="erp_clear_btn">Cancel</string>
     <string name="erp_sub_btn">Submit</string>

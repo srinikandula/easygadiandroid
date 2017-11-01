@@ -234,6 +234,9 @@ public class PartList extends Fragment {
                                 partyadapter = new CustomAdapter(data);
                                 recyclerView.setAdapter(partyadapter);
                                 pDialog.dismiss();
+                            }else{
+                                Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
+                                pDialog.dismiss();
                             }
                     }
                 } catch (Exception e) {
@@ -408,10 +411,13 @@ public class PartList extends Fragment {
                 voData.setContact(""+partData.getInt("contact"));
                 voData.setOperatingLane(partData.getString("operatingLane"));
                 this.data.add(voData);
-                partyadapter.notifyDataSetChanged();
-
-                /*adapter = new CustomAdapter(this.data);
-                recyclerView.setAdapter(adapter);*/
+                if(this.data.size() == 0)
+                {
+                    partyadapter = new CustomAdapter(this.data);
+                    recyclerView.setAdapter(partyadapter);
+                }else{
+                    partyadapter.notifyDataSetChanged();
+                }
             }catch (Exception e)
             {
                 e.getMessage();

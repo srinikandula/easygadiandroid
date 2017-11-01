@@ -501,6 +501,8 @@ public class Trunck_Activity extends AppCompatActivity {
                     post_dict.put("pollutionExpiry", truckPoll);
                     post_dict.put("taxDueDate", trucktax);
                     post_dict.put("driverId", truckID);
+                    post_dict.put("tripLane", "");
+                    post_dict.put("tripExpenses", 50);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -527,9 +529,9 @@ public class Trunck_Activity extends AppCompatActivity {
                     //JSONObject js = new JSONObject(s);
                     if (!s.getBoolean("status")) {
 
-                        Toast.makeText(context, s.getString("message"),Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Fail to Added",Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(context, ""+s.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, ""+"Truck Added", Toast.LENGTH_SHORT).show();
 
                         Intent intent=new Intent();
                         intent.putExtra("addItem",s.getJSONObject("truck").toString());

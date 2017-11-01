@@ -5,14 +5,14 @@
 
     <item
         android:id="@+id/action_reports"
-        android:icon="@drawable/ic_trip_mdpi"
+        android:icon="@drawable/erp_report"
         android:orderInCategory="0"
         android:showAsAction="ifRoom"
         android:title="@string/trips"
         app:showAsAction="always"/>
     <item
          android:id="@+id/action_home"
-         android:icon="@drawable/ic_trip_list"
+         android:icon="@drawable/erp_home"
          android:orderInCategory="0"
          android:showAsAction="ifRoom"
          android:title="@string/rewardpoints"

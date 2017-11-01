@@ -670,6 +670,7 @@ public class LoginActivity extends Activity {
 				}
 				System.out.println("" + String.valueOf(post_dict));
 				String result = parser.easyyExcutePost(LoginActivity.this,TruckApp.userLoginURL,String.valueOf(post_dict));
+				System.out.println("login o/p"+result);
 				res = new JSONObject(result);
 
 			} catch (Exception e) {
@@ -689,7 +690,6 @@ public class LoginActivity extends Activity {
 				try {
 					//JSONObject js = new JSONObject(s);
 					if (!s.getBoolean("status")) {
-
 						Toast.makeText(context, "fail",Toast.LENGTH_LONG).show();
 					} else {
 

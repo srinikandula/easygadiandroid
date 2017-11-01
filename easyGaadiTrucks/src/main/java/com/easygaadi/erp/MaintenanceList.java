@@ -1,6 +1,8 @@
 package com.easygaadi.erp;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -10,17 +12,30 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easygaadi.gpsapp.utilities.ConnectionDetector;
+import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.DataModel;
+import com.easygaadi.models.DriverVo;
+import com.easygaadi.models.MaitenanceVo;
 import com.easygaadi.trucksmobileapp.Maintenance_Activity;
 import com.easygaadi.trucksmobileapp.R;
+import com.easygaadi.trucksmobileapp.TruckApp;
 import com.easygaadi.trucksmobileapp.Trunck_Activity;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MaintenanceList extends Fragment {
         // TODO: Rename parameter arguments, choose names that match
@@ -36,11 +51,18 @@ public class MaintenanceList extends Fragment {
         private String mParam2;
 
 
+
+        private int requestCode = 123;
         private static RecyclerView.Adapter adapter;
         private RecyclerView.LayoutManager layoutManager;
         private static RecyclerView recyclerView;
-        private static ArrayList<DataModel> data;
-        private static ArrayList<Integer> removedItems;
+        private static ArrayList<MaitenanceVo> data;
+        private ConnectionDetector detectConnection;
+        JSONParser parser;
+        ProgressDialog pDialog;
+        EditText etSearch;
+        int moreLoad=1;
+        CustomAdapter partyadapter;
 
         private static ImageView addImage;
 
@@ -85,28 +107,11 @@ public class MaintenanceList extends Fragment {
             recyclerView = (RecyclerView) view.findViewById(R.id.quotes_rc);
             recyclerView.setHasFixedSize(true);
 
-
+            data = new ArrayList<MaitenanceVo>();
             addImage = (ImageView)view.findViewById(R.id.addImage);
             layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-            data = new ArrayList<DataModel>();
-            for (int i = 0; i < com.easygaadi.erp.TrunkList.MyData.nameArray.length; i++) {
-                data.add(new DataModel(
-                        com.easygaadi.erp.TrunkList.MyData.nameArray[i],
-                        com.easygaadi.erp.TrunkList.MyData.versionArray[i],
-                        com.easygaadi.erp.TrunkList.MyData.id_[i],
-                        com.easygaadi.erp.TrunkList.MyData.drawableArray[i],
-                        0
-                ));
-            }
-
-            removedItems = new ArrayList<Integer>();
-
-            adapter = new CustomAdapter(data);
-            recyclerView.setAdapter(adapter);
-
 
 
             addImage.setOnClickListener(new View.OnClickListener() {
@@ -116,9 +121,15 @@ public class MaintenanceList extends Fragment {
                 }
             });
 
-
-
-
+            detectConnection = new ConnectionDetector(getActivity());
+            parser = JSONParser.getInstance();
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setCancelable(true);
+            if (detectConnection.isConnectingToInternet()) {
+                new GetMaitenaceList().execute();
+            }else{
+                Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
+            }
             return view;
         }
 
@@ -137,24 +148,23 @@ public class MaintenanceList extends Fragment {
 
         public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
-            private ArrayList<DataModel> dataSet;
+            private ArrayList<MaitenanceVo> dataSet;
 
             public class MyViewHolder extends RecyclerView.ViewHolder {
 
-                TextView textViewName;
-                TextView textViewVersion,textViewmore,textViewamt,textViewRArea,textViewRType;
+                TextView textViewName,textViewDate,textViewamt,textViewRArea,textViewRType;
 
                 public MyViewHolder(View itemView) {
                     super(itemView);
                     this.textViewName = (TextView) itemView.findViewById(R.id.truckRegNo_tv);
-                    this.textViewVersion = (TextView) itemView.findViewById(R.id.tv_lastupadate);
+                    this.textViewDate = (TextView) itemView.findViewById(R.id.tv_lastupadate);
                     this.textViewRType = (TextView) itemView.findViewById(R.id.repairtype_tv);
                     this.textViewRArea = (TextView) itemView.findViewById(R.id.repairarea_tv);
                     this.textViewamt = (TextView) itemView.findViewById(R.id.repairamt_tv);
                 }
             }
 
-            public CustomAdapter(ArrayList<DataModel> data) {
+            public CustomAdapter(ArrayList<MaitenanceVo> data) {
                 this.dataSet = data;
             }
 
@@ -171,12 +181,16 @@ public class MaintenanceList extends Fragment {
             public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
                 TextView textViewName = holder.textViewName;
-                TextView textViewVersion = holder.textViewVersion;
-                TextView textViewmore = holder.textViewmore;
+                TextView textViewDate = holder.textViewDate;
+                TextView textViewRType = holder.textViewRType;
+                TextView textViewRArea = holder.textViewRArea;
+                TextView textViewamt = holder.textViewamt;
 
-                textViewName.setText(dataSet.get(listPosition).getName());
-                textViewVersion.setText(dataSet.get(listPosition).getVersion());
-                Log.d("isselected","-->"+dataSet.get(listPosition).getVersion());
+                textViewName.setText(dataSet.get(listPosition).getVehicleNumber());
+                textViewDate.setText(getFormatDate(dataSet.get(listPosition).getDate()));
+                textViewRType.setText(dataSet.get(listPosition).getDescription());
+                textViewRArea.setText(dataSet.get(listPosition).getCity());
+                textViewamt.setText(dataSet.get(listPosition).getCostString());
 
             }
 
@@ -188,19 +202,107 @@ public class MaintenanceList extends Fragment {
             }
         }
 
+    public String getFormatDate(String fdate){
 
+        Date date;
+        String diff = "";
 
-        public static class MyData {
-            static String[] nameArray = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice Cream Sandwich","JellyBean", "Kitkat", "Lollipop", "Marshmallow"};
-            static String[] versionArray = {"10/01/2017", "10/01/2017", "24/01/2017", "23/01/2017", "22/01/2017", "21/01/2017", "20/01/2017", "19/01/2017", "17/01/2017", "15/01/2017","6/01/2017"};
-
-            static Integer[] drawableArray = {R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage,
-                    R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage,
-                    R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage,R.drawable.car_damage};
-
-            static Integer[] id_ = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
+        DateFormat dateFormat,formatter;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        try {
+            date = dateFormat.parse(fdate);
+            formatter = new SimpleDateFormat("dd-MM-yyyy"); //If you need time just put specific format for time like 'HH:mm:ss'
+            diff = formatter.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("err--"+e.getMessage());
         }
+
+        return diff;
+    }
+
+
+    private class GetMaitenaceList extends AsyncTask<String, String, JSONObject> {
+
+        //String uid, accountid, offset;
+
+        public GetMaitenaceList() {
+            //this.uid = uid;
+            //this.accountid = accountid;
+            //this.offset = String.valueOf(offset);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            pDialog.setMessage("Fetching Trucks Please..");
+            pDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+
+            JSONObject json = null;
+            try {
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.maintenanceListURL+"/"+moreLoad);
+                Log.e("moreLoad",res.toString());
+                json = new JSONObject(res);
+
+            } catch (Exception e) {
+                Log.e("Login DoIN EX", e.toString());
+            }
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            if (result != null) {
+
+                try {
+
+                    if (!result.getBoolean("status")) {
+                        Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
+                    }else
+                    {
+                        JSONArray partArray = result.getJSONArray("maintanenceCosts");
+                        if(partArray.length() > 0)
+                        {
+                            for (int i = 0; i < partArray.length(); i++) {
+                                JSONObject partData = partArray.getJSONObject(i);
+                                MaitenanceVo voData = new MaitenanceVo();
+                                voData.set_id(partData.getString("_id"));
+                                voData.setVehicleNumber(partData.getString("vehicleNumber"));
+                                voData.setCostString(partData.getString("cost"));
+                                if(partData.has("location")){
+                                    voData.setCity(partData.getString("location"));
+                                }else{
+                                    voData.setCity("Location not found");
+                                }
+                                voData.setDate(""+partData.getString("date"));
+                                voData.setDescription(partData.getString("description"));
+                                data.add(voData);
+                            }
+
+                            partyadapter = new CustomAdapter(data);
+                            recyclerView.setAdapter(partyadapter);
+                            pDialog.dismiss();
+                        }
+                    }
+                } catch (Exception e) {
+                    System.out.println("ex in get leads" + e.toString());
+                }
+
+            } else {
+                pDialog.dismiss();
+                Toast.makeText(getActivity(),
+                        getResources().getString(R.string.exceptionmsg),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
 
     }
 

@@ -133,6 +133,43 @@
                 </LinearLayout>
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/erp_details_line">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_5"
+                    android:gravity="top">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/padding_5"
+                        android:hint="@string/truck_fexpiry"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColorHint="@color/blackblueshade"
+                        android:gravity="left|center"
+                        android:visibility="visible"
+                        android:padding="5dp"/>
+                    <TextView
+                        android:id="@+id/fitnessExpiry"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/padding_5"
+                        android:hint="@string/truck_fexpiry"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColorHint="@color/blackblueshade"
+                        android:gravity="left|center"
+                        android:padding="5dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -398,11 +398,11 @@
 
     <!--erp string-->
     <string name="shareP_erp">EasyGaadiERP</string>
-    <string name="erp_trunks">Trunks</string>
+    <string name="erp_trunks">Trucks</string>
     <string name="erp_drivers">Drivers</string>
     <string name="erp_party">PartY</string>
     <string name="erp_trips">Trips</string>
-    <string name="erp_maintenance">Maintenace</string>
+    <string name="erp_maintenance">Maintenance</string>
     <string name="erp_trip_date">Trip Date</string>
     <string name="erp_trunknum">Trunck Number</string>
     <string name="erp_frm">From</string>
@@ -410,7 +410,7 @@
     <string name="erp_bkdload">Book Load</string>
     <string name="erp_drivernme">Driver Name</string>
 
-    <string name="erp_diesalamt">Diesal Amount</string>
+    <string name="erp_diesalamt">Diesel Amount</string>
     <string name="erp_tollgateamt">Tollgate Amount</string>
     <string name="erp_tonnage">Tonnage</string>
     <string name="erp_rate">Rate</string>

@@ -3,12 +3,14 @@ package com.easygaadi.trucksmobileapp;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
@@ -18,7 +20,11 @@ import com.easygaadi.models.TruckVo;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class TruckDetails extends AppCompatActivity {
 
@@ -103,9 +109,15 @@ public class TruckDetails extends AppCompatActivity {
                         finish();
                     }else
                     {
-                        JSONArray partArray = result.getJSONArray("trucks");
+                        JSONObject partArray = result.getJSONObject("truck");
+                        ((TextView)findViewById(R.id.truck_reg_lbl)).setText(partArray.getString("registrationNo"));
+                        ((TextView)findViewById(R.id.truck_type)).setText(getFormatDate(partArray.getString("truckType")));
+                        ((TextView)findViewById(R.id.fitnessExpiry)).setText(getFormatDate(partArray.getString("fitnessExpiry")));
+                        ((TextView)findViewById(R.id.truck_ins)).setText(getFormatDate(partArray.getString("insuranceExpiry")));
+                        ((TextView)findViewById(R.id.truck_pollexpiry)).setText(getFormatDate(partArray.getString("pollutionExpiry")));
 
-                        pDialog.show();
+
+                        pDialog.dismiss();
                     }
 
 
@@ -124,4 +136,23 @@ public class TruckDetails extends AppCompatActivity {
         }
     }
 
+
+    public String getFormatDate(String fdate){
+
+        Date date;
+        String diff = "";
+
+        DateFormat dateFormat,formatter;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        try {
+            date = dateFormat.parse(fdate);
+            formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
+            diff = formatter.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("err--"+e.getMessage());
+        }
+
+        return diff;
+    }
 }

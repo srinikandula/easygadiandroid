@@ -44,9 +44,9 @@ public class Trips_Activty extends AppCompatActivity  {
 
     String[] payment = { "Payment Type","Cheque", "Chash"  };
     String truckID="",registrationNo="",DriverID="",paymentType="",PartyID="";
-    TextView tripDate,trip_lbl,trip_frmdatelbl,trip_todatelbl,trip_trunklbl, trip_bkloadlbl,
+    TextView tripDate,trip_lbl,trip_frmdatelbl,trip_todatelbl,trip_trunklbl,
             trip_drnmelbl, trip_pymtbl,trip_diesalamtlbl,trip_tollgateamtlbl,trip_tonnagelbl,trip_ratelbl,trip_frghtbl,trip_advbalbl,trip_balbl,trip_remrksl;
-    EditText tripFromDateET,trip_loadET,tripToDateET,trip_diesalamtET,trip_tollgateamtET,trip_tonnageamtET,trip_rateET,frghtET,AdvnceET,BalnceET,erp_remarkET;
+    EditText tripFromDateET,tripToDateET,trip_diesalamtET,trip_tollgateamtET,trip_tonnageamtET,trip_rateET,frghtET,AdvnceET,BalnceET,erp_remarkET;
     Button formLL;
      Spinner spin,drspin,bookspin;
     Context context;
@@ -68,7 +68,6 @@ public class Trips_Activty extends AppCompatActivity  {
         trip_frmdatelbl=(TextView)findViewById(R.id.trip_frmdatelbl);
         trip_todatelbl=(TextView)findViewById(R.id.trip_todatelbl);
 
-        trip_bkloadlbl=(TextView)findViewById(R.id.trip_bkloadlbl);
         trip_drnmelbl=(TextView)findViewById(R.id.trip_drnmelbl);
         trip_diesalamtlbl=(TextView)findViewById(R.id.trip_diesalamtlbl);
         trip_tonnagelbl=(TextView)findViewById(R.id.trip_tonnagelbl);
@@ -104,14 +103,11 @@ public class Trips_Activty extends AppCompatActivity  {
         voDatasq.set_id("");
         voDatasq.setRegistrationNo("Assigned Driver");
 
-
-
-
         datad.add(voDatasq);
 
         TruckVo voDatasp = new TruckVo();
         voDatasp.set_id("");
-        voDatasp.setRegistrationNo("Assigned Party");
+        voDatasp.setRegistrationNo("Book For");
         datap.add(voDatasp);
 
         lookuup = getIntent().getStringExtra("hitupdate");
@@ -130,17 +126,12 @@ public class Trips_Activty extends AppCompatActivity  {
 
         tripDate = (TextView)findViewById(R.id.trip_id);
 
-
         tripDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePicker(tripDate);
             }
         });
-
-
-
-
         AdapterView.OnItemSelectedListener countrySelectedListener = new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -187,7 +178,7 @@ public class Trips_Activty extends AppCompatActivity  {
         //erp_frghtamt,erp_advamt,erp_balamt
         tripFromDateET = (EditText)findViewById(R.id.trip_frm_date);
         tripToDateET = (EditText)findViewById(R.id.trip_to_date);
-        trip_loadET = (EditText)findViewById(R.id.trip_load);
+
         trip_diesalamtET = (EditText)findViewById(R.id.trip_diesalamt);
         trip_tollgateamtET = (EditText)findViewById(R.id.trip_tollgateamt);
         trip_tonnageamtET = (EditText)findViewById(R.id.trip_tonnageamt);
@@ -243,7 +234,7 @@ public class Trips_Activty extends AppCompatActivity  {
         String tripTruckID =  truckID.toString().trim();
         String tripFrom =  tripFromDateET.getText().toString().trim();
         String tripTo =  tripToDateET.getText().toString().trim();
-        String trip_load =  trip_loadET.getText().toString().trim();
+        String trip_load =  PartyID.toString().trim();
         String tripDriverID =  DriverID.toString().trim();
         String tripDieselAmt =  trip_diesalamtET.getText().toString().trim();
         String tripTollAmt =  trip_tollgateamtET.getText().toString().trim();
@@ -254,7 +245,7 @@ public class Trips_Activty extends AppCompatActivity  {
         String tripBalnceAmt =  BalnceET.getText().toString().trim();
         String triperp_remark =  erp_remarkET.getText().toString().trim();
         String trippaymentType =  paymentType.toString().trim();
-        String tripPartBook =  PartyID.toString().trim();
+
 
         if(tripDatestr.contains("-")){
             if(tripTruckID.length()>0){
@@ -262,17 +253,17 @@ public class Trips_Activty extends AppCompatActivity  {
                     if(tripTo.length()>0){
                         if(trip_load.length()>0){
                             if(tripDriverID.length()>0){
-                                if(tripDieselAmt.length()>0){
-                                    if(tripTollAmt.length()>0){
-                                        if(tripTonnageAmt.length()>0){
-                                            if(tripRateAmt.length()>0){
-                                                if(tripfrghtAmt.length()>0){
-                                                    if(tripAdvnceAmt.length()>0){
-                                                        if(tripBalnceAmt.length()>0){
+                                if(tripTonnageAmt.length()>0){
+                                    if(tripRateAmt.length()>0){
+                                        if(tripfrghtAmt.length()>0){
+                                            if(tripAdvnceAmt.length()>0){
+                                                if(tripDieselAmt.length()>0){
+                                                    if(tripBalnceAmt.length()>0){
+                                                        if(tripTollAmt.length()>0){
                                                             if(trippaymentType.length()>0){
                                                                 if (detectCnnection.isConnectingToInternet()) {
                                                                     new AddTrip( tripDatestr ,tripTruckID,tripFrom ,tripTo ,trip_load ,tripDriverID,tripDieselAmt,tripTollAmt ,tripTonnageAmt,tripRateAmt,tripfrghtAmt ,tripAdvnceAmt,
-                                                                            tripBalnceAmt,triperp_remark,trippaymentType,tripPartBook).execute();
+                                                                            tripBalnceAmt,triperp_remark,trippaymentType).execute();
                                                                 } else {
                                                                     Toast.makeText(context,res.getString(R.string.internet_str),Toast.LENGTH_LONG).show();
                                                                 }
@@ -282,35 +273,35 @@ public class Trips_Activty extends AppCompatActivity  {
                                                             }
                                                         }else
                                                         {
-                                                            Toast.makeText(context, "Please Enter Balance Amount ", Toast.LENGTH_SHORT).show();
+                                                            Toast.makeText(context, "Please Enter Toll Amount ", Toast.LENGTH_SHORT).show();
                                                         }
 
                                                     }else
                                                     {
-                                                        Toast.makeText(context, "Please Enter Advnce Amount ", Toast.LENGTH_SHORT).show();
+                                                        Toast.makeText(context, "Please Enter Diesel Amount", Toast.LENGTH_SHORT).show();
                                                     }
                                                 }else
                                                 {
-                                                    Toast.makeText(context, "Please Enter Frieght Amount ", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(context, "Please Enter Balance Amount", Toast.LENGTH_SHORT).show();
                                                 }
 
                                             }else
                                             {
-                                                Toast.makeText(context, "Please Enter Rate ", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(context, "Please Enter Advance Amount ", Toast.LENGTH_SHORT).show();
                                             }
 
                                         }else
                                         {
-                                            Toast.makeText(context, "Please Enter Tonnage ", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(context, "Please Enter Freight Amount ", Toast.LENGTH_SHORT).show();
                                         }
 
                                     }else
                                     {
-                                        Toast.makeText(context, "Please Enter Toll Amount", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(context, "Please Enter Rate", Toast.LENGTH_SHORT).show();
                                     }
                                 }else
                                 {
-                                    Toast.makeText(context, "Please Enter Diesel Amount", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Please Enter Tonnage", Toast.LENGTH_SHORT).show();
                                 }
                             }else
                             {
@@ -531,13 +522,13 @@ public class Trips_Activty extends AppCompatActivity  {
                 String res ="";
                 if(type.equalsIgnoreCase("truck"))
                 {
-                    res = parser.erpExecuteGet(context,TruckApp.truckListURL);
+                    res = parser.erpExecuteGet(context,TruckApp.truckListURL+"/get/accountTrucks/1");
                     Log.e("truckListURL",res.toString());
                 }else if(type.equalsIgnoreCase("drivers")){
-                    res = parser.erpExecuteGet(context,TruckApp.driverListURL);
+                    res = parser.erpExecuteGet(context,TruckApp.driverListURL+"/1");
                     Log.e("driverListURL",res.toString());
                 }else if(type.equalsIgnoreCase("parties")){
-                    res = parser.erpExecuteGet(context,TruckApp.payListURL);
+                    res = parser.erpExecuteGet(context,TruckApp.paryListURL);
                     Log.e("payListURL",res.toString());
                 }
                 json = new JSONObject(res);
@@ -775,11 +766,11 @@ public class Trips_Activty extends AppCompatActivity  {
 
     private class AddTrip extends AsyncTask<String, String, JSONObject> {
         String tripDatestr ,tripTruckID,tripFrom ,tripTo ,trip_load ,tripDriverID,tripDieselAmt,tripTollAmt ,tripTonnageAmt,tripRateAmt,tripfrghtAmt ,tripAdvnceAmt,
-                tripBalnceAmt,triperp_remark,trippaymentType,tripPartBook;
+                tripBalnceAmt,triperp_remark,trippaymentType;
 
         public AddTrip(String tripDatestr ,String tripTruckID,String tripFrom ,String tripTo ,String trip_load ,String tripDriverID,String tripDieselAmt,String tripTollAmt ,String tripTonnageAmt,String
                 tripRateAmt,String tripfrghtAmt ,String tripAdvnceAmt,
-                       String tripBalnceAmt,String triperp_remark,String  trippaymentType,String tripPartBook) {
+                       String tripBalnceAmt,String triperp_remark,String  trippaymentType) {
             this.tripDatestr = tripDatestr;
             this.tripTruckID =  tripTruckID;
             this.tripFrom =  tripFrom;
@@ -795,7 +786,6 @@ public class Trips_Activty extends AppCompatActivity  {
             this.tripBalnceAmt = tripBalnceAmt;
             this.triperp_remark = triperp_remark;
             this.trippaymentType = trippaymentType;
-            this.tripPartBook = tripPartBook;
 
         }
         @Override

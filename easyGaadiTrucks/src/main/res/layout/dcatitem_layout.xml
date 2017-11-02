@@ -68,7 +68,7 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="3dp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#838282"
+                        android:textColor="@color/actionbar_clr"
                         android:text="Driver ID"/>
                     <TextView
                         android:id="@+id/driverName_tv"

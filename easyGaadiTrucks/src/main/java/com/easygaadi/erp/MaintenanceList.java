@@ -8,11 +8,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,6 +27,7 @@ import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.DataModel;
 import com.easygaadi.models.DriverVo;
 import com.easygaadi.models.MaitenanceVo;
+import com.easygaadi.models.PartyVo;
 import com.easygaadi.trucksmobileapp.Driver_Activity;
 import com.easygaadi.trucksmobileapp.Maintenance_Activity;
 import com.easygaadi.trucksmobileapp.R;
@@ -78,7 +83,7 @@ public class MaintenanceList extends Fragment {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment TrunkList.
+         * @return A new instance of fragment TruckList.
          */
         // TODO: Rename and change types and number of parameters
         public static MaintenanceList newInstance(String param1, String param2) {
@@ -123,6 +128,27 @@ public class MaintenanceList extends Fragment {
             }else{
                 Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
             }
+            etSearch=(EditText)view.findViewById(R.id.etSearch);
+            etSearch.setText("");
+            etSearch.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count,             int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    //if(s.length()>0){
+                        if(partyadapter !=null)
+                            partyadapter.getFilter().filter(s.toString());
+                    //}
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+
+                }
+            });
 
             addImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -151,7 +177,7 @@ public class MaintenanceList extends Fragment {
          * >Communicating with Other Fragments</a> for more information.
          */
 
-        public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
+        public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> implements Filterable{
 
             private ArrayList<MaitenanceVo> dataSet;
 
@@ -180,8 +206,6 @@ public class MaintenanceList extends Fragment {
                 return myViewHolder;
             }
 
-
-
             @Override
             public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
@@ -196,14 +220,57 @@ public class MaintenanceList extends Fragment {
                 textViewRType.setText(dataSet.get(listPosition).getDescription());
                 textViewRArea.setText(dataSet.get(listPosition).getCity());
                 textViewamt.setText(dataSet.get(listPosition).getCostString());
-
             }
-
-
 
             @Override
             public int getItemCount() {
                 return dataSet.size();
+            }
+
+            private Filter fRecords;
+            @Override
+            public Filter getFilter() {
+                if(fRecords == null) {
+                    fRecords=new CustomAdapter.RecordFilter();
+                }
+                return fRecords;
+            }
+
+            private class RecordFilter extends Filter{
+
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults results = new FilterResults();
+
+                    //Implement filter logic
+                    // if edittext is null return the actual list
+                    if (constraint == null || constraint.length() == 0) {
+                        //No need for filter
+                        results.values = data;
+                        results.count = data.size();
+
+                    } else {
+                        //Need Filter
+                        // it matches the text  entered in the edittext and set the data in adapter list
+                        ArrayList<MaitenanceVo> fRecords = new ArrayList<MaitenanceVo>();
+
+                        for (MaitenanceVo s : dataSet) {
+                            if (s.getVehicleNumber().toString().toUpperCase().trim().contains(constraint.toString().toUpperCase().trim())) {
+                                fRecords.add(s);
+                            }
+                        }
+                        results.values = fRecords;
+                        results.count = fRecords.size();
+
+                    }
+                    return results;
+                }
+
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+                    dataSet = (ArrayList<MaitenanceVo>) results.values;
+                    notifyDataSetChanged();
+                }
             }
         }
 
@@ -279,16 +346,28 @@ public class MaintenanceList extends Fragment {
                                 for (int i = 0; i < partArray.length(); i++) {
                                     JSONObject partData = partArray.getJSONObject(i);
                                     MaitenanceVo voData = new MaitenanceVo();
+
                                     voData.set_id(partData.getString("_id"));
-                                    voData.setVehicleNumber(partData.getString("vehicleNumber"));
                                     voData.setCostString(partData.getString("cost"));
-                                    if(partData.has("location")){
-                                        voData.setCity(partData.getString("location"));
+                                    if(partData.has("shedArea")){
+                                        voData.setCity(partData.getString("shedArea"));
                                     }else{
                                         voData.setCity("Location not found");
                                     }
                                     voData.setDate(""+partData.getString("date"));
                                     voData.setDescription(partData.getString("description"));
+
+
+                                    JSONObject attributes = partData.getJSONObject("attrs");
+                                    if(attributes.has("truckName"))
+                                    {
+                                        voData.setVehicleNumber(attributes.getString("truckName"));
+                                    }else{
+                                        voData.setVehicleNumber("XXXXXX");
+                                    }
+
+
+
                                     data.add(voData);
                                 }
 

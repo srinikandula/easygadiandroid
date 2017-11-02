@@ -361,7 +361,7 @@ public class Trunck_Activity extends AppCompatActivity {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(context,TruckApp.driverListURL);
+                String res = parser.erpExecuteGet(context,TruckApp.driverListURL+"/1");
                 System.out.println("paylist"+res.toString());
                 json = new JSONObject(res);
 

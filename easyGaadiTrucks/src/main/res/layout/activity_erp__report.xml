@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:layout_alignParentTop="true"
+        android:id="@+id/header">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/actionbar_clr"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|center_vertical">
+                <Button
+                    android:id="@+id/backbtn"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:background="@drawable/erp_back_btn"
+                    android:gravity="left|center_vertical"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/margin_5"
+                    android:onClick="callback"/>
+                <TextView  android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Reports"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:gravity="left|center_vertical"
+                    android:layout_toRightOf="@+id/backbtn"/>
+
+                <TextView  android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="  Send To  EMail"
+                    android:textSize="20dp"
+                    android:layout_margin="@dimen/margin_5"
+                    android:padding="@dimen/margin_5"
+                    android:textStyle="bold"
+                    android:gravity="left|center_vertical"
+                    android:background="@color/yellowdclr"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/btmbutns"
+        android:id="@+id/form">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/formLL"
+            android:layout_marginLeft="@dimen/margin_10"
+            android:layout_marginRight="@dimen/margin_10">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="#ffffff"
+                card_view:cardCornerRadius="3dp"
+                card_view:cardElevation="5dp"
+                card_view:cardUseCompatPadding="true">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_5">
+                    <TextView
+                        android:id="@+id/trip_lbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_5"
+                        android:hint="@string/erp_trip_date"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColorHint="@color/actionbar_clr"
+                        android:gravity="left"
+                        android:visibility="invisible"/>
+                    <TextView
+                        android:id="@+id/trip_id"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/erp_height"
+                        android:background="@drawable/erp_etborder"
+                        android:hint="@string/erp_trip_date"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:gravity="left|center"
+                        android:paddingLeft="@dimen/margin_5"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_5">
+                    <TextView
+                        android:id="@+id/trip_trunklbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_5"
+                        android:hint="@string/erp_trunknum"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColorHint="@color/actionbar_clr"
+                        android:gravity="left"
+                        android:visibility="invisible"/>
+                    <TextView
+                        android:id="@+id/trip_did"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/erp_height"
+                        android:background="@drawable/erp_etborder"
+                        android:hint="@string/erp_trip_date"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:gravity="left|center"
+                        android:paddingLeft="@dimen/margin_5"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10"
+                >
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_5">
+                    <TextView
+                        android:id="@+id/trip_frmdatelbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_5"
+                        android:hint="@string/erp_frm"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColorHint="@color/actionbar_clr"
+                        android:gravity="left"
+                        android:visibility="invisible"/>
+                    <Spinner
+                        android:id="@+id/spnr_trunknum"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/erp_height"
+                        android:background="@drawable/erp_etborder"
+                        android:hint="@string/reports_vech"
+                        android:dropDownWidth="fill_parent"
+                        android:spinnerMode="dropdown"
+                        android:layout_weight="1"
+                        />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_5">
+                    <TextView
+                        android:id="@+id/trip_todatelbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_5"
+                        android:hint="@string/erp_to"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColorHint="@color/actionbar_clr"
+                        android:gravity="left"
+                        android:visibility="invisible"/>
+                    <Spinner
+                        android:id="@+id/spnr_driver"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/erp_height"
+                        android:background="@drawable/erp_etborder"
+                        android:hint="@string/reports_driver"
+                        android:dropDownWidth="fill_parent"
+                        android:spinnerMode="dropdown"
+                        android:layout_weight="1"
+                        />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/margin_5">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/margin_10"
+                    android:textColor="@color/white"
+                    android:text="@string/reports_genreports"
+                    android:background="#646060"/>
+
+            </LinearLayout>
+            </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/card_view_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                card_view:cardBackgroundColor="#ffffff"
+                card_view:cardCornerRadius="3dp"
+                card_view:cardElevation="5dp"
+                card_view:cardUseCompatPadding="true"
+                android:layout_marginTop="@dimen/margin_5">
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/quotes_rc"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/etSearch">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </android.support.v7.widget.CardView>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

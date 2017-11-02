@@ -11,11 +11,17 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.SpannableString;
+import android.text.TextWatcher;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +45,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -85,7 +92,7 @@ public class DriverList extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment TrunkList.
+     * @return A new instance of fragment TruckList.
      */
     // TODO: Rename and change types and number of parameters
     public static DriverList newInstance(String param1, String param2) {
@@ -122,10 +129,6 @@ public class DriverList extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        data = new ArrayList<DriverVo>();
-
-
         detectConnection = new ConnectionDetector(getActivity());
         parser = JSONParser.getInstance();
         pDialog = new ProgressDialog(getActivity());
@@ -149,6 +152,29 @@ public class DriverList extends Fragment {
             }
         });
 
+        etSearch=(EditText)view.findViewById(R.id.etSearch);
+       // etSearch.setHint("Enter Driver ID");
+        etSearch.setText("");
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,             int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //if(s.length()>0){
+                if(partyadapter !=null)
+                    partyadapter.getFilter().filter(s.toString());
+                //}
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
         return view;
     }
 
@@ -165,13 +191,13 @@ public class DriverList extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
 
-    public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
+    public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> implements Filterable {
 
         private ArrayList<DriverVo> dataSet;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView textViewDriverID,textViewDriverName,textViewDriverCon,textViewDriverLic_tv,textViewDriverLicExp_tv;
+            TextView textViewDriverID,textViewDriverName,textViewDriverCon,textViewDriverLic_tv,textViewDriverLicExp_tv,textViewCall_tv;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -180,6 +206,7 @@ public class DriverList extends Fragment {
                 this.textViewDriverCon = (TextView) itemView.findViewById(R.id.driverContact_tv);
                 this.textViewDriverLic_tv = (TextView) itemView.findViewById(R.id.driverLic_tv);
                 this.textViewDriverLicExp_tv = (TextView) itemView.findViewById(R.id.driverLicExp_tv);
+                this.textViewCall_tv = (TextView) itemView.findViewById(R.id.call_tv);
             }
         }
 
@@ -204,12 +231,12 @@ public class DriverList extends Fragment {
             TextView textViewDriverCon = holder.textViewDriverCon;
             TextView textViewDriverLic_tv = holder.textViewDriverLic_tv;
             TextView textViewDriverLicExp_tv = holder.textViewDriverLicExp_tv;
+            TextView textViewCall_tv = holder.textViewCall_tv;
 
             textViewDriverName.setText(dataSet.get(listPosition).getFullName());
             textViewDriverCon.setText(dataSet.get(listPosition).getMobile());
             textViewDriverLic_tv.setText(dataSet.get(listPosition).getLicenseNumber());
-            Log.v("check",dataSet.get(listPosition).getLicenseNumber()+""+dataSet.get(listPosition).getLicenseValidity());
-            System.out.println("check"+dataSet.get(listPosition).getLicenseNumber()+""+dataSet.get(listPosition).getLicenseValidity());
+
 
             textViewDriverID.setText(dataSet.get(listPosition).getDriverId());
             textViewDriverID.setOnClickListener(new View.OnClickListener() {
@@ -225,6 +252,8 @@ public class DriverList extends Fragment {
             });
 
 
+
+
             Date date;
             long diff = 0;
 
@@ -238,13 +267,14 @@ public class DriverList extends Fragment {
                 Log.d("custom date",newDates);
 
                 Date today = new Date();
-                 diff =  today.getTime() - date.getTime();
+                 diff =  date.getTime() -today.getTime()  ;
             } catch (ParseException e) {
                 e.printStackTrace();
                 System.out.println("err--"+e.getMessage());
             }
 
-            int numOfDays = (int) (diff / (1000 * 60 * 60 * 24));
+            //int numOfDays = (int) (diff / (1000 * 60 * 60 * 24));
+            long numOfDays = TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS);
             System.out.println("difference-"+listPosition+""+numOfDays);
             if(numOfDays < 0)
             {
@@ -266,14 +296,61 @@ public class DriverList extends Fragment {
 
 
             textViewDriverLicExp_tv.setText(newDates);
-            //System.out.println("check--"+newDates);
+
+
+            SpannableString mySpannableString = new SpannableString(textViewDriverID.getText().toString().trim());
+            mySpannableString.setSpan(new UnderlineSpan(), 0, mySpannableString.length(), 0);
+            textViewDriverID.setText(mySpannableString);
         }
-
-
 
         @Override
         public int getItemCount() {
             return dataSet.size();
+        }
+
+        private Filter fRecords;
+        @Override
+        public Filter getFilter() {
+            if(fRecords == null) {
+                fRecords=new CustomAdapter.RecordFilter();
+            }
+            return fRecords;
+        }
+
+        private class RecordFilter extends Filter{
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+
+                //Implement filter logic
+                // if edittext is null return the actual list
+                if (constraint == null || constraint.length() == 0) {
+                    //No need for filter
+                    results.values = data;
+                    results.count = data.size();
+
+                } else {
+                    //Need Filter
+                    // it matches the text  entered in the edittext and set the data in adapter list
+                    ArrayList<DriverVo> fRecords = new ArrayList<DriverVo>();
+
+                    for (DriverVo s : dataSet) {
+                        if (s.getDriverId().toString().trim().contains(constraint.toString().trim())) {
+                            fRecords.add(s);
+                        }
+                    }
+                    results.values = fRecords;
+                    results.count = fRecords.size();
+                }
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                dataSet = (ArrayList<DriverVo>) results.values;
+                notifyDataSetChanged();
+            }
         }
     }
 
@@ -302,7 +379,7 @@ public class DriverList extends Fragment {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(getActivity(), TruckApp.driverListURL);
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.driverListURL+"/1");
                 Log.e("driverlist",res.toString());
                 json = new JSONObject(res);
 
@@ -327,13 +404,21 @@ public class DriverList extends Fragment {
                         JSONArray partArray = result.getJSONArray("drivers");
                         if(partArray.length() > 0)
                         {
+                            data = new ArrayList<DriverVo>();
                             for (int i = 0; i < partArray.length(); i++) {
                                 JSONObject partData = partArray.getJSONObject(i);
                                 DriverVo voData = new DriverVo();
                                 voData.set_id(partData.getString("_id"));
                                 voData.setDriverId(partData.getString("driverId"));
 
-                                voData.setFullName(partData.getString("fullName"));
+
+                                if(partData.has("fullName")){
+                                    voData.setFullName(partData.getString("fullName"));
+                                }else{
+                                    voData.setFullName("XYZ");
+                                }
+
+
                                 voData.setMobile(""+partData.getString("mobile"));
                                 voData.setLicenseNumber(partData.getString("licenseNumber"));
 

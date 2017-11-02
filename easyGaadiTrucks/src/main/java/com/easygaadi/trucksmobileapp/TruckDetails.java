@@ -34,7 +34,7 @@ public class TruckDetails extends AppCompatActivity {
     private ConnectionDetector detectCnnection;
     FrameLayout progressFrame;
     ProgressDialog pDialog;
-    String lookuup;
+    String lookuup,forActivty;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +48,7 @@ public class TruckDetails extends AppCompatActivity {
         detectCnnection = new ConnectionDetector(context);
 
         lookuup = getIntent().getStringExtra("hitupdate");
+        forActivty = getIntent().getStringExtra("call");
         if (detectCnnection.isConnectingToInternet()) {
             new GetBuyingTrucks().execute();
         } else {
@@ -111,10 +112,14 @@ public class TruckDetails extends AppCompatActivity {
                     {
                         JSONObject partArray = result.getJSONObject("truck");
                         ((TextView)findViewById(R.id.truck_reg_lbl)).setText(partArray.getString("registrationNo"));
-                        ((TextView)findViewById(R.id.truck_type)).setText(getFormatDate(partArray.getString("truckType")));
-                        ((TextView)findViewById(R.id.fitnessExpiry)).setText(getFormatDate(partArray.getString("fitnessExpiry")));
-                        ((TextView)findViewById(R.id.truck_ins)).setText(getFormatDate(partArray.getString("insuranceExpiry")));
-                        ((TextView)findViewById(R.id.truck_pollexpiry)).setText(getFormatDate(partArray.getString("pollutionExpiry")));
+                        //((TextView)findViewById(R.id.truck_reg_lbl)).setCompoundDrawables(partArray.getString("registrationNo"));
+
+                        ((TextView)findViewById(R.id.truck_type)).setText( ":  "+partArray.getString("truckType"));
+                        ((TextView)findViewById(R.id.fitnessExpiry)).setText(":  "+getFormatDate(partArray.getString("fitnessExpiry")));
+                        ((TextView)findViewById(R.id.truck_ins)).setText(":  "+getFormatDate(partArray.getString("insuranceExpiry")));
+                        ((TextView)findViewById(R.id.truck_pollexpiry)).setText(": " +getFormatDate(partArray.getString("pollutionExpiry")));
+                        ((TextView)findViewById(R.id.truck_permit)).setText(": "+getFormatDate(partArray.getString("permitExpiry")));
+                        ((TextView)findViewById(R.id.truck_res_ton)).setText("XXT"+ "   "+""+partArray.getString("modelAndYear"));
 
 
                         pDialog.dismiss();

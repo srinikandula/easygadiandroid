@@ -82,6 +82,12 @@
                         android:gravity="center"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@android:color/black" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1"
+                        android:gravity="top">
                     <TextView
                         android:id="@+id/truck_reg_lbl"
                         android:layout_width="match_parent"
@@ -92,7 +98,17 @@
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left"
                         android:visibility="visible"/>
-
+                        <TextView
+                            android:id="@+id/truck_res_ton"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="@dimen/padding_5"
+                            android:hint="xxT xxxx"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColorHint="@color/blackblueshade"
+                            android:gravity="left"
+                            android:visibility="visible"/>
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>
@@ -100,36 +116,36 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:background="@drawable/erp_details_line">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
+                    android:orientation="horizontal"
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5"
                     android:gravity="top">
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding_5"
                         android:hint="@string/truck_type"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left|center"
                         android:visibility="visible"
-                        android:padding="5dp"/>
+                        android:padding="10dp"/>
                     <TextView
                         android:id="@+id/truck_type"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding_5"
                         android:hint="@string/truck_type"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left|center"
-                        android:padding="5dp"/>
+                        android:padding="10dp"
+                        android:layout_weight="1"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -142,13 +158,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_weight="1"
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5"
                     android:gravity="top">
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/padding_5"
                         android:hint="@string/truck_fexpiry"
@@ -156,7 +172,7 @@
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left|center"
                         android:visibility="visible"
-                        android:padding="5dp"/>
+                        android:padding="10dp"/>
                     <TextView
                         android:id="@+id/fitnessExpiry"
                         android:layout_width="match_parent"
@@ -166,7 +182,8 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left|center"
-                        android:padding="5dp"/>
+                        android:padding="10dp"
+                        android:layout_weight="1"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -178,13 +195,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_weight="1"
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5"
                     android:gravity="top">
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/padding_5"
                         android:hint="@string/truck_perexpiry"
@@ -192,7 +209,7 @@
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left|center"
                         android:visibility="visible"
-                        android:padding="5dp"/>
+                        android:padding="10dp"/>
                     <TextView
                         android:id="@+id/truck_permit"
                         android:layout_width="match_parent"
@@ -202,7 +219,8 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left|center"
-                        android:padding="5dp"/>
+                        android:padding="10dp"
+                        android:layout_weight="1"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -213,13 +231,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_weight="1"
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5"
                     android:gravity="top">
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/padding_5"
                         android:hint="@string/truck_insexpiry"
@@ -227,7 +245,7 @@
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left|center"
                         android:visibility="visible"
-                        android:padding="5dp"/>
+                        android:padding="10dp"/>
                     <TextView
                         android:id="@+id/truck_ins"
                         android:layout_width="match_parent"
@@ -237,7 +255,8 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left|center"
-                        android:padding="5dp"/>
+                        android:padding="10dp"
+                        android:layout_weight="1"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -248,13 +267,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_weight="1"
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5"
                     android:gravity="top">
                     <TextView
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/padding_5"
                         android:hint="@string/truck_pollexpiry"
@@ -262,7 +281,7 @@
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left|center"
                         android:visibility="visible"
-                        android:padding="5dp"/>
+                        android:padding="10dp"/>
                     <TextView
                         android:id="@+id/truck_pollexpiry"
                         android:layout_width="match_parent"
@@ -272,7 +291,8 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColorHint="@color/blackblueshade"
                         android:gravity="left|center"
-                        android:padding="5dp"/>
+                        android:padding="10dp"
+                        android:layout_weight="1"/>
                 </LinearLayout>
             </LinearLayout>
                 <LinearLayout
@@ -282,7 +302,8 @@
                     android:layout_weight="1"
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5"
-                    android:gravity="top">
+                    android:gravity="top"
+                    android:visibility="invisible">
                     <TextView
                         android:id="@+id/maitain_amt"
                         android:layout_width="match_parent"
@@ -293,7 +314,8 @@
                         android:textColorHint="@color/yellow"
                         android:gravity="left|center"
                         android:textStyle="bold"
-                        android:padding="5dp"/>
+                        android:padding="5dp"
+                        android:visibility="gone"/>
                     <TextView
                         android:id="@+id/repair_type"
                         android:layout_width="match_parent"

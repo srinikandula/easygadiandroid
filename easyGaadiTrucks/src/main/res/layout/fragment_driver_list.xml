@@ -7,11 +7,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <EditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/erp_height"
+            android:hint="Search"
+            android:background="@drawable/erp_etborder"
+            android:layout_alignParentTop="true"
+            android:imeOptions="actionDone"
+            android:inputType="text|textCapCharacters"
+            android:maxLines="1"
+            android:paddingLeft="@dimen/margin_5"
+            android:layout_margin="@dimen/margin_5"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/quotes_rc"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentTop="true">
+            android:layout_below="@+id/etSearch">
 
         </android.support.v7.widget.RecyclerView>
 

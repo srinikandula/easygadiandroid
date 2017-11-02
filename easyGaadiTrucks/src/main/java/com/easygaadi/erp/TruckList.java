@@ -2,25 +2,28 @@ package com.easygaadi.erp;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,15 +31,11 @@ import android.widget.Toast;
 
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
-import com.easygaadi.models.DataModel;
 import com.easygaadi.models.PartyVo;
 import com.easygaadi.models.TruckVo;
-import com.easygaadi.trucksmobileapp.Driver_Activity;
-import com.easygaadi.trucksmobileapp.Party_Activity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.TruckApp;
 import com.easygaadi.trucksmobileapp.TruckDetails;
-import com.easygaadi.trucksmobileapp.TrucksActivity;
 import com.easygaadi.trucksmobileapp.Trunck_Activity;
 
 import org.json.JSONArray;
@@ -47,16 +46,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A fragment with a Google +1 button.
  * Activities that contain this fragment must implement the
  * {} interface
  * to handle interaction events.
- * Use the {@link TrunkList#newInstance} factory method to
+ * Use the {@link TruckList#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TrunkList extends Fragment{
+public class TruckList extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -84,7 +84,7 @@ public class TrunkList extends Fragment{
     private int requestCode = 123;
     CustomAdapter partyadapter;
 
-    public TrunkList() {
+    public TruckList() {
         // Required empty public constructor
     }
 
@@ -94,11 +94,11 @@ public class TrunkList extends Fragment{
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment TrunkList.
+     * @return A new instance of fragment TruckList.
      */
     // TODO: Rename and change types and number of parameters
-    public static TrunkList newInstance(String param1, String param2) {
-        TrunkList fragment = new TrunkList();
+    public static TruckList newInstance(String param1, String param2) {
+        TruckList fragment = new TruckList();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -124,17 +124,10 @@ public class TrunkList extends Fragment{
         recyclerView = (RecyclerView) view.findViewById(R.id.quotes_rc);
         recyclerView.setHasFixedSize(true);
 
-
         addImage = (ImageView)view.findViewById(R.id.addImage);
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
-
-
-
-
 
         detectConnection = new ConnectionDetector(getActivity());
         parser = JSONParser.getInstance();
@@ -143,9 +136,7 @@ public class TrunkList extends Fragment{
         if (detectConnection.isConnectingToInternet()) {
             new GetBuyingTrucks().execute();
         }else{
-            Toast.makeText(getActivity(),
-                    getResources().getString(R.string.internet_str),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),getResources().getString(R.string.internet_str), Toast.LENGTH_LONG).show();
         }
 
         addImage.setOnClickListener(new View.OnClickListener() {
@@ -154,9 +145,27 @@ public class TrunkList extends Fragment{
                 startActivityForResult(new Intent(getActivity(), Trunck_Activity.class), requestCode);
             }
         });
-       // swipeRefreshLayout.setOnRefreshListener(this);
+        etSearch=(EditText)view.findViewById(R.id.etSearch);
+        etSearch.setText("");
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,             int after) {
 
+            }
 
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //if(s.length()>0){
+                if(partyadapter !=null)
+                    partyadapter.getFilter().filter(s.toString());
+                //}
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         return view;
     }
 
@@ -180,7 +189,7 @@ public class TrunkList extends Fragment{
      * >Communicating with Other Fragments</a> for more information.
      */
 
-    public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
+    public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> implements Filterable {
 
         private ArrayList<TruckVo> dataSet;
 
@@ -232,11 +241,26 @@ public class TrunkList extends Fragment{
             textViewTruckREG.setText(dataSet.get(listPosition).getRegistrationNo());
             textViewlastupadate.setText(dataSet.get(listPosition).getTruckType()+ " "+""+dataSet.get(listPosition).getModelAndYear());
 
-            textViewPermit_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getPermitExpiry()), null, null, null );
-            textViewPoll_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getPollutionExpiry()), null, null, null );
-            textViewIns_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getInsuranceExpiry()), null, null, null );
-            textViewFitness_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getFitnessExpiry()), null, null, null );
+            Log.i("expry",dataSet.get(listPosition).getPermitExpiry());
 
+            if(Build.VERSION.SDK_INT  > 16)
+            {
+                textViewFitness_tv.setCompoundDrawablesRelativeWithIntrinsicBounds(getDays(dataSet.get(listPosition).getFitnessExpiry()), null, null, null );
+                textViewPermit_tv.setCompoundDrawablesRelativeWithIntrinsicBounds( getDays(dataSet.get(listPosition).getPermitExpiry()), null, null, null );
+                textViewPoll_tv.setCompoundDrawablesRelativeWithIntrinsicBounds( getDays(dataSet.get(listPosition).getPollutionExpiry()), null, null, null );
+                textViewIns_tv.setCompoundDrawablesRelativeWithIntrinsicBounds( getDays(dataSet.get(listPosition).getInsuranceExpiry()), null, null, null );
+            }else{
+                textViewPermit_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getPermitExpiry()), null, null, null );
+                textViewPoll_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getPollutionExpiry()), null, null, null );
+                textViewIns_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getInsuranceExpiry()), null, null, null );
+                textViewFitness_tv.setCompoundDrawables(getDays(dataSet.get(listPosition).getFitnessExpiry()), null, null, null );
+            }
+
+
+            if(dataSet.get(listPosition).getDrivercontact().contains("x"))
+            {
+                textViewcall.setVisibility(View.GONE);
+            }
 
             textViewcall.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -251,7 +275,7 @@ public class TrunkList extends Fragment{
 
                     Intent intent = new Intent(getActivity(), TruckDetails.class);
                     intent.putExtra("hitupdate", dataSet.get(listPosition).get_id());
-                    //intent.putExtra("hitupdate", "loo");
+                    intent.putExtra("call", "truck");
                     startActivity(intent);
                 }
             });
@@ -264,6 +288,51 @@ public class TrunkList extends Fragment{
         public int getItemCount() {
             return dataSet.size();
         }
+
+        private Filter fRecords;
+        @Override
+        public Filter getFilter() {
+            if(fRecords == null) {
+                fRecords=new CustomAdapter.RecordFilter();
+            }
+            return fRecords;
+        }
+
+        private class RecordFilter extends Filter{
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+
+                //Implement filter logic
+                // if edittext is null return the actual list
+                if (constraint == null || constraint.length() == 0) {
+                    //No need for filter
+                    results.values = data;
+                    results.count = data.size();
+
+                } else {
+                    //Need Filter
+                    // it matches the text  entered in the edittext and set the data in adapter list
+                    ArrayList<TruckVo> fRecords = new ArrayList<TruckVo>();
+
+                    for (TruckVo s : dataSet) {
+                        if (s.getRegistrationNo().toString().toUpperCase().trim().contains(constraint.toString().toUpperCase().trim())) {
+                            fRecords.add(s);
+                        }
+                    }
+                    results.values = fRecords;
+                    results.count = fRecords.size();
+                }
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                dataSet = (ArrayList<TruckVo>) results.values;
+                notifyDataSetChanged();
+            }
+        }
     }
 
 
@@ -271,7 +340,7 @@ public class TrunkList extends Fragment{
 
         Date date;
         long diff = 0;
-
+        Log.i("start date",fdate);
         DateFormat dateFormat,formatter;
         dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         String newDates = null;
@@ -279,19 +348,21 @@ public class TrunkList extends Fragment{
             date = dateFormat.parse(fdate);
             formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
             newDates = formatter.format(date);
-            Log.d("custom date",newDates);
-
+            Log.i("custom date",newDates);
             Date today = new Date();
-            diff =  today.getTime() - date.getTime();
+            diff =  date.getTime()-today.getTime()  ;
         } catch (ParseException e) {
             e.printStackTrace();
             System.out.println("err--"+e.getMessage());
         }
 
-        int numOfDays = (int) (diff / (1000 * 60 * 60 * 24));
+        //int numOfDays = (int) (diff / (1000 * 60 * 60 * 24));
+        long numOfDays = TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS);
+        Log.i("numOfDays-->",""+numOfDays);
+        System.out.println("numOfDays-->"+numOfDays);
         if(numOfDays >  30)
         {
-            Drawable img = getContext().getResources().getDrawable( R.drawable.green );
+            Drawable img = getContext().getResources().getDrawable( R.drawable.orange );
             img.setBounds( 0, 0, 60, 60 );
             return img;
         }else if(numOfDays < 30)
@@ -304,23 +375,7 @@ public class TrunkList extends Fragment{
             Drawable img = getContext().getResources().getDrawable( R.drawable.red );
             img.setBounds( 0, 0, 60, 60 );
             return img;
-
         }
-    }
-
-
-
-
-    public static class MyData {
-        static String[] nameArray = {"Cupcake", "Donut", "Eclair", "Froyo", "Gingerbread", "Honeycomb", "Ice Cream Sandwich","JellyBean", "Kitkat", "Lollipop", "Marshmallow"};
-        static String[] versionArray = {"1.5", "1.6", "2.0-2.1", "2.2-2.2.3", "2.3-2.3.7", "3.0-3.2.6", "4.0-4.0.4", "4.1-4.3.1", "4.4-4.4.4", "5.0-5.1.1","6.0-6.0.1"};
-
-        static Integer[] drawableArray = {R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage,
-                R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage,
-                R.drawable.car_damage, R.drawable.car_damage, R.drawable.car_damage,R.drawable.car_damage};
-
-        static Integer[] id_ = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
-
     }
 
 
@@ -371,8 +426,8 @@ public class TrunkList extends Fragment{
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(getActivity(), TruckApp.truckListURL);
-                Log.e("paylist",res.toString());
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.truckListURL+"/get/accountTrucks/1");
+                Log.i("trucksList",res.toString());
                 json = new JSONObject(res);
 
             } catch (Exception e) {
@@ -399,8 +454,19 @@ public class TrunkList extends Fragment{
                             for (int i = 0; i < partArray.length(); i++) {
                                 JSONObject partData = partArray.getJSONObject(i);
                                 TruckVo voData = new TruckVo();
-                                voData.setDrivername("Driver Name"+i);
-                                voData.setDrivercontact("8801715086");
+                                JSONObject attributes = partData.getJSONObject("attrs");
+
+                                if(attributes.has("fullName")){
+                                    voData.setDrivername(attributes.getString("fullName"));
+                                }else{
+                                    voData.setDrivername("XYZ");
+                                }
+
+                                if(attributes.has("mobile")){
+                                    voData.setDrivercontact(""+attributes.getInt("mobile"));
+                                }else{
+                                    voData.setDrivercontact("xxxxxxxxxx");
+                                }
                                 voData.set_id(partData.getString("_id"));
                                 voData.setRegistrationNo(partData.getString("registrationNo"));
                                 voData.setTruckType(partData.getString("truckType"));
@@ -409,7 +475,7 @@ public class TrunkList extends Fragment{
                                 voData.setPermitExpiry(partData.getString("permitExpiry"));
                                 voData.setInsuranceExpiry(partData.getString("insuranceExpiry"));
                                 voData.setPollutionExpiry(partData.getString("pollutionExpiry"));
-
+                                System.out.println("leads" + voData.getFitnessExpiry());
                                 data.add(voData);
                             }
 
@@ -422,7 +488,7 @@ public class TrunkList extends Fragment{
                         }
                     }
                 } catch (Exception e) {
-                    System.out.println("ex in get leads" + e.toString());
+                    System.out.println("trucksDAT" + e.toString());
                 }
 
             } else {
@@ -444,7 +510,14 @@ public class TrunkList extends Fragment{
                 JSONObject partData = new JSONObject(addItem);
                 TruckVo voData = new TruckVo();
                 voData.setDrivername("Driver Name");
-                voData.setDrivercontact("8801715086");
+
+                if(partData.has("mobile")){
+                    voData.setDrivercontact(partData.getString("mobile"));
+                }else{
+                    voData.setDrivercontact("xxxxxxxxxx");
+                }
+
+
                 voData.setRegistrationNo(partData.getString("registrationNo"));
                 voData.setTruckType(partData.getString("truckType"));
                 voData.setModelAndYear(partData.getString("modelAndYear"));

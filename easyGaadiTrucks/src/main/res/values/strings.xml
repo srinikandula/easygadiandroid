@@ -469,4 +469,10 @@
     <string name="truck_mamt">Maintance Amount</string>
     <string name="truck_tonnage">Tonnage</string>
 
+
+    <!--Reports-->
+    <string name="reports_vech">Select Vechile</string>
+    <string name="reports_driver">Select Driver</string>
+    <string name="reports_genreports">Generate Report</string>
+
 </resources>

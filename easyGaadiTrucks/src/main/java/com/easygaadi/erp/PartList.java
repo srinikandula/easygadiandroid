@@ -88,7 +88,7 @@ public class PartList extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment TrunkList.
+     * @return A new instance of fragment TruckList.
      */
     // TODO: Rename and change types and number of parameters
     public static PartList newInstance(String param1, String param2) {
@@ -156,10 +156,10 @@ public class PartList extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length()>0){
+                //if(s.length()>0){
                     if(partyadapter !=null)
                     partyadapter.getFilter().filter(s.toString());
-                }
+                //}
             }
 
             @Override
@@ -195,7 +195,7 @@ public class PartList extends Fragment {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(getActivity(),TruckApp.payListURL);
+                String res = parser.erpExecuteGet(getActivity(),TruckApp.paryListURL);
                 Log.e("paylist",res.toString());
                 json = new JSONObject(res);
 
@@ -346,8 +346,8 @@ public class PartList extends Fragment {
                 // if edittext is null return the actual list
                 if (constraint == null || constraint.length() == 0) {
                     //No need for filter
-                    results.values = dataSet;
-                    results.count = dataSet.size();
+                    results.values = data;
+                    results.count = data.size();
 
                 } else {
                     //Need Filter
@@ -371,7 +371,6 @@ public class PartList extends Fragment {
                 notifyDataSetChanged();
             }
         }
-
 
     }
 

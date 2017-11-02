@@ -7,6 +7,16 @@ package com.easygaadi.models;
 public class TripVo {
     
     String _id;
+    String tripId;
+
+    public String getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(String tripId) {
+        this.tripId = tripId;
+    }
+
     String updatedAt;
     String createdAt;
     String date;

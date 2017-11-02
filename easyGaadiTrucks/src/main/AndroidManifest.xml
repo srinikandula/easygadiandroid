@@ -359,10 +359,12 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme1"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".TruckDetails"
+        <activity
+            android:name=".TruckDetails"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme1"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ERP_Report"></activity>
     </application>
 
 </manifest>

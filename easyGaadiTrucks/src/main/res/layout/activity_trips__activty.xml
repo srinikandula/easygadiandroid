@@ -216,25 +216,24 @@
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5">
                     <TextView
-                        android:id="@+id/trip_bkloadlbl"
+                        android:id="@+id/trip_bookbl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding_5"
-                        android:hint="@string/erp_bkdload"
+                        android:hint="@string/erp_book_for"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColorHint="@color/actionbar_clr"
                         android:gravity="left"
                         android:visibility="invisible"/>
-                    <EditText
-                        android:id="@+id/trip_load"
+                    <Spinner
+                        android:id="@+id/spnr_book"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/erp_height"
                         android:background="@drawable/erp_etborder"
-                        android:hint="@string/erp_bkdload"
-                        android:inputType="number"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:gravity="left|center"
-                        android:paddingLeft="@dimen/margin_5"/>
+                        android:hint="@string/erp_book_for"
+                        android:dropDownWidth="fill_parent"
+                        android:spinnerMode="dropdown"
+                        />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -262,70 +261,6 @@
                         android:dropDownWidth="fill_parent"
                         android:spinnerMode="dropdown"
                         />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginLeft="@dimen/margin_10"
-                android:layout_marginRight="@dimen/margin_10">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/margin_5"
-                    android:layout_marginRight="@dimen/margin_5">
-                    <TextView
-                        android:id="@+id/trip_diesalamtlbl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padding_5"
-                        android:hint="@string/erp_diesalamt"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColorHint="@color/actionbar_clr"
-                        android:gravity="left"
-                        android:visibility="invisible"/>
-                    <EditText
-                        android:id="@+id/trip_diesalamt"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/erp_height"
-                        android:hint="@string/erp_diesalamt"
-                        android:gravity="left|center"
-                        android:paddingLeft="@dimen/margin_5"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:background="@drawable/erp_etborder"
-                        android:inputType="numberDecimal"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/margin_5"
-                    android:layout_marginRight="@dimen/margin_5">
-                    <TextView
-                        android:id="@+id/trip_tollgateamtlbl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padding_5"
-                        android:hint="@string/erp_tollgateamt"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColorHint="@color/actionbar_clr"
-                        android:gravity="left"
-                        android:visibility="invisible"/>
-                    <EditText
-                        android:id="@+id/trip_tollgateamt"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/erp_height"
-                        android:hint="@string/erp_tollgateamt"
-                        android:gravity="left|center"
-                        android:paddingLeft="@dimen/margin_5"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:background="@drawable/erp_etborder"
-                        android:layout_weight="1"
-                        android:inputType="numberDecimal"/>
                 </LinearLayout>
             </LinearLayout>
             <LinearLayout
@@ -501,6 +436,76 @@
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5">
                     <TextView
+                        android:id="@+id/trip_diesalamtlbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_5"
+                        android:hint="@string/erp_diesalamt"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColorHint="@color/actionbar_clr"
+                        android:gravity="left"
+                        android:visibility="invisible"/>
+                    <EditText
+                        android:id="@+id/trip_diesalamt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/erp_height"
+                        android:hint="@string/erp_diesalamt"
+                        android:gravity="left|center"
+                        android:paddingLeft="@dimen/margin_5"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:background="@drawable/erp_etborder"
+                        android:inputType="numberDecimal"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="@dimen/margin_10"
+                android:layout_marginRight="@dimen/margin_10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_5">
+                    <TextView
+                        android:id="@+id/trip_tollgateamtlbl"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/padding_5"
+                        android:hint="@string/erp_tollgateamt"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColorHint="@color/actionbar_clr"
+                        android:gravity="left"
+                        android:visibility="invisible"/>
+                    <EditText
+                        android:id="@+id/trip_tollgateamt"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/erp_height"
+                        android:hint="@string/erp_tollgateamt"
+                        android:gravity="left|center"
+                        android:paddingLeft="@dimen/margin_5"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:background="@drawable/erp_etborder"
+                        android:layout_weight="1"
+                        android:inputType="numberDecimal"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="@dimen/margin_5"
+                    android:layout_marginRight="@dimen/margin_5">
+                    <TextView
                         android:id="@+id/trip_pymtbl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -560,33 +565,7 @@
                         android:layout_weight="1"
                         android:inputType="textAutoComplete"/>
                 </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1"
-                android:layout_marginLeft="@dimen/margin_5"
-                android:layout_marginRight="@dimen/margin_5">
-                <TextView
-                    android:id="@+id/trip_bookbl"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/padding_5"
-                    android:hint="@string/erp_book_for"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColorHint="@color/actionbar_clr"
-                    android:gravity="left"
-                    android:visibility="invisible"/>
-                <Spinner
-                    android:id="@+id/spnr_book"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/erp_height"
-                    android:background="@drawable/erp_etborder"
-                    android:hint="@string/erp_book_for"
-                    android:dropDownWidth="fill_parent"
-                    android:spinnerMode="dropdown"
-                    />
-            </LinearLayout>
+
         </LinearLayout>
         </LinearLayout>
     </ScrollView>

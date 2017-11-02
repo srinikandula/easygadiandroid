@@ -10,11 +10,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +26,7 @@ import android.widget.Toast;
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.DataModel;
+import com.easygaadi.models.PartyVo;
 import com.easygaadi.models.TripVo;
 import com.easygaadi.models.TruckVo;
 import com.easygaadi.trucksmobileapp.Party_Activity;
@@ -85,7 +90,7 @@ public class TripList extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment TrunkList.
+     * @return A new instance of fragment TruckList.
      */
     // TODO: Rename and change types and number of parameters
     public static TripList newInstance(String param1, String param2) {
@@ -134,7 +139,27 @@ public class TripList extends Fragment {
                     Toast.LENGTH_LONG).show();
         }
 
+        etSearch=(EditText)view.findViewById(R.id.etSearch);
+        etSearch.setText("");
+        etSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count,             int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                //if(s.length()>0){
+                if(partyadapter !=null)
+                    partyadapter.getFilter().filter(s.toString());
+                //}
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,16 +183,17 @@ public class TripList extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
 
-    public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
+    public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> implements Filterable{
 
         private ArrayList<TripVo> dataSet;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView truckRegNo_tv,tv_lastupadate,triperName_tv,dieselamt_tv,tollamt_tv,freightamt_tv,advamt_tv,balanceamt_tv;
+            TextView tripID_tv,truckRegNo_tv,tv_lastupadate,triperName_tv,dieselamt_tv,tollamt_tv,freightamt_tv,advamt_tv,balanceamt_tv;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
+                this.tripID_tv = (TextView) itemView.findViewById(R.id.tripID_tv);
                 this.truckRegNo_tv = (TextView) itemView.findViewById(R.id.truckRegNo_tv);
                 this.tv_lastupadate = (TextView) itemView.findViewById(R.id.tv_lastupadate);
                 this.triperName_tv = (TextView) itemView.findViewById(R.id.triperName_tv);
@@ -195,6 +221,7 @@ public class TripList extends Fragment {
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int listPosition) {
 
+            TextView tripID_tv = holder.tripID_tv;
             TextView truckRegNo_tv = holder.truckRegNo_tv;
             TextView tv_lastupadate = holder.tv_lastupadate;
             TextView triperName_tv = holder.triperName_tv;
@@ -204,6 +231,7 @@ public class TripList extends Fragment {
             TextView advamt_tv = holder.advamt_tv;
             TextView balanceamt_tv = holder.balanceamt_tv;
 
+            tripID_tv.setText(dataSet.get(listPosition).getTripId());
             truckRegNo_tv.setText(dataSet.get(listPosition).getTruckName());
 
             triperName_tv.setText(dataSet.get(listPosition).getPartyName());
@@ -212,8 +240,6 @@ public class TripList extends Fragment {
             freightamt_tv.setText(dataSet.get(listPosition).getFreightAmount());
             advamt_tv.setText(dataSet.get(listPosition).getAdvance());
             balanceamt_tv.setText(dataSet.get(listPosition).getBalance());
-
-
 
             Date date;
 
@@ -231,13 +257,61 @@ public class TripList extends Fragment {
                 e.printStackTrace();
                 System.out.println("err--"+e.getMessage());
             }
+
+            //tripID_tv
+
+
+
         }
-
-
 
         @Override
         public int getItemCount() {
             return dataSet.size();
+        }
+
+        private Filter fRecords;
+        @Override
+        public Filter getFilter() {
+            if(fRecords == null) {
+                fRecords=new CustomAdapter.RecordFilter();
+            }
+            return fRecords;
+        }
+
+        private class RecordFilter extends Filter{
+
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                FilterResults results = new FilterResults();
+
+                //Implement filter logic
+                // if edittext is null return the actual list
+                if (constraint == null || constraint.length() == 0) {
+                    //No need for filter
+                    results.values = data;
+                    results.count = data.size();
+
+                } else {
+                    //Need Filter
+                    // it matches the text  entered in the edittext and set the data in adapter list
+                    ArrayList<TripVo> fRecords = new ArrayList<TripVo>();
+
+                    for (TripVo s : dataSet) {
+                        if (s.getTripId().toString().toUpperCase().trim().contains(constraint.toString().toUpperCase().trim())) {
+                            fRecords.add(s);
+                        }
+                    }
+                    results.values = fRecords;
+                    results.count = fRecords.size();
+                }
+                return results;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                dataSet = (ArrayList<TripVo>) results.values;
+                notifyDataSetChanged();
+            }
         }
     }
 
@@ -295,12 +369,17 @@ public class TripList extends Fragment {
                             for (int i = 0; i < partArray.length(); i++) {
                                 JSONObject partData = partArray.getJSONObject(i);
 
-                                System.out.println("trips" + partData.toString());
-
                                 TripVo voData = new TripVo();
+                                voData.setTripId(""+partData.getString("tripId"));
                                 voData.setAdvance(""+partData.getInt("advance"));
                                 voData.setDieselAmount(""+partData.getInt("dieselAmount"));
-                                voData.setFreightAmount(""+partData.getInt("freightAmount"));
+
+                                if(partData.has("freightAmount")){
+                                    voData.setFreightAmount(""+partData.getInt("freightAmount"));
+                                }else{
+                                    voData.setFreightAmount("XXXXX");
+                                }
+
                                 voData.setTollgateAmount(""+partData.getInt("tollgateAmount"));
                                 voData.setBalance(""+partData.getInt("balance"));
                                 voData.setUpdatedAt(""+partData.getString("updatedAt"));

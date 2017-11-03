@@ -474,5 +474,10 @@
     <string name="reports_vech">Select Vechile</string>
     <string name="reports_driver">Select Driver</string>
     <string name="reports_genreports">Generate Report</string>
+    <string name="trips_addpayment">Add Payment</string>
+    <string name="tripsdate">Date</string>
+    <string name="tripsid">Trip ID</string>
+    <string name="tripsnaam">Trip Name</string>
+    <string name="tripsdur">Duration</string>
 
 </resources>

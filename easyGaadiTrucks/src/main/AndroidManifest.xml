@@ -364,7 +364,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme1"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ERP_Report"></activity>
+        <activity android:name=".ERP_Report" />
+        <activity android:name=".TripsDetails_Activty"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

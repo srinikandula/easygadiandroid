@@ -78,10 +78,11 @@
                             android:layout_gravity="start|center_vertical"
                             android:layout_margin="3dp"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@android:color/black"
+                            android:textColor="@color/actionbar_clr"
                             android:maxLines="1"
                             android:text="XYZ"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1"
+                            />
                         <TextView
                             android:id="@+id/triperName_tv"
                             android:layout_width="wrap_content"

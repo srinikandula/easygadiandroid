@@ -1,11 +1,13 @@
 package com.easygaadi.trucksmobileapp;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +26,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -262,6 +265,8 @@ public class Trips_Activty extends AppCompatActivity  {
                                                         if(tripTollAmt.length()>0){
                                                             if(trippaymentType.length()>0){
                                                                 if (detectCnnection.isConnectingToInternet()) {
+                                                                    Log.i("shaaka",
+                                                                            tripDatestr +" -->"+tripTruckID+" -->"+tripFrom +" -->"+tripTo +" -->"+trip_load +" -->"+tripDriverID+" -->"+tripDieselAmt+" -->"+tripTollAmt +" -->"+tripTonnageAmt+" -->"+tripRateAmt+" -->"+tripfrghtAmt +" -->"+tripAdvnceAmt+" -->"+tripBalnceAmt+" -->"+triperp_remark+" -->"+trippaymentType);
                                                                     new AddTrip( tripDatestr ,tripTruckID,tripFrom ,tripTo ,trip_load ,tripDriverID,tripDieselAmt,tripTollAmt ,tripTonnageAmt,tripRateAmt,tripfrghtAmt ,tripAdvnceAmt,
                                                                             tripBalnceAmt,triperp_remark,trippaymentType).execute();
                                                                 } else {
@@ -534,7 +539,7 @@ public class Trips_Activty extends AppCompatActivity  {
                 json = new JSONObject(res);
 
             } catch (Exception e) {
-                Log.e("Login DoIN EX", e.toString());
+                Log.e("type EX", e.toString());
             }
             return json;
         }
@@ -546,9 +551,6 @@ public class Trips_Activty extends AppCompatActivity  {
             if (result != null) {
 
                 try {
-
-
-
 
                     if (!result.getBoolean("status")) {
                         Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
@@ -808,7 +810,7 @@ public class Trips_Activty extends AppCompatActivity  {
                     post_dict.put("freightAmount", Integer.parseInt(tripfrghtAmt));
                     post_dict.put("bookedFor", PartyID);
                     post_dict.put("advance", Integer.parseInt(tripAdvnceAmt));
-                    post_dict.put("bookLoad", Integer.parseInt(trip_load));
+                    //post_dict.put("bookLoad",trip_load);
                     post_dict.put("dieselAmount", Integer.parseInt(tripDieselAmt));
                     post_dict.put("tollgateAmount", Integer.parseInt(tripTollAmt));
                     post_dict.put("from", tripFrom);
@@ -821,14 +823,15 @@ public class Trips_Activty extends AppCompatActivity  {
                     post_dict.put("bookedFor", PartyID);
 
                 } catch (JSONException e) {
+                    Log.i("post_dict EX", e.toString());
                     e.printStackTrace();
                 }
-                System.out.println("" + String.valueOf(post_dict));
+                System.out.println("post_dict" + String.valueOf(post_dict));
                 String result = parser.easyyExcutePost(context,TruckApp.tripsListURL+"/addTrip ",String.valueOf(post_dict));
                 res = new JSONObject(result);
 
             } catch (Exception e) {
-                Log.e("Login DoIN EX", e.toString());
+                Log.i("riyaz DoIN EX",""+ e.toString());
                 res = null;
             }
             return res;
@@ -882,6 +885,7 @@ public class Trips_Activty extends AppCompatActivity  {
         super.onBackPressed();
         // Do extra stuff here
     }
+
 
 }
 

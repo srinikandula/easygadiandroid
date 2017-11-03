@@ -33,6 +33,9 @@
 
 
     <style name="BaseTheme1" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/actionbar_clr</item>
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/actionbar_clr</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:colorBackground">@color/white</item>
         <item name="windowNoTitle">true</item>

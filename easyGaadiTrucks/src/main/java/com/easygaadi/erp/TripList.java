@@ -1,8 +1,12 @@
 package com.easygaadi.erp;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,15 +15,21 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,8 +41,11 @@ import com.easygaadi.models.TripVo;
 import com.easygaadi.models.TruckVo;
 import com.easygaadi.trucksmobileapp.Party_Activity;
 import com.easygaadi.trucksmobileapp.R;
+import com.easygaadi.trucksmobileapp.TollActivity;
+import com.easygaadi.trucksmobileapp.TripsDetails_Activty;
 import com.easygaadi.trucksmobileapp.Trips_Activty;
 import com.easygaadi.trucksmobileapp.TruckApp;
+import com.easygaadi.trucksmobileapp.TruckDetails;
 import com.easygaadi.trucksmobileapp.Trunck_Activity;
 
 import org.json.JSONArray;
@@ -42,6 +55,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -71,7 +85,8 @@ public class TripList extends Fragment {
     private static RecyclerView recyclerView;
     private static ArrayList<TripVo> data;
     private static ArrayList<Integer> removedItems;
-
+    private EditText fromdate_tv,amount_tv;
+    String paymentType = "";
     private ConnectionDetector detectConnection;
     private static ImageView addImage;
     JSONParser parser;
@@ -79,7 +94,7 @@ public class TripList extends Fragment {
     EditText etSearch;
     private int requestCode = 123;
     CustomAdapter partyadapter;
-
+    private Dialog reportDialog;
     public TripList() {
         // Required empty public constructor
     }
@@ -189,7 +204,8 @@ public class TripList extends Fragment {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView tripID_tv,truckRegNo_tv,tv_lastupadate,triperName_tv,dieselamt_tv,tollamt_tv,freightamt_tv,advamt_tv,balanceamt_tv;
+            TextView tripID_tv,truckRegNo_tv,tv_lastupadate,triperName_tv,dieselamt_tv,tollamt_tv,freightamt_tv,advamt_tv,
+                    balanceamt_tv,edit_tv;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -202,6 +218,7 @@ public class TripList extends Fragment {
                 this.freightamt_tv = (TextView) itemView.findViewById(R.id.freightamt_tv);
                 this.advamt_tv = (TextView) itemView.findViewById(R.id.advamt_tv);
                 this.balanceamt_tv = (TextView) itemView.findViewById(R.id.balanceamt_tv);
+                this.edit_tv = (TextView) itemView.findViewById(R.id.edit_tv);
             }
         }
 
@@ -230,8 +247,9 @@ public class TripList extends Fragment {
             TextView freightamt_tv = holder.freightamt_tv;
             TextView advamt_tv = holder.advamt_tv;
             TextView balanceamt_tv = holder.balanceamt_tv;
+            TextView edit_tv = holder.edit_tv;
 
-            tripID_tv.setText(dataSet.get(listPosition).getTripId());
+            tripID_tv.setText(Html.fromHtml("<u>"+dataSet.get(listPosition).getTripId()+"<u>"));
             truckRegNo_tv.setText(dataSet.get(listPosition).getTruckName());
 
             triperName_tv.setText(dataSet.get(listPosition).getPartyName());
@@ -258,9 +276,24 @@ public class TripList extends Fragment {
                 System.out.println("err--"+e.getMessage());
             }
 
+            tripID_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(getActivity(), TripsDetails_Activty.class);
+                    intent.putExtra("hitupdate", dataSet.get(listPosition).get_id());
+                    intent.putExtra("call", "truck");
+                    startActivity(intent);
+                }
+            });
+
             //tripID_tv
-
-
+            edit_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    setReportDialog(dataSet.get(listPosition).getTripId());
+                }
+            });
 
         }
 
@@ -313,9 +346,130 @@ public class TripList extends Fragment {
                 notifyDataSetChanged();
             }
         }
+
+
+
+
+        private void setReportDialog( String i){
+            String[] payment = { "Payment Type","Cheque", "Chash"  };
+
+            reportDialog = null;
+            reportDialog = new Dialog(getContext(), android.R.style.Theme_Dialog);
+            reportDialog.requestWindowFeature(1);
+            reportDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            reportDialog.setContentView(R.layout.erp_trips_addbal_dialog);
+            ImageView cardDiaCls = (ImageView)reportDialog.findViewById(R.id.recharge_close);
+            final Button go_btn = (Button)reportDialog.findViewById(R.id.go_btn);
+            fromdate_tv = (EditText) reportDialog.findViewById(R.id.Date_et);
+            amount_tv = (EditText) reportDialog.findViewById(R.id.amount_tv);
+            fromdate_tv.setClickable(true);
+            fromdate_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showDatePicker(fromdate_tv);
+                }
+            });
+
+            //Spinner trip_pymtbl = (Spinner) reportDialog.findViewById(R.id.spnr_paymnttype);
+            Spinner payspin = (Spinner) reportDialog.findViewById(R.id.spnr_paymnttype);
+            //Creating the ArrayAdapter instance having the country list
+            ArrayAdapter paytypeeaa = new ArrayAdapter(getContext(),R.layout.erp_view_spinner_item,payment);
+            paytypeeaa.setDropDownViewResource(R.layout.erp_view_spinner_item);
+            //Setting the ArrayAdapter data on the Spinner
+            payspin.setAdapter(paytypeeaa);
+
+
+            reportDialog.show();
+            cardDiaCls.setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View paramAnonymousView)
+                {
+                    reportDialog.dismiss();
+                }
+            });
+            go_btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    /*String fromDate = fromdate_tv.getText().toString().trim();
+                    String toDate = todate_tv.getText().toString().trim();
+                    String cardNo = go_btn.getTag().toString();
+                    if(fromDate!=null && !fromDate.isEmpty() && toDate!=null && !toDate.isEmpty()){
+                        new TollActivity.GetReport(fromDate,toDate,cardNo).execute();
+                    }else{
+                        TruckApp.editTextValidation(fromdate_tv,fromDate,"Please Enter From Date");
+                        TruckApp.editTextValidation(todate_tv,toDate,"Please Enter To Date");
+                    }*/
+                }
+            });
+
+
+            AdapterView.OnItemSelectedListener countrySelectedListener = new AdapterView.OnItemSelectedListener() {
+
+                @Override
+                public void onItemSelected(AdapterView<?> spinner, View container,int position, long id) {
+                    if(spinner.getId() == R.id.spnr_paymnttype){
+                        String selected = spinner.getItemAtPosition(position).toString();
+                        if(selected.equalsIgnoreCase("Payment Type"))
+                        {
+                            //trip_pymtbl.setVisibility(View.INVISIBLE);
+
+                        }else{
+                            //trip_pymtbl.setVisibility(View.VISIBLE);
+                        }
+                        if(position !=0)
+                        {
+                            paymentType = spinner.getItemAtPosition(position).toString();
+                        }else {
+                            paymentType = "";
+                        }
+
+                    }
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+
+                }
+            };
+
+            payspin.setOnItemSelectedListener(countrySelectedListener);
+
+        }
     }
 
 
+
+    public void showDatePicker(final View Tview)
+    {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dpd = new DatePickerDialog(getActivity(),R.style.MyDialogTheme ,new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                int tempmonth = view.getMonth()+1;
+                String temp = ""+tempmonth;
+                if(temp.length()>2){
+                    temp ="0"+temp;
+                }
+                if(Tview.getId() == R.id.trip_id){
+                    fromdate_tv.setText(view.getYear()+"-"+temp+"-"+view.getDayOfMonth());
+
+                }
+            }
+        }, year, month, day);
+
+
+
+
+        dpd.show();
+
+
+    }
 
 
     private class GetBuyingTrucks extends AsyncTask<String, String, JSONObject> {
@@ -370,6 +524,7 @@ public class TripList extends Fragment {
                                 JSONObject partData = partArray.getJSONObject(i);
 
                                 TripVo voData = new TripVo();
+                                voData.set_id(""+partData.getString("_id"));
                                 voData.setTripId(""+partData.getString("tripId"));
                                 voData.setAdvance(""+partData.getInt("advance"));
                                 voData.setDieselAmount(""+partData.getInt("dieselAmount"));
@@ -435,5 +590,7 @@ public class TripList extends Fragment {
             }
         }
     }
+
+
 
 }

@@ -417,7 +417,7 @@ public class TruckList extends Fragment{
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Trucks Please..");
+            pDialog.setMessage("");
             pDialog.show();
         }
 

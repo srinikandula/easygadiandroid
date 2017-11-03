@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,10 +32,12 @@ public class TripsDetails_Activty extends AppCompatActivity {
     FrameLayout progressFrame;
     ProgressDialog pDialog;
     String lookuup,forActivty;
+    TextView trip_feightamt,trip_advanceamt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trips_details__activty);
+        initializeViews();
         context = TripsDetails_Activty.this;
         parser = JSONParser.getInstance();
         pDialog = new ProgressDialog(context);
@@ -56,6 +59,13 @@ public class TripsDetails_Activty extends AppCompatActivity {
 
     public void callback(View view){
         finish();
+    }
+
+
+    private void initializeViews()
+    {
+        trip_feightamt  = (TextView)findViewById(R.id.trip_feightamt);
+        trip_advanceamt = (TextView)findViewById(R.id.trip_advanceamt);
     }
 
 
@@ -107,7 +117,18 @@ public class TripsDetails_Activty extends AppCompatActivity {
                     }else
                     {
                         JSONObject tripObj = result.getJSONObject("trip");
-
+                        ((TextView)findViewById(R.id.trip_id)).setText(tripObj.getString("tripId"));
+                        ((TextView)findViewById(R.id.tripsnaam)).setText(tripObj.getString("bookedFor"));
+                        ((TextView)findViewById(R.id.srcloc_tv)).setText(tripObj.getString("from"));
+                        ((TextView)findViewById(R.id.destloc_tv)).setText(tripObj.getString("to"));
+                        ((TextView)findViewById(R.id.diesel_tv)).setText("Diesel "+ ""+ tripObj.getInt("dieselAmount"));
+                        ((TextView)findViewById(R.id.toll_tv)).setText("Toll "+ ""+ tripObj.getInt("tollgateAmount"));
+                        trip_feightamt.setText(""+tripObj.getInt("freightAmount"));
+                        trip_advanceamt.setText(""+tripObj.getInt("advance"));
+                        ((TextView)findViewById(R.id.trip_bal)).setText( ""+tripObj.getInt("balance"));
+                        if(tripObj.getInt("balance") >0){
+                            ((LinearLayout)findViewById(R.id.paymntLL)).setVisibility(View.VISIBLE);
+                        }
 
 
                         pDialog.dismiss();

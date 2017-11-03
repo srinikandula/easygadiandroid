@@ -186,7 +186,7 @@ public class PartList extends Fragment {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Trucks Please..");
+            pDialog.setMessage("");
             pDialog.show();
         }
 
@@ -196,7 +196,6 @@ public class PartList extends Fragment {
             JSONObject json = null;
             try {
                 String res = parser.erpExecuteGet(getActivity(),TruckApp.paryListURL);
-                Log.e("paylist",res.toString());
                 json = new JSONObject(res);
 
             } catch (Exception e) {

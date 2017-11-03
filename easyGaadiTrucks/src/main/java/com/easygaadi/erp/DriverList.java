@@ -1,12 +1,15 @@
 package com.easygaadi.erp;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -251,7 +254,14 @@ public class DriverList extends Fragment {
                 }
             });
 
+            textViewCall_tv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onCall(v,""+dataSet.get(listPosition).getMobile());
 
+
+                }
+            });
 
 
             Date date;
@@ -355,6 +365,27 @@ public class DriverList extends Fragment {
     }
 
 
+    public void onCall(View view,String callNumber) {
+        Intent callIntent = new Intent(Intent.ACTION_CALL); //use ACTION_CALL class
+        callIntent.setData(Uri.parse("tel:"+callNumber));    //this is the phone number calling
+        //check permission
+        //If the device is running Android 6.0 (API level 23) and the app's targetSdkVersion is 23 or higher,
+        //the system asks the user to grant approval.
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            //request permission from user if the app hasn't got the required permission
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{Manifest.permission.CALL_PHONE},   //request specific permission from user
+                    10);
+            return;
+        }else {     //have got permission
+            try{
+                startActivity(callIntent);  //call activity and make phone call
+            }
+            catch (android.content.ActivityNotFoundException ex){
+                Toast.makeText(getActivity(),"yourActivity is not founded",Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     private class GetDriverList extends AsyncTask<String, String, JSONObject> {
 
@@ -370,7 +401,7 @@ public class DriverList extends Fragment {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Drivers Please..");
+            pDialog.setMessage("");
             pDialog.show();
         }
 
@@ -410,8 +441,6 @@ public class DriverList extends Fragment {
                                 DriverVo voData = new DriverVo();
                                 voData.set_id(partData.getString("_id"));
                                 voData.setDriverId(partData.getString("driverId"));
-
-
                                 if(partData.has("fullName")){
                                     voData.setFullName(partData.getString("fullName"));
                                 }else{

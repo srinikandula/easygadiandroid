@@ -1,7 +1,9 @@
 package com.easygaadi.trucksmobileapp;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -9,6 +11,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +28,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class TruckDetails extends AppCompatActivity {
@@ -114,13 +119,12 @@ public class TruckDetails extends AppCompatActivity {
                         ((TextView)findViewById(R.id.truck_reg_lbl)).setText(partArray.getString("registrationNo"));
                         //((TextView)findViewById(R.id.truck_reg_lbl)).setCompoundDrawables(partArray.getString("registrationNo"));
 
-                        ((TextView)findViewById(R.id.truck_type)).setText( ":  "+partArray.getString("truckType"));
+                        ((EditText)findViewById(R.id.truck_type)).setText( ":  "+partArray.getString("truckType"));
                         ((TextView)findViewById(R.id.fitnessExpiry)).setText(":  "+getFormatDate(partArray.getString("fitnessExpiry")));
                         ((TextView)findViewById(R.id.truck_ins)).setText(":  "+getFormatDate(partArray.getString("insuranceExpiry")));
                         ((TextView)findViewById(R.id.truck_pollexpiry)).setText(": " +getFormatDate(partArray.getString("pollutionExpiry")));
                         ((TextView)findViewById(R.id.truck_permit)).setText(": "+getFormatDate(partArray.getString("permitExpiry")));
                         ((TextView)findViewById(R.id.truck_res_ton)).setText("XXT"+ "   "+""+partArray.getString("modelAndYear"));
-
 
                         pDialog.dismiss();
                     }
@@ -141,6 +145,86 @@ public class TruckDetails extends AppCompatActivity {
         }
     }
 
+
+    public void showDatePicker(final View Tview)
+    {
+        final Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dpd = new DatePickerDialog(TruckDetails.this,R.style.MyDialogTheme ,new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+                //(view).setText(view.getDayOfMonth()+"/"+view.getMonth()+"/"+view.getYear());
+                int tempmonth = view.getMonth()+1;
+                String temp = ""+tempmonth;
+                if(temp.length()>2){
+                    temp ="0"+temp;
+                }
+                /*if(Tview.getId() == R.id.truck_duetax){
+
+                    truck_duetaxTV.setText(view.getYear()+"-"+temp+"-"+view.getDayOfMonth());
+                    if(truck_duetaxTV.getText().toString().length()>0){
+                        truck_duetaxlbltv.setVisibility(View.VISIBLE);
+                        slideUp(truck_duetaxlbltv);
+                    }else {
+                        truck_duetaxlbltv.setVisibility(View.INVISIBLE);
+                    }
+                }else if(Tview.getId() == R.id.truck_fexpire){
+                    truck_fexpireTV.setText(view.getYear()+"-"+temp+"-"+view.getDayOfMonth());
+                    if(truck_fexpireTV.getText().toString().length()>0){
+                        truck_fexpirelbltv.setVisibility(View.VISIBLE);
+                        slideUp(truck_fexpirelbltv);
+                    }else {
+                        truck_fexpirelbltv.setVisibility(View.INVISIBLE);
+                    }
+                }else if(Tview.getId() == R.id.truck_insexpire){
+                    truck_insexpireTV.setText(view.getYear()+"-"+temp+"-"+view.getDayOfMonth());
+                    if(truck_insexpireTV.getText().toString().length()>0){
+                        truck_insexpirelbltv.setVisibility(View.VISIBLE);
+                        slideUp(truck_insexpirelbltv);
+                    }else {
+                        truck_insexpirelbltv.setVisibility(View.INVISIBLE);
+                    }
+                }else if(Tview.getId() == R.id.truck_perexpire){
+                    truck_perexpireTV.setText(view.getYear()+"-"+temp+"-"+view.getDayOfMonth());
+                    if(truck_perexpireTV.getText().toString().length()>0){
+                        truck_perexpirelblTV.setVisibility(View.VISIBLE);
+                        slideUp(truck_perexpirelblTV);
+                    }else {
+                        truck_perexpirelblTV.setVisibility(View.INVISIBLE);
+                    }
+                }else if(Tview.getId() == R.id.truck_pollexpire){
+                    truck_pollexpireTV.setText(view.getYear()+"-"+temp+"-"+view.getDayOfMonth());
+                    if(truck_pollexpireTV.getText().toString().length()>0){
+                        truck_pollexpirelblTV.setVisibility(View.VISIBLE);
+                        slideUp(truck_pollexpirelblTV);
+                    }else {
+                        truck_pollexpirelblTV.setVisibility(View.INVISIBLE);
+                    }
+                }*/
+            }
+        }, year, month, day);
+
+        dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        dpd.setButton(DialogInterface.BUTTON_NEGATIVE,"cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == DialogInterface.BUTTON_NEGATIVE) {
+                    if(Tview.getId() == R.id.truck_model){
+                        /*if(truck_modelTV.getText().toString().length()>0){
+                            truck_modellblTV.setVisibility(View.VISIBLE);
+                        }else {
+                            truck_modellblTV.setVisibility(View.INVISIBLE);
+                        }*/
+                    }
+                }
+            }
+        });
+
+        dpd.show();
+    }
 
     public String getFormatDate(String fdate){
 

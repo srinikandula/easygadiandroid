@@ -486,7 +486,7 @@ public class TripList extends Fragment {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Trips Please..");
+            pDialog.setMessage("");
             pDialog.show();
         }
 

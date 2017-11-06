@@ -431,7 +431,7 @@ public class TruckList extends Fragment{
                 json = new JSONObject(res);
 
             } catch (Exception e) {
-                Log.e("Login DoIN EX", e.toString());
+                Log.e("truckListURL DoIN EX", e.toString());
             }
             return json;
         }

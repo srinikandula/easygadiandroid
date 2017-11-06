@@ -39,6 +39,7 @@ import com.easygaadi.models.DataModel;
 import com.easygaadi.models.PartyVo;
 import com.easygaadi.models.TripVo;
 import com.easygaadi.models.TruckVo;
+import com.easygaadi.trucksmobileapp.Driver_Activity;
 import com.easygaadi.trucksmobileapp.Party_Activity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.TollActivity;
@@ -49,6 +50,7 @@ import com.easygaadi.trucksmobileapp.TruckDetails;
 import com.easygaadi.trucksmobileapp.Trunck_Activity;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -283,7 +285,7 @@ public class TripList extends Fragment {
                     Intent intent = new Intent(getActivity(), TripsDetails_Activty.class);
                     intent.putExtra("hitupdate", dataSet.get(listPosition).get_id());
                     intent.putExtra("call", "truck");
-                    startActivity(intent);
+                    startActivityForResult(intent, requestCode);
                 }
             });
 
@@ -291,7 +293,7 @@ public class TripList extends Fragment {
             edit_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    setReportDialog(dataSet.get(listPosition).getTripId());
+                    setReportDialog(dataSet.get(listPosition).get_id());
                 }
             });
 
@@ -350,7 +352,7 @@ public class TripList extends Fragment {
 
 
 
-        private void setReportDialog( String i){
+        private void setReportDialog(final String tripID){
             String[] payment = { "Payment Type","Cheque", "Chash"  };
 
             reportDialog = null;
@@ -390,15 +392,35 @@ public class TripList extends Fragment {
             go_btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    /*String fromDate = fromdate_tv.getText().toString().trim();
-                    String toDate = todate_tv.getText().toString().trim();
-                    String cardNo = go_btn.getTag().toString();
-                    if(fromDate!=null && !fromDate.isEmpty() && toDate!=null && !toDate.isEmpty()){
-                        new TollActivity.GetReport(fromDate,toDate,cardNo).execute();
+                    String fromDate = fromdate_tv.getText().toString().trim();
+                    String amount = amount_tv.getText().toString().trim();
+                    String paymentsType = paymentType;
+                   Log.i("fromDate-->", fromDate);
+                   Log.v("fromDate-->",  fromDate);
+                   Log.e("fromDate-->",  fromDate);
+                   Log.d("fromDate-->",  fromDate);
+                    Toast.makeText(getActivity(),"--"+fromDate,Toast.LENGTH_LONG).show();
+                    if(fromDate.contains("-")){
+                        if(amount.length() > 0){
+                            if(Integer.parseInt(amount) > 0){
+                                if(paymentsType.length() > 0){
+                                    if (detectConnection.isConnectingToInternet()) {
+                                        new AddPayment(tripID,fromDate,amount,paymentsType).execute();
+                                    } else {
+                                        Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
+                                    }
+                                }else{
+                                    Toast.makeText(getActivity(),"Please Select Payment Type",Toast.LENGTH_SHORT).show();
+                                }
+                            }else{
+                                Toast.makeText(getActivity(),"Please Enter VAlid Amount ",Toast.LENGTH_SHORT).show();
+                            }
+                        }else{
+                            Toast.makeText(getActivity(),"Please Enter Amount",Toast.LENGTH_SHORT).show();
+                        }
                     }else{
-                        TruckApp.editTextValidation(fromdate_tv,fromDate,"Please Enter From Date");
-                        TruckApp.editTextValidation(todate_tv,toDate,"Please Enter To Date");
-                    }*/
+                        Toast.makeText(getActivity(),"Please Select Date",Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
 
@@ -456,15 +478,12 @@ public class TripList extends Fragment {
                 if(temp.length()>2){
                     temp ="0"+temp;
                 }
-                if(Tview.getId() == R.id.trip_id){
+                if(Tview.getId() == R.id.Date_et){
                     fromdate_tv.setText(view.getYear()+"-"+temp+"-"+view.getDayOfMonth());
 
                 }
             }
         }, year, month, day);
-
-
-
 
         dpd.show();
 
@@ -587,6 +606,85 @@ public class TripList extends Fragment {
             }catch (Exception e)
             {
                 e.getMessage();
+            }
+        }
+    }
+
+
+    private class AddPayment extends AsyncTask<String, String, JSONObject> {
+        String tripId, paymentDate,amount, paymentType;
+
+        public AddPayment(String tripId,String  paymentDate,String  amount,String  paymentType) {
+            this.tripId = tripId;
+            this.paymentDate = paymentDate;
+            this.amount = amount;
+            this.paymentType = paymentType;
+        }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... strings) {
+            JSONObject res = null;
+            try {
+
+                JSONObject post_dict = new JSONObject();
+                JSONObject salary = new JSONObject();
+
+                try {
+                    post_dict.put("tripId",tripId);
+                    post_dict.put("paymentDate", paymentDate);
+                    post_dict.put("paymentType", paymentType);
+                    post_dict.put("amount", amount);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("" + String.valueOf(post_dict));
+                String result="";
+                    result = parser.ERPexcutePut(getContext(), TruckApp.PaymentURL, String.valueOf(post_dict));
+                    System.out.println("PaymentURL Trip"+result );
+                    res = new JSONObject(result);
+
+            } catch (Exception e) {
+                Log.e("PaymentURL DoIN EX", e.toString());
+                res = null;
+            }
+            return res;
+        }
+        @Override
+        protected void onPostExecute(JSONObject s) {
+            super.onPostExecute(s);
+            // login_btn.setEnabled(true);
+            pDialog.dismiss();
+            Log.v("PaymentURL","res"+s.toString());
+            if (s != null) {
+
+                try {
+                    //JSONObject js = new JSONObject(s);
+                    if (!s.getBoolean("status")) {
+                        Toast.makeText(getContext(), "fail",Toast.LENGTH_LONG).show();
+                    } else {
+                        reportDialog.dismiss();
+                        Toast.makeText(getContext(), "Successfully Amount Addedd", Toast.LENGTH_SHORT).show();
+                        if (detectConnection.isConnectingToInternet()) {
+                            new GetBuyingTrucks().execute();
+                        }else{
+                            Toast.makeText(getActivity(),
+                                    getResources().getString(R.string.internet_str),
+                                    Toast.LENGTH_LONG).show();
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    System.out.println("Exception while extracting the response:"+ e.toString());
+                }
+            } else {
+                Toast.makeText(getContext(), getActivity().getResources().getString(R.string.exceptionmsg),
+                        Toast.LENGTH_LONG).show();
             }
         }
     }

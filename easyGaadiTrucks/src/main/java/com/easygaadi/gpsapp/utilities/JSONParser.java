@@ -17,9 +17,12 @@ import java.net.Proxy;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.easygaadi.trucksmobileapp.LoginActivity;
 import com.easygaadi.trucksmobileapp.R;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -330,7 +333,6 @@ public class JSONParser {
 				String restoredText = prefs.getString("token", null);
 				if (restoredText != null) {
 					erpToken = prefs.getString("token", "No name defined");//"No name defined" is the default value.
-
 				}
 
 				System.setProperty("http.keepAlive", "false");
@@ -349,6 +351,9 @@ public class JSONParser {
 					result = readStream(urlConnection.getInputStream());
 					Log.v("JSONParser", result);
 					return result;
+				} else if(responseCode == HttpURLConnection.HTTP_UNAUTHORIZED){
+					Toast.makeText(context, "Login Session expires.Please Login again", Toast.LENGTH_SHORT).show();
+					context.startActivity(new Intent(context, LoginActivity.class));
 				}else{
 					Log.v("JSONParser", "Response code:"+ responseCode);
 				}

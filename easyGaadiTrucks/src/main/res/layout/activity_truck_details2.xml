@@ -109,7 +109,8 @@
                             android:gravity="left"
                             android:visibility="visible"
                             android:drawablePadding="5dp"
-                            android:drawableRight="@drawable/erp_editbutton"/>
+                            android:drawableRight="@drawable/erp_editbutton"
+                            android:onClick="callback"/>
                     </LinearLayout>
                 </LinearLayout>
 
@@ -308,52 +309,7 @@
                         />
                 </LinearLayout>
             </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/margin_5"
-                    android:layout_marginRight="@dimen/margin_5"
-                    android:gravity="center"
-                    android:visibility="visible">
-                    <TextView
-                        android:id="@+id/maitain_amt"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/padding_5"
-                        android:hint="@string/truck_pollexpiry"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/yellow"
-                        android:gravity="left|center"
-                        android:textStyle="bold"
-                        android:padding="5dp"
-                        android:visibility="gone"/>
-                    <TextView
-                        android:id="@+id/repair_type"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/padding_5"
-                        android:text="Update"
-                        android:padding="@dimen/margin_10"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
-                        android:textColor="@color/white"
-                        android:textStyle="bold"
-                        android:gravity="center"
-                        android:background="@color/actionbar_clr"
-                        android:layout_margin="@dimen/margin_5"/>
-                    <TextView
-                        android:id="@+id/repair_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/padding_5"
-                        android:hint="25/10/2017"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/txt_black"
-                        android:gravity="left|center"
-                        android:padding="5dp"
-                        android:visibility="gone"/>
-                </LinearLayout>
+
 
 
         </LinearLayout>

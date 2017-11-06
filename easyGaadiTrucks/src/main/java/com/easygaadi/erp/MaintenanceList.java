@@ -1,10 +1,14 @@
 package com.easygaadi.erp;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -442,5 +446,40 @@ public class MaintenanceList extends Fragment {
             }
         }
     }
+
+
+        MyReceiver r;
+        public void refresh() {
+            //yout code in refresh.
+            Log.i("Refresh", "YES--");
+            if (detectConnection.isConnectingToInternet()) {
+                new GetMaitenaceList().execute();
+            }else{
+                Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
+            }
+        }
+
+        public void onPause() {
+            super.onPause();
+            LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(r);
+        }
+
+        public void onResume() {
+            super.onResume();
+            r = new MyReceiver();
+            LocalBroadcastManager.getInstance(getContext()).registerReceiver(r,
+                    new IntentFilter("TAG_REFRESH"));
+        }
+
+        private class MyReceiver extends BroadcastReceiver {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                MaintenanceList.this.refresh();
+            }
+        }
+
+
+
+
     }
 

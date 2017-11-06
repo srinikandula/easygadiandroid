@@ -2,7 +2,10 @@ package com.easygaadi.erp;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ScaleDrawable;
@@ -12,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,6 +37,7 @@ import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.PartyVo;
 import com.easygaadi.models.TruckVo;
+import com.easygaadi.trucksmobileapp.Driver_Activity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.TruckApp;
 import com.easygaadi.trucksmobileapp.TruckDetails;
@@ -142,7 +147,9 @@ public class TruckList extends Fragment{
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(getActivity(), Trunck_Activity.class), requestCode);
+                Intent intent = new Intent(getActivity(), Trunck_Activity.class);
+                intent.putExtra("hitupdate", "");
+                startActivityForResult(intent, requestCode);
             }
         });
         etSearch=(EditText)view.findViewById(R.id.etSearch);
@@ -170,11 +177,6 @@ public class TruckList extends Fragment{
     }
 
 
-    private boolean IsRecyclerViewAtTop()   {
-        if(recyclerView.getChildCount() == data.size())
-            return true;
-        return recyclerView.getChildAt(0).getBottom() == 0;
-    }
 
 
 
@@ -241,7 +243,6 @@ public class TruckList extends Fragment{
             textViewTruckREG.setText(dataSet.get(listPosition).getRegistrationNo());
             textViewlastupadate.setText(dataSet.get(listPosition).getTruckType()+ " "+""+dataSet.get(listPosition).getModelAndYear());
 
-            Log.i("expry",dataSet.get(listPosition).getPermitExpiry());
 
             if(Build.VERSION.SDK_INT  > 16)
             {
@@ -275,7 +276,7 @@ public class TruckList extends Fragment{
 
                     Intent intent = new Intent(getActivity(), TruckDetails.class);
                     intent.putExtra("hitupdate", dataSet.get(listPosition).get_id());
-                    intent.putExtra("call", "truck");
+                    intent.putExtra("call", "");
                     startActivity(intent);
                 }
             });
@@ -540,6 +541,36 @@ public class TruckList extends Fragment{
             {
                 e.getMessage();
             }
+        }
+    }
+
+    MyReceiver r;
+    public void refresh() {
+        //yout code in refresh.
+        Log.i("Refresh", "YES--");
+        if (detectConnection.isConnectingToInternet()) {
+            new GetBuyingTrucks().execute();
+        }else{
+            Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(r);
+    }
+
+    public void onResume() {
+        super.onResume();
+        r = new MyReceiver();
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(r,
+                new IntentFilter("TAG_REFRESH"));
+    }
+
+    private class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            TruckList.this.refresh();
         }
     }
 }

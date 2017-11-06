@@ -2,8 +2,10 @@ package com.easygaadi.erp;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -11,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -72,7 +75,6 @@ public class DriverList extends Fragment {
     private String mParam2;
 
     private int requestCode = 123;
-    private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
     private static ArrayList<DriverVo> data;
@@ -83,6 +85,7 @@ public class DriverList extends Fragment {
 
     CustomAdapter partyadapter;
     private static ImageView addImage;
+    Boolean hit = false;
 
 
     public DriverList() {
@@ -132,15 +135,24 @@ public class DriverList extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        if(partyadapter !=null)
+        {
+            partyadapter.notifyDataSetChanged();
+        }
+
+
         detectConnection = new ConnectionDetector(getActivity());
         parser = JSONParser.getInstance();
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(true);
         if (detectConnection.isConnectingToInternet()) {
+            hit = true;
             new GetDriverList().execute();
         }else{
             Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
         }
+
 
 
 
@@ -524,6 +536,38 @@ public class DriverList extends Fragment {
             {
                 e.getMessage();
             }
+        }
+    }
+
+    MyReceiver r;
+    public void refresh() {
+        //yout code in refresh.
+        Log.i("Refresh", "YES--"+hit);
+        if(hit){
+            if (detectConnection.isConnectingToInternet()) {
+                new GetDriverList().execute();
+            }else{
+                Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getContext()).unregisterReceiver(r);
+    }
+
+    public void onResume() {
+        super.onResume();
+        r = new MyReceiver();
+        LocalBroadcastManager.getInstance(getContext()).registerReceiver(r,
+                new IntentFilter("TAG_REFRESH"));
+    }
+
+    private class MyReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            DriverList.this.refresh();
         }
     }
 

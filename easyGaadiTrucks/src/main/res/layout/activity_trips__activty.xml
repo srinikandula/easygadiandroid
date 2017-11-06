@@ -585,7 +585,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:background="@drawable/erp_clr_button"
-            android:layout_margin="2dp"/>
+            android:layout_margin="2dp"
+            android:onClick="callback"/>
         <Button
             android:id="@+id/submit_btn"
             android:layout_width="match_parent"

@@ -1,10 +1,12 @@
 package com.easygaadi.trucksmobileapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -67,27 +69,40 @@ public class Erp_Activity extends AppCompatActivity {
 
                 Log.v("tab nam,e -->",""+tab.getText());
                 viewPager.setCurrentItem(tab.getPosition());
-
+                LocalBroadcastManager lbm = LocalBroadcastManager.getInstance(Erp_Activity.this);
+                Intent i;
                 switch (tab.getPosition()) {
                     case 0:
 
                         mTitle.setText(tab.getText()+" List");
+                        //viewPager.setCurrentItem(tab.getPosition());
+
+                         i = new Intent("TAG_REFRESH");
+                        lbm.sendBroadcast(i);
                         break;
                     case 1:
                         mTitle.setText(tab.getText()+" List");
-
+                       // viewPager.setCurrentItem(tab.getPosition());
+                         i = new Intent("TAG_REFRESH");
+                        lbm.sendBroadcast(i);
                         break;
                     case 2:
                         mTitle.setText(tab.getText()+" List");
-
+                        //viewPager.setCurrentItem(tab.getPosition());
+                        i = new Intent("TAG_REFRESH");
+                        lbm.sendBroadcast(i);
                         break;
                     case 3:
                         mTitle.setText(tab.getText()+" List");
-
+                        //viewPager.setCurrentItem(tab.getPosition());
+                        i = new Intent("TAG_REFRESH");
+                        lbm.sendBroadcast(i);
                         break;
                     case 4:
                         mTitle.setText(tab.getText()+" List");
-
+                       // viewPager.setCurrentItem(tab.getPosition());
+                        i = new Intent("TAG_REFRESH");
+                        lbm.sendBroadcast(i);
                         break;
 
                     default:

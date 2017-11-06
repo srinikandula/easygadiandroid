@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -55,7 +56,7 @@ public class TruckDetails extends AppCompatActivity {
         lookuup = getIntent().getStringExtra("hitupdate");
         forActivty = getIntent().getStringExtra("call");
         if (detectCnnection.isConnectingToInternet()) {
-            new GetBuyingTrucks().execute();
+            new GetTrucksDetails().execute();
         } else {
             Toast.makeText(context,
                     res.getString(R.string.internet_str),
@@ -64,15 +65,22 @@ public class TruckDetails extends AppCompatActivity {
     }
 
     public void callback(View view){
-        finish();
+        if(view.getId() == R.id.truck_res_ton){
+            Intent intent = new Intent(TruckDetails.this, Trunck_Activity.class);
+            intent.putExtra("hitupdate", lookuup);
+            startActivity(intent);
+        }else{
+            finish();
+        }
+
     }
 
 
-    private class GetBuyingTrucks extends AsyncTask<String, String, JSONObject> {
+    private class GetTrucksDetails extends AsyncTask<String, String, JSONObject> {
 
         //String uid, accountid, offset;
 
-        public GetBuyingTrucks() {
+        public GetTrucksDetails() {
             //this.uid = uid;
             //this.accountid = accountid;
             //this.offset = String.valueOf(offset);
@@ -93,7 +101,7 @@ public class TruckDetails extends AppCompatActivity {
             try {
                 Log.e("truck id",lookuup);
                 String res = parser.erpExecuteGet(context,TruckApp.truckListURL+"/"+lookuup);
-                Log.e("truckDetails",res.toString());
+                //Log.e("truckDetails",res.toString());
                 json = new JSONObject(res);
 
             } catch (Exception e) {
@@ -107,7 +115,6 @@ public class TruckDetails extends AppCompatActivity {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             if (result != null) {
-
                 try {
                     if (!result.getBoolean("status")) {
                         Toast.makeText(context, ""+result.getString("message"),Toast.LENGTH_LONG).show();
@@ -138,9 +145,7 @@ public class TruckDetails extends AppCompatActivity {
 
             } else {
                 pDialog.dismiss();
-                Toast.makeText(context,
-                        getResources().getString(R.string.exceptionmsg),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(context,getResources().getString(R.string.exceptionmsg),Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -34,12 +34,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Trunck_Activity extends AppCompatActivity {
 
-    String truckID = "";
+    String truckID = "",lookuup="";
     TextView truck_type_lbl,truck_modelTV,truck_modellblTV,truck_duetaxTV,truck_tonnagelblTV,truck_duetaxlbltv,
             truck_fexpireTV, truck_fexpirelbltv,truck_insexpirelbltv,truck_insexpireTV,
             truck_perexpirelblTV,truck_perexpireTV,truck_pollexpirelblTV,truck_pollexpireTV,
@@ -108,6 +112,7 @@ public class Trunck_Activity extends AppCompatActivity {
     {
         spin = (Spinner) findViewById(R.id.spnr_driver_fname);
         data = new ArrayList<TruckVo>();
+        lookuup = getIntent().getStringExtra("hitupdate");
         if (detectCnnection.isConnectingToInternet()) {
             new GetBuyingTrucks().execute();
         } else {
@@ -405,6 +410,10 @@ public class Trunck_Activity extends AppCompatActivity {
                     }
                     SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),data);
                     spin.setAdapter(customAdapter);
+                    if(lookuup.length()> 0)
+                    {
+                        new GetFreshTrucks().execute();
+                     }
 
                 } catch (Exception e) {
                     System.out.println("ex in truck leads" + e.toString());
@@ -418,6 +427,8 @@ public class Trunck_Activity extends AppCompatActivity {
             }
         }
     }
+
+
 
 
     public class SpinnerCustomAdapter extends BaseAdapter {
@@ -501,18 +512,25 @@ public class Trunck_Activity extends AppCompatActivity {
                     post_dict.put("pollutionExpiry", truckPoll);
                     post_dict.put("taxDueDate", trucktax);
                     post_dict.put("driverId", truckID);
-                    post_dict.put("tripLane", "");
-                    post_dict.put("tripExpenses", 50);
+                   /* post_dict.put("tripLane", "");
+                    post_dict.put("tripExpenses", 50);*/
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                System.out.println("" + String.valueOf(post_dict));
-                String result = parser.easyyExcutePost(context,TruckApp.truckListURL,String.valueOf(post_dict));
-                res = new JSONObject(result);
+                System.out.println("truck put values-->" + String.valueOf(post_dict));
+                String result = "";
 
+                if(lookuup.length()> 0) {
+                    result = parser.ERPexcutePut(context, TruckApp.truckListURL, String.valueOf(post_dict));
+                    System.out.println("put Trucks Details" );
+                }else
+                {
+                     result = parser.easyyExcutePost(context,TruckApp.truckListURL,String.valueOf(post_dict));
+                }
+                res = new JSONObject(result);
             } catch (Exception e) {
-                Log.e("Login DoIN EX", e.toString());
+                Log.e("Login DoIN EX", e.toString()+"update"+lookuup);
                 res = null;
             }
             return res;
@@ -522,7 +540,6 @@ public class Trunck_Activity extends AppCompatActivity {
             super.onPostExecute(s);
             // login_btn.setEnabled(true);
             progressFrame.setVisibility(View.GONE);
-            Log.v("response","res"+s.toString());
             if (s != null) {
 
                 try {
@@ -565,6 +582,120 @@ public class Trunck_Activity extends AppCompatActivity {
         finish();
         super.onBackPressed();
         // Do extra stuff here
+    }
+
+    private class GetFreshTrucks extends AsyncTask<String, String, JSONObject> {
+
+        //String uid, accountid, offset;
+
+        public GetFreshTrucks() {
+            //this.uid = uid;
+            //this.accountid = accountid;
+            //this.offset = String.valueOf(offset);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            pDialog.setMessage("Fetching Trucks Please..");
+            pDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+
+            JSONObject json = null;
+            try {
+                String res = parser.erpExecuteGet(context,TruckApp.truckListURL+"/"+lookuup);
+                Log.e("truckListURL",res.toString());
+                json = new JSONObject(res);
+            } catch (Exception e) {
+                Log.e("truckListURL DoIN EX", lookuup+"--"+ "---"+e.toString());
+            }
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            if (result != null) {
+
+                try {
+                    if (!result.getBoolean("status")) {
+                        Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
+                    }else
+                    {
+
+                        JSONObject partData = result.getJSONObject("truck");
+                        // driverFnameET,drivermobET,driverlicnumET,driverSalET
+
+                        truck_regET.setText(partData.getString("registrationNo"));
+                        truck_typeET.setText(partData.getString("truckType"));
+                        truck_modelET.setText(partData.getString("modelAndYear"));
+                        if(partData.has("tonnage")) {
+                            truck_tonnageET.setText(partData.getString("tonnage"));
+                        }
+
+                        truck_fexpireTV.setText(getDate(partData.getString("fitnessExpiry")));
+                        truck_perexpireTV.setText(getDate(partData.getString("permitExpiry")));
+                        truck_insexpireTV.setText(getDate(partData.getString("insuranceExpiry")));
+                        truck_pollexpireTV.setText(getDate(partData.getString("pollutionExpiry")));
+                        truck_duetaxTV.setText(getDate(partData.getString("taxDueDate")));
+
+                        String driverID = "";
+                        if(partData.isNull("driverId")) {
+                            driverID = "";
+                        } else {
+                            driverID = partData.getString("driverId");
+                        }
+
+                        for (int i = 0; i < data.size(); i++) {
+                            TruckVo vo = data.get(i);
+                            System.out.println(vo.get_id()+"riyaz"+partData.getString("driverId"));
+                            if(vo.get_id().contentEquals(driverID)){
+                                spin.setSelection(i);
+                                break;
+                            }
+                        }
+                        pDialog.dismiss();
+
+                    }
+
+
+                } catch (Exception e) {
+                    System.out.println("ex GetFreshTrucks get leads" + e.toString());
+                }
+
+            } else {
+                pDialog.dismiss();
+                Toast.makeText(context,
+                        getResources().getString(R.string.exceptionmsg),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+
+    private String getDate(String fdate)
+    {
+        Date date;
+        String diff = "";
+        System.out.println("getDate--"+"getDate"+fdate);
+        DateFormat dateFormat,formatter;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        try {
+            date = dateFormat.parse(fdate);
+            formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
+            diff = formatter.format(date);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("err--"+e.getMessage());
+        }
+        return diff;
     }
 
 }

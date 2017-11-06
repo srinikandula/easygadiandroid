@@ -199,34 +199,6 @@ public class Trips_Activty extends AppCompatActivity  {
         chnageTextView(BalnceET);
         chnageTextView(erp_remarkET);
 
-        formLL = (Button)findViewById(R.id.clr_btn);
-        formLL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                ViewGroup group = (ViewGroup)findViewById(R.id.formLL);
-                clearForm(group);
-
-                if (Build.VERSION.SDK_INT >= 11) {
-                    recreate();
-                } else {
-                    Intent intent = getIntent();
-                    intent.replaceExtras(new Bundle());
-                    getIntent().setAction("");
-                    getIntent().setData(null);
-                    getIntent().setFlags(0);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    finish();
-                    overridePendingTransition(0, 0);
-
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                }
-            }
-        });
-
-
-
     }
 
 

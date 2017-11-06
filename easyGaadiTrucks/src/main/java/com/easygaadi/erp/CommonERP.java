@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 public class CommonERP {
 
 
-    public Drawable getDays(Context context,String fdate){
+    public static Drawable getDays(Context context,String fdate){
 
         Date date;
         long diff = 0;
@@ -60,4 +60,25 @@ public class CommonERP {
             return img;
         }
     }
+
+    public static String getDate(String fdate)
+    {
+        Date date;
+        String diff = "";
+        System.out.println("getDate--"+"getDate"+fdate);
+        DateFormat dateFormat,formatter;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        try {
+            date = dateFormat.parse(fdate);
+            formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
+            diff = formatter.format(date);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("err--"+e.getMessage());
+        }
+        return diff;
+    }
+
 }

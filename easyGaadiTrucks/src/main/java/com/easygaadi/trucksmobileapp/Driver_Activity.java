@@ -473,7 +473,7 @@ public class Driver_Activity extends AppCompatActivity {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(context,TruckApp.truckListURL+"/get/accountTrucks/1");
+                String res = parser.erpExecuteGet(context,TruckApp.truckListURL);
                 Log.e("paylist",res.toString());
                 json = new JSONObject(res);
 

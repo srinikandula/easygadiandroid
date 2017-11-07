@@ -3,6 +3,8 @@ package com.easygaadi.erp;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -341,7 +343,7 @@ public class TruckList extends Fragment{
 
         Date date;
         long diff = 0;
-        Log.i("start date",fdate);
+        //Log.i("start date",fdate);
         DateFormat dateFormat,formatter;
         dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         String newDates = null;
@@ -349,7 +351,7 @@ public class TruckList extends Fragment{
             date = dateFormat.parse(fdate);
             formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
             newDates = formatter.format(date);
-            Log.i("custom date",newDates);
+            //Log.i("custom date",newDates);
             Date today = new Date();
             diff =  date.getTime()-today.getTime()  ;
         } catch (ParseException e) {
@@ -359,8 +361,8 @@ public class TruckList extends Fragment{
 
         //int numOfDays = (int) (diff / (1000 * 60 * 60 * 24));
         long numOfDays = TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS);
-        Log.i("numOfDays-->",""+numOfDays);
-        System.out.println("numOfDays-->"+numOfDays);
+        //Log.i("numOfDays-->",""+numOfDays);
+        //System.out.println("numOfDays-->"+numOfDays);
         if(numOfDays >  30)
         {
             Drawable img = getContext().getResources().getDrawable( R.drawable.orange );
@@ -427,7 +429,7 @@ public class TruckList extends Fragment{
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(getActivity(), TruckApp.truckListURL+"/get/accountTrucks/1");
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.truckListURL);
                 Log.i("trucksList",res.toString());
                 json = new JSONObject(res);
 
@@ -448,6 +450,9 @@ public class TruckList extends Fragment{
                         Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
                     }else
                     {
+                        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("pase", result.toString());
+                        clipboard.setPrimaryClip(clip);
                         JSONArray partArray = result.getJSONArray("trucks");
                         if(partArray.length() > 0)
                         {
@@ -455,17 +460,23 @@ public class TruckList extends Fragment{
                             for (int i = 0; i < partArray.length(); i++) {
                                 JSONObject partData = partArray.getJSONObject(i);
                                 TruckVo voData = new TruckVo();
-                                JSONObject attributes = partData.getJSONObject("attrs");
 
-                                if(attributes.has("fullName")){
-                                    voData.setDrivername(attributes.getString("fullName"));
+
+                                if(partData.has("attrs")) {
+                                    JSONObject attributes = partData.getJSONObject("attrs");
+                                    if(attributes.has("fullName")){
+                                        voData.setDrivername(attributes.getString("fullName"));
+                                    }else{
+                                        voData.setDrivername("XYZ");
+                                    }
+                                    if(attributes.has("mobile")){
+                                        voData.setDrivercontact(""+attributes.getInt("mobile"));
+                                        System.out.println("mobile" + attributes.getInt("mobile"));
+                                    }else{
+                                        voData.setDrivercontact("xxxxxxxxxx");
+                                    }
                                 }else{
                                     voData.setDrivername("XYZ");
-                                }
-
-                                if(attributes.has("mobile")){
-                                    voData.setDrivercontact(""+attributes.getInt("mobile"));
-                                }else{
                                     voData.setDrivercontact("xxxxxxxxxx");
                                 }
                                 voData.set_id(partData.getString("_id"));
@@ -476,12 +487,13 @@ public class TruckList extends Fragment{
                                 voData.setPermitExpiry(partData.getString("permitExpiry"));
                                 voData.setInsuranceExpiry(partData.getString("insuranceExpiry"));
                                 voData.setPollutionExpiry(partData.getString("pollutionExpiry"));
-                                System.out.println("leads" + voData.getFitnessExpiry());
+
                                 data.add(voData);
                             }
 
                             partyadapter = new CustomAdapter(data);
                             recyclerView.setAdapter(partyadapter);
+                            recyclerView.invalidate();
                             pDialog.dismiss();
                         }else{
                             Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
@@ -508,31 +520,12 @@ public class TruckList extends Fragment{
         if(requestCode == this.requestCode){
             String addItem=data.getStringExtra("addItem");
             try {
-                JSONObject partData = new JSONObject(addItem);
-                TruckVo voData = new TruckVo();
-                voData.setDrivername("Driver Name");
-
-                if(partData.has("mobile")){
-                    voData.setDrivercontact(partData.getString("mobile"));
+                if (detectConnection.isConnectingToInternet()) {
+                    new GetBuyingTrucks().execute();
                 }else{
-                    voData.setDrivercontact("xxxxxxxxxx");
-                }
-
-
-                voData.setRegistrationNo(partData.getString("registrationNo"));
-                voData.setTruckType(partData.getString("truckType"));
-                voData.setModelAndYear(partData.getString("modelAndYear"));
-                voData.setFitnessExpiry(partData.getString("fitnessExpiry"));
-                voData.setPermitExpiry(partData.getString("permitExpiry"));
-                voData.setInsuranceExpiry(partData.getString("insuranceExpiry"));
-                voData.setPollutionExpiry(partData.getString("pollutionExpiry"));
-                this.data.add(voData);
-                if(this.data.size() == 0)
-                {
-                    partyadapter = new CustomAdapter(this.data);
-                    recyclerView.setAdapter(partyadapter);
-                }else{
-                    partyadapter.notifyDataSetChanged();
+                    Toast.makeText(getActivity(),
+                            getResources().getString(R.string.internet_str),
+                            Toast.LENGTH_LONG).show();
                 }
 
                 /*adapter = new CustomAdapter(this.data);

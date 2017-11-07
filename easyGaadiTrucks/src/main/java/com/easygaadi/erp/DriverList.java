@@ -422,7 +422,7 @@ public class DriverList extends Fragment {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(getActivity(), TruckApp.driverListURL+"/1");
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.driverListURL+"/account/drivers");
                 Log.e("driverlist",res.toString());
                 json = new JSONObject(res);
 
@@ -458,8 +458,6 @@ public class DriverList extends Fragment {
                                 }else{
                                     voData.setFullName("XYZ");
                                 }
-
-
                                 voData.setMobile(""+partData.getString("mobile"));
                                 voData.setLicenseNumber(partData.getString("licenseNumber"));
 
@@ -469,6 +467,7 @@ public class DriverList extends Fragment {
 
                             partyadapter = new CustomAdapter(data);
                             recyclerView.setAdapter(partyadapter);
+                            recyclerView.invalidate();
 
                         }else{
                             Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();

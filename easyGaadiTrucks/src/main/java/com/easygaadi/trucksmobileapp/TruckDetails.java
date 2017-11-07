@@ -74,6 +74,15 @@ public class TruckDetails extends AppCompatActivity {
         }
 
     }
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent();
+        intent.putExtra("addItem","");
+        setResult(123,intent);
+        finish();
+        super.onBackPressed();
+        // Do extra stuff here
+    }
 
 
     private class GetTrucksDetails extends AsyncTask<String, String, JSONObject> {
@@ -101,7 +110,8 @@ public class TruckDetails extends AppCompatActivity {
             try {
                 Log.e("truck id",lookuup);
                 String res = parser.erpExecuteGet(context,TruckApp.truckListURL+"/"+lookuup);
-                //Log.e("truckDetails",res.toString());
+                Log.e("truckDetails",res.toString());
+                Log.e("truckDetails",res.toString());
                 json = new JSONObject(res);
 
             } catch (Exception e) {
@@ -131,7 +141,15 @@ public class TruckDetails extends AppCompatActivity {
                         ((TextView)findViewById(R.id.truck_ins)).setText(":  "+getFormatDate(partArray.getString("insuranceExpiry")));
                         ((TextView)findViewById(R.id.truck_pollexpiry)).setText(": " +getFormatDate(partArray.getString("pollutionExpiry")));
                         ((TextView)findViewById(R.id.truck_permit)).setText(": "+getFormatDate(partArray.getString("permitExpiry")));
-                        ((TextView)findViewById(R.id.truck_res_ton)).setText("XXT"+ "   "+""+partArray.getString("modelAndYear"));
+
+                        if(partArray.has("tonnage"))
+                        {
+                            ((TextView)findViewById(R.id.truck_res_ton)).setText(partArray.getString("tonnage") +"T"+ "   "+""+partArray.getString("modelAndYear"));
+                        }else{
+                            ((TextView)findViewById(R.id.truck_res_ton)).setText("XXT"+ "   "+""+partArray.getString("modelAndYear"));
+                        }
+
+
 
                         pDialog.dismiss();
                     }

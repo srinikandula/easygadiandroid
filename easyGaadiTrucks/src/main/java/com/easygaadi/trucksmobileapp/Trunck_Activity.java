@@ -366,7 +366,7 @@ public class Trunck_Activity extends AppCompatActivity {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(context,TruckApp.driverListURL+"/1");
+                String res = parser.erpExecuteGet(context,TruckApp.driverListURL+"/account/drivers");
                 System.out.println("paylist"+res.toString());
                 json = new JSONObject(res);
 
@@ -522,6 +522,7 @@ public class Trunck_Activity extends AppCompatActivity {
                 String result = "";
 
                 if(lookuup.length()> 0) {
+                    post_dict.put("_id" , lookuup);
                     result = parser.ERPexcutePut(context, TruckApp.truckListURL, String.valueOf(post_dict));
                     System.out.println("put Trucks Details" );
                 }else
@@ -570,7 +571,7 @@ public class Trunck_Activity extends AppCompatActivity {
     public void callback(View view){
         Intent intent=new Intent();
         intent.putExtra("addItem","");
-        setResult(124,intent);
+        setResult(123,intent);
         finish();
     }
 
@@ -578,7 +579,7 @@ public class Trunck_Activity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent=new Intent();
         intent.putExtra("addItem","");
-        setResult(124,intent);
+        setResult(123,intent);
         finish();
         super.onBackPressed();
         // Do extra stuff here

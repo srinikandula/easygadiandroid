@@ -493,47 +493,11 @@ public class DriverList extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == this.requestCode){
             String addItem=data.getStringExtra("addItem");
-            try {
-                JSONObject partData = new JSONObject(addItem);
-                DriverVo voData = new DriverVo();
-
-                if(data.getStringExtra("updated").equalsIgnoreCase("update"))
-                {
-                    for (int i = 0; i < this.data.size(); i++) {
-                        if( partData.getString("_id").equalsIgnoreCase(this.data.get(i).get_id()))
-                        {
-                            voData.setDriverId(partData.getString("driverId"));
-                            voData.setFullName(partData.getString("fullName"));
-                            voData.setMobile(""+partData.getString("mobile"));
-                            voData.setLicenseNumber(partData.getString("licenseNumber"));
-                            voData.setLicenseValidity(partData.getString("licenseValidity"));
-                            //this.data.add(voData);
-                            this.data.set(i,voData);
-                            partyadapter.notifyDataSetChanged();
-                            break;
-                        }
-                    }
-
-                }else{
-                    voData.setDriverId(partData.getString("driverId"));
-                    voData.setFullName(partData.getString("fullName"));
-                    voData.setMobile(""+partData.getString("mobile"));
-                    voData.setLicenseNumber(partData.getString("licenseNumber"));
-
-                    voData.setLicenseValidity(partData.getString("licenseValidity"));
-                    this.data.add(voData);
-                    if(this.data.size() == 0)
-                    {
-                        partyadapter = new CustomAdapter(this.data);
-                        recyclerView.setAdapter(partyadapter);
-                    }else{
-                        partyadapter.notifyDataSetChanged();
-                    }
-                    //partyadapter.notifyDataSetChanged();
-                }
-            }catch (Exception e)
-            {
-                e.getMessage();
+            if (detectConnection.isConnectingToInternet()) {
+                hit = true;
+                new GetDriverList().execute();
+            }else{
+                Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -71,7 +71,6 @@ public class MaintenanceList extends Fragment {
         JSONParser parser;
         ProgressDialog pDialog;
         EditText etSearch;
-        int moreLoad=1;
         CustomAdapter partyadapter;
 
         private static ImageView addImage;
@@ -321,8 +320,7 @@ public class MaintenanceList extends Fragment {
 
                 JSONObject json = null;
                 try {
-                    String res = parser.erpExecuteGet(getActivity(), TruckApp.maintenanceListURL+"/"+moreLoad);
-                    Log.e("moreLoad",res.toString());
+                    String res = parser.erpExecuteGet(getActivity(), TruckApp.maintenanceListURL+"/all/accountMaintenance");
                     json = new JSONObject(res);
 
                 } catch (Exception e) {
@@ -377,6 +375,7 @@ public class MaintenanceList extends Fragment {
 
                                 partyadapter = new CustomAdapter(data);
                                 recyclerView.setAdapter(partyadapter);
+                                recyclerView.invalidate();
                                 pDialog.dismiss();
                             }else{
                                 Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
@@ -425,6 +424,7 @@ public class MaintenanceList extends Fragment {
                             {
                                 partyadapter = new CustomAdapter(this.data);
                                 recyclerView.setAdapter(partyadapter);
+
                             }else{
                                 partyadapter.notifyDataSetChanged();
                             }

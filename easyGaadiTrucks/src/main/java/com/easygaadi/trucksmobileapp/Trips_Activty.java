@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
+import com.easygaadi.models.TripVo;
 import com.easygaadi.models.TruckVo;
 
 import org.json.JSONArray;
@@ -47,7 +48,7 @@ public class Trips_Activty extends AppCompatActivity  {
 
     String[] payment = { "Payment Type","Cheque", "Chash"  };
     String truckID="",registrationNo="",DriverID="",paymentType="",PartyID="";
-    TextView tripDate,trip_lbl,trip_frmdatelbl,trip_todatelbl,trip_trunklbl,
+    TextView tripDate,trip_lbl,trip_frmdatelbl,trip_bookbl,trip_todatelbl,trip_trunklbl,
             trip_drnmelbl, trip_pymtbl,trip_diesalamtlbl,trip_tollgateamtlbl,trip_tonnagelbl,trip_ratelbl,trip_frghtbl,trip_advbalbl,trip_balbl,trip_remrksl;
     EditText tripFromDateET,tripToDateET,trip_diesalamtET,trip_tollgateamtET,trip_tonnageamtET,trip_rateET,frghtET,AdvnceET,BalnceET,erp_remarkET;
     Button formLL;
@@ -70,6 +71,7 @@ public class Trips_Activty extends AppCompatActivity  {
         trip_trunklbl=(TextView)findViewById(R.id.trip_trunklbl);
         trip_frmdatelbl=(TextView)findViewById(R.id.trip_frmdatelbl);
         trip_todatelbl=(TextView)findViewById(R.id.trip_todatelbl);
+        trip_bookbl=(TextView)findViewById(R.id.trip_bookbl);
 
         trip_drnmelbl=(TextView)findViewById(R.id.trip_drnmelbl);
         trip_diesalamtlbl=(TextView)findViewById(R.id.trip_diesalamtlbl);
@@ -155,8 +157,33 @@ public class Trips_Activty extends AppCompatActivity  {
                         paymentType = "";
                     }
 
-                }
+                }else  if(spinner.getId() == R.id.spnr_trunknum){
+                    if(position ==0)
+                    {
+                        trip_trunklbl.setVisibility(View.INVISIBLE);
 
+                    }else{
+                        trip_trunklbl.setVisibility(View.VISIBLE);
+
+                        updateDriverSpinner(position);
+                    }
+                }else  if(spinner.getId() == R.id.spnr_drivername){
+                    if(position ==0)
+                    {
+                        trip_drnmelbl.setVisibility(View.INVISIBLE);
+
+                    }else{
+                        trip_drnmelbl.setVisibility(View.VISIBLE);
+                    }
+                }else  if(spinner.getId() == R.id.spnr_book){
+                    if(position ==0)
+                    {
+                        trip_bookbl.setVisibility(View.INVISIBLE);
+
+                    }else{
+                        trip_bookbl.setVisibility(View.VISIBLE);
+                    }
+                }
             }
 
             @Override
@@ -172,8 +199,24 @@ public class Trips_Activty extends AppCompatActivity  {
         };
 
         payspin.setOnItemSelectedListener(countrySelectedListener);
+        spin.setOnItemSelectedListener(countrySelectedListener);
+        drspin.setOnItemSelectedListener(countrySelectedListener);
+        bookspin.setOnItemSelectedListener(countrySelectedListener);
+
     }
 
+
+    private void updateDriverSpinner(int  position){
+        for (int i = 0; i < datad.size(); i++) {
+            TruckVo vo = datad.get(i);
+            if((vo.get_id()).contentEquals((datat.get(position).getDriverID()))){
+                drspin.setSelection(i);
+                break;
+            }else{
+                drspin.setSelection(0);
+            }
+        }
+    }
 
 
     public void initilizationView(){
@@ -228,10 +271,10 @@ public class Trips_Activty extends AppCompatActivity  {
                     if(tripTo.length()>0){
                         if(trip_load.length()>0){
                             if(tripDriverID.length()>0){
-                                if(tripTonnageAmt.length()>0){
-                                    if(tripRateAmt.length()>0){
+                                if(true){//tripTonnageAmt.length()>0--tripRateAmt.length()>0--tripAdvnceAmt.length()>0
+                                    if(true){
                                         if(tripfrghtAmt.length()>0){
-                                            if(tripAdvnceAmt.length()>0){
+                                            if(true){
                                                 if(tripDieselAmt.length()>0){
                                                     if(tripBalnceAmt.length()>0){
                                                         if(tripTollAmt.length()>0){
@@ -336,6 +379,15 @@ public class Trips_Activty extends AppCompatActivity  {
                     if (string.trim().length() != 0) {
                         trip_tonnagelbl.setVisibility(View.VISIBLE);
                         slideUp(trip_tonnagelbl);
+                        int tempTonnamt= Integer.parseInt(string);
+                        if(tempTonnamt > 0) {
+                            String rateStr = trip_rateET.getText().toString().toString();
+                            if (rateStr.length() > 0 && Integer.parseInt(rateStr) > 0) {
+                                int temprateamt= Integer.parseInt(rateStr);
+                                int famt = tempTonnamt *temprateamt;
+                                frghtET.setText(""+famt);
+                            }
+                        }
                     }else{
                         trip_tonnagelbl.setVisibility(View.INVISIBLE);
                     }
@@ -343,6 +395,16 @@ public class Trips_Activty extends AppCompatActivity  {
                     if (string.trim().length() != 0) {
                         trip_ratelbl.setVisibility(View.VISIBLE);
                         slideUp(trip_ratelbl);
+                        int tempRateamt= Integer.parseInt(string);
+                        if(tempRateamt > 0) {
+                            String tonnStr = trip_tonnageamtET.getText().toString().toString();
+                            if (tonnStr.length() > 0 && Integer.parseInt(tonnStr) > 0) {
+                                int temprateamt= Integer.parseInt(tonnStr);
+                                int famt = tempRateamt *temprateamt;
+                                frghtET.setText(""+famt);
+                            }
+                        }
+
                     }else{
                         trip_ratelbl.setVisibility(View.INVISIBLE);
                     }
@@ -350,13 +412,49 @@ public class Trips_Activty extends AppCompatActivity  {
                     if (string.trim().length() != 0) {
                         trip_frghtbl.setVisibility(View.VISIBLE);
                         slideUp(((TextView)findViewById(R.id.trip_frghtbl)));
+                        int tempFamt= Integer.parseInt(string);
+                        if(tempFamt > 0) {
+                            String advStr = AdvnceET.getText().toString().toString();
+                            if (advStr.length() > 0 && Integer.parseInt(advStr) > 0) {
+                                int tempAdvamt= Integer.parseInt(advStr);
+                                if(tempAdvamt > tempFamt){
+                                    AdvnceET.setText("");
+                                    BalnceET.setText(string);
+                                }else{
+                                    int bal = tempFamt - tempAdvamt;
+                                    BalnceET.setText(""+bal);
+                                }
+
+                            }else{
+                                BalnceET.setText(string);
+                            }
+                        }
                     }else{
                         trip_frghtbl.setVisibility(View.INVISIBLE);
+                        BalnceET.setText("");
                     }
                 }else if(R.id.erp_advamt == etview.getId()) {
                     if (string.trim().length() != 0) {
                         trip_advbalbl.setVisibility(View.VISIBLE);
                         slideUp(((TextView)findViewById(R.id.trip_advbalbl)));
+                        int tempadvamt= Integer.parseInt(string);
+                        if(tempadvamt > 0) {
+                            String freightStr = frghtET.getText().toString().toString();
+                            if (freightStr.length() > 0 && Integer.parseInt(freightStr) > 0) {
+                                int tempFreightamt= Integer.parseInt(freightStr);
+                                if(tempadvamt > tempFreightamt){
+                                    AdvnceET.setText("");
+                                    BalnceET.setText(freightStr);
+                                }else{
+                                    int bal = tempFreightamt - tempadvamt;
+                                    BalnceET.setText(""+bal);
+                                }
+
+                            }else{
+                                BalnceET.setText(string);
+                            }
+                        }
+
                     }else{
                         trip_advbalbl.setVisibility(View.INVISIBLE);
                     }
@@ -499,10 +597,10 @@ public class Trips_Activty extends AppCompatActivity  {
                 String res ="";
                 if(type.equalsIgnoreCase("truck"))
                 {
-                    res = parser.erpExecuteGet(context,TruckApp.truckListURL+"/get/accountTrucks/1");
+                    res = parser.erpExecuteGet(context,TruckApp.truckListURL);
                     Log.e("truckListURL",res.toString());
                 }else if(type.equalsIgnoreCase("drivers")){
-                    res = parser.erpExecuteGet(context,TruckApp.driverListURL+"/1");
+                    res = parser.erpExecuteGet(context,TruckApp.driverListURL+"/account/drivers");
                     Log.e("driverListURL",res.toString());
                 }else if(type.equalsIgnoreCase("parties")){
                     res = parser.erpExecuteGet(context,TruckApp.paryListURL);
@@ -556,6 +654,7 @@ public class Trips_Activty extends AppCompatActivity  {
                                     TruckVo voData = new TruckVo();
                                     voData.set_id(partData.getString("_id"));
                                     voData.setRegistrationNo(""+partData.getString("registrationNo"));
+                                    voData.setDriverID(""+partData.getString("driverId"));
 
                                     datat.add(voData);
                                 }
@@ -632,7 +731,7 @@ public class Trips_Activty extends AppCompatActivity  {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(final int i, View view, ViewGroup viewGroup) {
             LayoutInflater inflator=LayoutInflater.from(mcontext);
             View bookRow=inflator.inflate(R.layout.erp_spinner_item, viewGroup, false);
             TextView names = (TextView) bookRow.findViewById(R.id.text1);
@@ -646,6 +745,8 @@ public class Trips_Activty extends AppCompatActivity  {
                 truckID  = book.get_id();
                 registrationNo = book.getRegistrationNo();
             }
+
+
             return bookRow;
         }
     }
@@ -678,7 +779,7 @@ public class Trips_Activty extends AppCompatActivity  {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(final int i, View view, ViewGroup viewGroup) {
             LayoutInflater inflator=LayoutInflater.from(mcontext);
             View bookRow=inflator.inflate(R.layout.erp_spinner_item, viewGroup, false);
             TextView names = (TextView) bookRow.findViewById(R.id.text1);
@@ -690,6 +791,7 @@ public class Trips_Activty extends AppCompatActivity  {
             }else{
                 DriverID  = book.get_id();
             }
+
             return bookRow;
         }
     }
@@ -753,10 +855,10 @@ public class Trips_Activty extends AppCompatActivity  {
             this.tripDriverID =tripDriverID ;
             this.tripDieselAmt = tripDieselAmt;
             this.tripTollAmt = tripTollAmt;
-            this.tripTonnageAmt = tripTonnageAmt;
-            this.tripRateAmt = tripRateAmt ;
+            this.tripTonnageAmt = (tripTonnageAmt.length() > 0) ? tripTonnageAmt : ""+0;
+            this.tripRateAmt = (tripRateAmt.length() > 0) ? tripRateAmt : ""+0 ;
             this.tripfrghtAmt = tripfrghtAmt;
-            this.tripAdvnceAmt = tripAdvnceAmt;
+            this.tripAdvnceAmt = (tripAdvnceAmt.length() > 0) ? tripAdvnceAmt : ""+0;
             this.tripBalnceAmt = tripBalnceAmt;
             this.triperp_remark = triperp_remark;
             this.trippaymentType = trippaymentType;

@@ -152,7 +152,7 @@ public class TripList extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
         if (detectConnection.isConnectingToInternet()) {
-            new GetBuyingTrucks().execute();
+            new GetTripsList().execute();
         }else{
             Toast.makeText(getActivity(),
                     getResources().getString(R.string.internet_str),
@@ -494,11 +494,11 @@ public class TripList extends Fragment {
     }
 
 
-    private class GetBuyingTrucks extends AsyncTask<String, String, JSONObject> {
+    private class GetTripsList extends AsyncTask<String, String, JSONObject> {
 
         //String uid, accountid, offset;
 
-        public GetBuyingTrucks() {
+        public GetTripsList() {
             //this.uid = uid;
             //this.accountid = accountid;
             //this.offset = String.valueOf(offset);
@@ -517,7 +517,7 @@ public class TripList extends Fragment {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(getActivity(), TruckApp.tripsListURL+"/getAll/1");
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.tripsListURL+"/getAllAccountTrips");
                 Log.e("getAll",res.toString());
                 json = new JSONObject(res);
 
@@ -600,7 +600,7 @@ public class TripList extends Fragment {
             try {
 
                 if (detectConnection.isConnectingToInternet()) {
-                    new GetBuyingTrucks().execute();
+                    new GetTripsList().execute();
                 }else{
                     Toast.makeText(getActivity(),
                             getResources().getString(R.string.internet_str),
@@ -674,7 +674,7 @@ public class TripList extends Fragment {
                         reportDialog.dismiss();
                         Toast.makeText(getContext(), "Successfully Amount Addedd", Toast.LENGTH_SHORT).show();
                         if (detectConnection.isConnectingToInternet()) {
-                            new GetBuyingTrucks().execute();
+                            new GetTripsList().execute();
                         }else{
                             Toast.makeText(getActivity(),
                                     getResources().getString(R.string.internet_str),
@@ -697,7 +697,7 @@ public class TripList extends Fragment {
         //yout code in refresh.
         Log.i("Refresh", "YES--");
             if (detectConnection.isConnectingToInternet()) {
-                new GetBuyingTrucks().execute();
+                new GetTripsList().execute();
             }else{
                 Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
             }

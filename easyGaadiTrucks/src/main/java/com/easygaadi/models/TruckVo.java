@@ -8,7 +8,17 @@ public class TruckVo {
     
     String drivername;
     String drivercontact;
+    String driverID;
     String _id;
+
+    public String getDriverID() {
+        return driverID;
+    }
+
+    public void setDriverID(String driverID) {
+        this.driverID = driverID;
+    }
+
     String  updatedAt;
     String  createdAt;
     String  registrationNo;

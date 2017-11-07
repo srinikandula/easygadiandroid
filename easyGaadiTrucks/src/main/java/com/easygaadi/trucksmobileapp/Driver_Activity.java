@@ -103,14 +103,14 @@ public class Driver_Activity extends AppCompatActivity {
 
 
 
-       /* AdapterView.OnItemSelectedListener countrySelectedListener = new AdapterView.OnItemSelectedListener() {
+        AdapterView.OnItemSelectedListener countrySelectedListener = new AdapterView.OnItemSelectedListener() {
 
             @Override
             public void onItemSelected(AdapterView<?> spinner, View container,int position, long id) {
                 if(spinner.getId() == R.id.spnr_trunknum){
                     //truckAssigned = spinner.getItemAtPosition(position).toString();
-                    TruckVo truckvo = (TruckVo) spinner.getItemAtPosition(position);
-                    truckAssigned = truckvo.getRegistrationNo();
+                    //TruckVo truckvo = (TruckVo) spinner.getItemAtPosition(position);
+                    //truckAssigned = truckvo.getRegistrationNo();
                     if(truckAssigned.equalsIgnoreCase("Assigned Truck"))
                     {
                         maintnce_trunknum_lbl.setVisibility(View.INVISIBLE);
@@ -132,7 +132,7 @@ public class Driver_Activity extends AppCompatActivity {
 
             }
         };
-        spin.setOnItemSelectedListener(countrySelectedListener);*/
+        spin.setOnItemSelectedListener(countrySelectedListener);
         lookuup = getIntent().getStringExtra("hitupdate");
         if (detectCnnection.isConnectingToInternet()) {
             new GetBuyingTrucks().execute();
@@ -602,11 +602,11 @@ public class Driver_Activity extends AppCompatActivity {
             JSONObject json = null;
             try {
                 String res = parser.erpExecuteGet(context,TruckApp.driverFreshURL+""+lookuup);
-                Log.e("paylist",res.toString());
+                Log.e("driverFreshURL",res.toString());
                 json = new JSONObject(res);
 
             } catch (Exception e) {
-                Log.e("Login DoIN EX", e.toString());
+                Log.e("driverFreshURL DoIN EX", e.toString());
             }
             return json;
         }
@@ -630,10 +630,15 @@ public class Driver_Activity extends AppCompatActivity {
                         drivermobET.setText(partData.getString("mobile"));
                         driverlicnumET.setText(partData.getString("licenseNumber"));
                         driverSalET.setText("");
-                        //drvr_doj.setText(getDate(partData.getString("licenseNumber")));
-                        drvr_doj.setText("");
+                        drvr_doj.setText(getDate(partData.getString("joiningDate")));
+                       // drvr_doj.setText("");
+                        if(drvr_doj.getText().toString().length() >0){
+                            trip_dojlbl.setVisibility(View.VISIBLE);
+                        }
                         drvr_lic_date.setText(getDate(partData.getString("licenseValidity")));
-
+                        if(drvr_lic_date.getText().toString().length() >0){
+                            trip_liclbl.setVisibility(View.VISIBLE);
+                        }
 
                         for (int i = 0; i < data.size(); i++) {
                             TruckVo vo = data.get(i);

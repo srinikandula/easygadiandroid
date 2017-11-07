@@ -130,7 +130,7 @@ public class PartList extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        data = new ArrayList<PartyVo>();
+
 
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,7 +144,7 @@ public class PartList extends Fragment {
         pDialog = new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
         if (detectConnection.isConnectingToInternet()) {
-            new GetBuyingTrucks().execute();
+            new GetPartyList().execute();
         }else{
             Toast.makeText(getActivity(),
                     getResources().getString(R.string.internet_str),
@@ -176,11 +176,11 @@ public class PartList extends Fragment {
         return view;
     }
 
-    private class GetBuyingTrucks extends AsyncTask<String, String, JSONObject> {
+    private class GetPartyList extends AsyncTask<String, String, JSONObject> {
 
         //String uid, accountid, offset;
 
-        public GetBuyingTrucks() {
+        public GetPartyList() {
             //this.uid = uid;
             //this.accountid = accountid;
             //this.offset = String.valueOf(offset);
@@ -223,6 +223,7 @@ public class PartList extends Fragment {
                             JSONArray partArray = result.getJSONArray("parties");
                             if(partArray.length() > 0)
                             {
+                                data = new ArrayList<PartyVo>();
                                 for (int i = 0; i < partArray.length(); i++) {
                                     JSONObject partData = partArray.getJSONObject(i);
                                     Log.v("contacts",partData.getString("contact"));
@@ -236,6 +237,7 @@ public class PartList extends Fragment {
 
                                 partyadapter = new CustomAdapter(data);
                                 recyclerView.setAdapter(partyadapter);
+                                recyclerView.invalidate();
                                 pDialog.dismiss();
                             }else{
                                 Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
@@ -433,7 +435,7 @@ public class PartList extends Fragment {
         //yout code in refresh.
         Log.i("Refresh", "YES--");
         if (detectConnection.isConnectingToInternet()) {
-            new GetBuyingTrucks().execute();
+            new GetPartyList().execute();
         }else{
             Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
         }

@@ -422,7 +422,7 @@ public class DriverList extends Fragment {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(getActivity(), TruckApp.driverListURL+"/account/drivers");
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.driverListURL+"account/drivers");
                 Log.e("driverlist",res.toString());
                 json = new JSONObject(res);
 

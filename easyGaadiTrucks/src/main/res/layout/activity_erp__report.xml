@@ -51,12 +51,8 @@
                     android:gravity="left|center_vertical"
                     android:background="@color/yellowdclr"
                     android:layout_alignParentRight="true"/>
-
             </RelativeLayout>
-
-
         </android.support.v7.widget.Toolbar>
-
     </android.support.design.widget.AppBarLayout>
     <ScrollView
         android:layout_width="match_parent"
@@ -98,21 +94,21 @@
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5">
                     <TextView
-                        android:id="@+id/trip_lbl"
+                        android:id="@+id/trip_frm_datelbl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding_5"
-                        android:hint="@string/erp_trip_date"
+                        android:hint="@string/erp_frm"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColorHint="@color/actionbar_clr"
                         android:gravity="left"
                         android:visibility="invisible"/>
                     <TextView
-                        android:id="@+id/trip_id"
+                        android:id="@+id/trip_frm_date"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/erp_height"
                         android:background="@drawable/erp_etborder"
-                        android:hint="@string/erp_trip_date"
+                        android:hint="@string/erp_frm"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:gravity="left|center"
                         android:paddingLeft="@dimen/margin_5"/>
@@ -125,21 +121,21 @@
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5">
                     <TextView
-                        android:id="@+id/trip_trunklbl"
+                        android:id="@+id/trip_to_datelbl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding_5"
-                        android:hint="@string/erp_trunknum"
+                        android:hint="@string/erp_to"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColorHint="@color/actionbar_clr"
                         android:gravity="left"
                         android:visibility="invisible"/>
                     <TextView
-                        android:id="@+id/trip_did"
+                        android:id="@+id/trip_to_date"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/erp_height"
                         android:background="@drawable/erp_etborder"
-                        android:hint="@string/erp_trip_date"
+                        android:hint="@string/erp_to"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:gravity="left|center"
                         android:paddingLeft="@dimen/margin_5"/>
@@ -163,7 +159,7 @@
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5">
                     <TextView
-                        android:id="@+id/trip_frmdatelbl"
+                        android:id="@+id/trip_trucklbl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding_5"
@@ -173,7 +169,7 @@
                         android:gravity="left"
                         android:visibility="invisible"/>
                     <Spinner
-                        android:id="@+id/spnr_trunknum"
+                        android:id="@+id/spnr_trucknum"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/erp_height"
                         android:background="@drawable/erp_etborder"
@@ -191,7 +187,7 @@
                     android:layout_marginLeft="@dimen/margin_5"
                     android:layout_marginRight="@dimen/margin_5">
                     <TextView
-                        android:id="@+id/trip_todatelbl"
+                        android:id="@+id/trip_drnmelbl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding_5"
@@ -211,26 +207,35 @@
                         android:layout_weight="1"
                         />
                 </LinearLayout>
-
-
-
             </LinearLayout>
 
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="@dimen/margin_5">
+                android:padding="@dimen/margin_5"
+                android:orientation="vertical">
+
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/margin_10"
                     android:textColor="@color/white"
                     android:text="@string/reports_genreports"
-                    android:background="#646060"/>
+                    android:background="#646060"
+                    android:onClick="GenerateReport"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"/>
+                <FrameLayout
+                    android:id="@+id/progressFrame"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
 
-            </LinearLayout>
+            </RelativeLayout>
             </LinearLayout>
 
             </android.support.v7.widget.CardView>
@@ -238,24 +243,22 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/card_view_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                card_view:cardBackgroundColor="#ffffff"
+                android:layout_height="wrap_content"
+                card_view:cardBackgroundColor="#9f9d9d"
                 card_view:cardCornerRadius="3dp"
                 card_view:cardElevation="5dp"
                 card_view:cardUseCompatPadding="true"
                 android:layout_marginTop="@dimen/margin_5">
                 <android.support.v7.widget.RecyclerView
-                    android:id="@+id/quotes_rc"
+                    android:id="@+id/trip_list_rc"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/etSearch">
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/etSearch"
+                    >
 
                 </android.support.v7.widget.RecyclerView>
 
             </android.support.v7.widget.CardView>
-
-
-
         </LinearLayout>
     </ScrollView>
 

@@ -698,7 +698,7 @@ public class LoginActivity extends Activity {
 						editor.putString("token", s.getString("token"));
 						editor.putString("role", s.getString("role"));
 						editor.apply();
-						startActivity(new Intent(context,HomeScreenActivity.class));
+						startActivity(new Intent(context,ERP_Report.class));//HomeScreenActivity
 						finish();
 						Toast.makeText(context, s.getString("success"),
 								Toast.LENGTH_LONG).show();

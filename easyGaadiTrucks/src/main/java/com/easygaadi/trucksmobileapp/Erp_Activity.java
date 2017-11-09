@@ -154,13 +154,10 @@ public class Erp_Activity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_reports:
-
+                startActivity(new Intent(Erp_Activity.this,ERP_Report.class));
                 break;
             case R.id.action_home:
                 finish();
-                break;
-            case R.id.action_map:
-
                 break;
         /*case R.id.action_report:
             reportproblem();

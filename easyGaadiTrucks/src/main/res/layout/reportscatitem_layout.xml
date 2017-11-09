@@ -7,7 +7,7 @@
     android:tag="cards main container"
     android:padding="@dimen/margin_5">
 
-    <android.support.v7.widget.CardView
+    <!--<android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
         card_view:cardCornerRadius="3dp"
         card_view:cardElevation="8dp"
         card_view:cardUseCompatPadding="true">
-
+-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -41,7 +41,7 @@
                     android:layout_weight="1"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/truckRegNo_tv"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -53,8 +53,8 @@
                         android:textColor="@android:color/black"
                         android:layout_weight="1"/>
 
-                    <TextView
-                        android:id="@+id/tv_lastupadate"
+                    <TextView  android:fontFamily="Arial"
+                        android:id="@+id/tv_tripId"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -70,8 +70,8 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_weight="1">
-                        <TextView
-                            android:id="@+id/tripID_tv"
+                        <TextView  android:fontFamily="Arial"
+                            android:id="@+id/truckId_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
@@ -81,18 +81,18 @@
                             android:maxLines="1"
                             android:text="XYZ"
                             android:layout_weight="1"/>
-                        <TextView
-                            android:id="@+id/triperName_tv"
+                        <TextView  android:fontFamily="Arial"
+                            android:id="@+id/triperdate_tv"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
                             android:layout_margin="3dp"
-                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:textColor="@android:color/black"
                             android:maxLines="1"
                             android:paddingRight="5dp"
                             android:gravity="right"
-                            android:text="Riyaz"
+                            android:text="xxxx-xx-xx"
                             android:layout_weight="1"/>
                     </LinearLayout>
                 <LinearLayout
@@ -104,7 +104,7 @@
                         android:orientation="vertical"
                         android:layout_weight="1"
                         android:gravity="right">
-                        <TextView
+                        <TextView  android:fontFamily="Arial"
                             android:id="@+id/partyname_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                             android:maxLines="1"
                             android:text="Party Name"
                             android:layout_weight="1"/>
-                        <TextView
+                        <TextView  android:fontFamily="Arial"
                             android:id="@+id/sdloc_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -133,8 +133,8 @@
                         android:orientation="vertical"
                         android:layout_weight="1"
                         android:gravity="right">
-                        <TextView
-                            android:id="@+id/toll_tv"
+                        <TextView  android:fontFamily="Arial"
+                            android:id="@+id/driverName_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end|center_vertical"
@@ -142,9 +142,9 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@android:color/black"
                             android:maxLines="1"
-                            android:text="Driver Number  "
+                            android:text="XXXXXXX  "
                             android:layout_weight="1"/>
-                        <TextView
+                        <TextView  android:fontFamily="Arial"
                             android:id="@+id/drivecontact_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -164,7 +164,7 @@
                 android:layout_height="1dp"
                 android:background="#c4c1c1"
                 />
-            <TextView
+            <TextView  android:fontFamily="Arial"
                 android:id="@+id/payLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -186,7 +186,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="1">
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/freight_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                         android:maxLines="1"
                         android:text="Freight"
                         android:layout_weight="1"/>
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/freightamt_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -215,7 +215,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="1">
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/adv_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
                         android:maxLines="1"
                         android:text="Advance"
                         android:layout_weight="1"/>
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/advamt_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -244,7 +244,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="1">
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/balance_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -255,7 +255,7 @@
                         android:maxLines="1"
                         android:text="Balance"
                         android:layout_weight="1"/>
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/balanceamt_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -269,12 +269,17 @@
                         android:layout_weight="1"/>
                 </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#c4c1c1"
                 />
-            <TextView
+            <TextView  android:fontFamily="Arial"
                 android:id="@+id/maintLL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -296,7 +301,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="1">
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/maintenance_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -307,7 +312,7 @@
                         android:maxLines="1"
                         android:text="Maitenance ID"
                         android:layout_weight="1"/>
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/maintenanceid_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -325,7 +330,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="1">
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/repaitt_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -336,7 +341,7 @@
                         android:maxLines="1"
                         android:text="Repair"
                         android:layout_weight="1"/>
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/repairType_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -354,7 +359,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="1">
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/repair_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -365,7 +370,7 @@
                         android:maxLines="1"
                         android:text="Repair Cost"
                         android:layout_weight="1"/>
-                    <TextView
+                    <TextView  android:fontFamily="Arial"
                         android:id="@+id/repaircost_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -379,9 +384,9 @@
                         android:layout_weight="1"/>
                 </LinearLayout>
             </LinearLayout>
-
+        </LinearLayout>
 
         </LinearLayout>
-    </android.support.v7.widget.CardView>
+ <!--</android.support.v7.widget.CardView>-->
 
 </LinearLayout>

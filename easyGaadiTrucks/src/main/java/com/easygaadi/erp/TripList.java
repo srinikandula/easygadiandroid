@@ -89,7 +89,6 @@ public class TripList extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
     private static ArrayList<TripVo> data;
-    private static ArrayList<Integer> removedItems;
     private EditText fromdate_tv,amount_tv;
     String paymentType = "";
     private ConnectionDetector detectConnection;

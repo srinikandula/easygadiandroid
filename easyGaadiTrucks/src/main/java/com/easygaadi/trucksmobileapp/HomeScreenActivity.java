@@ -361,7 +361,7 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
                         }else{
                             showSettingsDialog("Fuel Card");
                         }*/
-                        startActivity(new Intent(context, Erp_Activity.class));
+                        startActivity(new Intent(context, ERP_Activitys.class));
                         break;
                     case 10:
                         startActivity(new Intent(context, InsuranceActivity.class));
@@ -630,7 +630,6 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
                 logoutAction();
             }*/
         }
-
     }
 
     public static void showProgressDialogNoTitle(Context context, ProgressDialog progressDialog, boolean showProgress) {

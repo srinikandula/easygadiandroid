@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single"
+        >
+        <item
+            android:id="@+id/nav_truck"
+            android:icon="@drawable/erp_etborder"
+            android:title="Truck "
+            />
+        <item
+            android:id="@+id/nav_driver"
+            android:icon="@drawable/erp_home"
+            android:title="Driver" />
+        <item
+            android:id="@+id/nav_party"
+            android:icon="@drawable/action_add"
+            android:title="Party" />
+        <item
+            android:id="@+id/nav_trip"
+            android:icon="@drawable/action_settings"
+            android:title="Trip" />
+        <item
+            android:id="@+id/nav_maint"
+            android:icon="@drawable/action_settings"
+            android:title="Maintainence" />
+    </group>
+
+
+
+</menu>

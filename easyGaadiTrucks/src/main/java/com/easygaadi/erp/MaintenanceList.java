@@ -22,21 +22,15 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
-import com.easygaadi.models.DataModel;
-import com.easygaadi.models.DriverVo;
 import com.easygaadi.models.MaitenanceVo;
-import com.easygaadi.models.PartyVo;
-import com.easygaadi.trucksmobileapp.Driver_Activity;
 import com.easygaadi.trucksmobileapp.Maintenance_Activity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.TruckApp;
-import com.easygaadi.trucksmobileapp.Trunck_Activity;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -320,7 +314,7 @@ public class MaintenanceList extends Fragment {
 
                 JSONObject json = null;
                 try {
-                    String res = parser.erpExecuteGet(getActivity(), TruckApp.maintenanceListURL+"/all/accountMaintenance");
+                    String res = parser.erpExecuteGet(getActivity(), TruckApp.ExpensesURL+"/getAllExpense");
                     json = new JSONObject(res);
 
                 } catch (Exception e) {

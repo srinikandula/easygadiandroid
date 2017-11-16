@@ -112,9 +112,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/AppMaterialTheme.Base"
-            android:windowSoftInputMode="stateHidden"/>
-
-
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".TrucksActivity"
             android:label="@string/trucks"
@@ -373,14 +371,22 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme1"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ERP_Report"
+        <activity
+            android:name=".ERP_Report"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme1"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".TripsDetails_Activty"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".TripsDetails_Activty"
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme1"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ExpenseMaster"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ExpenseActivity"></activity>
     </application>
 
 </manifest>

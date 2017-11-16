@@ -47,8 +47,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easygaadi.erp.DriverList;
+import com.easygaadi.erp.ExpenseList;
+import com.easygaadi.erp.ExpensesList;
 import com.easygaadi.erp.MaintenanceList;
 import com.easygaadi.erp.PartList;
+import com.easygaadi.erp.PaymentsList;
 import com.easygaadi.erp.TripList;
 import com.easygaadi.erp.TruckList;
 import com.google.android.gms.ads.AdRequest;
@@ -136,8 +139,6 @@ public class ERP_Activitys extends AppCompatActivity implements NavigationView.O
         }*/
     }
 
-
-
     public void setTitle(CharSequence title) {
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
@@ -205,6 +206,10 @@ public class ERP_Activitys extends AppCompatActivity implements NavigationView.O
             fragment =  new TripList();
         }else if (id == R.id.nav_maint) {
             fragment =  new MaintenanceList();
+        }else if (id == R.id.nav_exps) {
+            fragment =  new ExpenseList();
+        }else if (id == R.id.nav_payment) {
+            fragment =  new PaymentsList();
         }
 
 

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:layout_alignParentTop="true"
+        android:id="@+id/header">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/actionbar_clr"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|center_vertical">
+                <Button
+                    android:id="@+id/backbtn"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:background="@drawable/erp_back_btn"
+                    android:gravity="left|center_vertical"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/margin_5"
+                    android:onClick="callback"/>
+                <TextView  android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Add Expenses"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:gravity="left|center_vertical"
+                    android:layout_toRightOf="@+id/backbtn"/>
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/btmbutns"
+        android:id="@+id/form">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/formLL"
+            android:layout_margin="@dimen/margin_10"
+            android:padding="@dimen/margin_10"
+            android:gravity="center">
+            <FrameLayout
+                android:id="@+id/progressFrame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:visibility="gone" >
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:layout_marginRight="@dimen/margin_5">
+                <TextView
+                    android:id="@+id/expense_name_lbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_5"
+                    android:hint="Name"
+                    android:textSize="12sp"
+                    android:textColorHint="@color/actionbar_clr"
+                    android:gravity="left"
+                    android:visibility="invisible"/>
+                <EditText
+                    android:id="@+id/expense_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/erp_height"
+                    android:layout_margin="@dimen/padding_5"
+                    android:hint="Expense Name"
+                    android:gravity="left|center"
+                    android:paddingLeft="@dimen/margin_5"
+                    android:maxLines="1"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:background="@drawable/erp_etborder"
+                    android:layout_weight="1"
+                    android:inputType="text"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/btmbutns"
+        android:layout_alignParentBottom="true">
+        <Button
+            android:id="@+id/clr_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/erp_clear_btn"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/erp_clr_button"
+            android:layout_margin="2dp"
+            android:onClick="callback"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/erp_sub_btn"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:background="@drawable/states_nice_button"
+            android:layout_margin="2dp"
+            android:onClick="callMainAct"/>
+    </LinearLayout>
+</RelativeLayout>

@@ -218,6 +218,7 @@ public class JSONParser {
 			InputStream is = connection.getInputStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 			String line;
+			System.out.println("buffer"+rd.toString());
 			StringBuffer response = new StringBuffer(); 
 			while((line = rd.readLine()) != null) {
 				response.append(line);

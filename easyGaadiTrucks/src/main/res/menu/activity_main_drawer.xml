@@ -7,25 +7,34 @@
         >
         <item
             android:id="@+id/nav_truck"
-            android:icon="@drawable/erp_etborder"
+            android:icon="@drawable/erp_truck"
             android:title="Truck "
             />
         <item
             android:id="@+id/nav_driver"
-            android:icon="@drawable/erp_home"
+            android:icon="@drawable/erp_driver"
             android:title="Driver" />
         <item
             android:id="@+id/nav_party"
-            android:icon="@drawable/action_add"
+            android:icon="@drawable/erp_party"
             android:title="Party" />
         <item
             android:id="@+id/nav_trip"
-            android:icon="@drawable/action_settings"
+            android:icon="@drawable/erp_trip"
             android:title="Trip" />
         <item
             android:id="@+id/nav_maint"
-            android:icon="@drawable/action_settings"
+            android:icon="@drawable/erp_maint"
             android:title="Maintainence" />
+        <item
+            android:id="@+id/nav_exps"
+            android:icon="@drawable/erp_exps"
+            android:title="Expenses" />
+
+        <item
+            android:id="@+id/nav_payment"
+            android:icon="@drawable/erp_peyments"
+            android:title="Payments" />
     </group>
 
 

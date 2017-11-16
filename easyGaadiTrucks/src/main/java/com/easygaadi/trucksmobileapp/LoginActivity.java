@@ -66,8 +66,8 @@ public class LoginActivity extends Activity {
 	List<String> customerTypes, customerValues;
 	Spinner customerTypeSpn;
 	protected String selectedCustomerType;
-	
-	
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -177,7 +177,7 @@ public class LoginActivity extends Activity {
 
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
-					int arg2, long arg3) {
+									   int arg2, long arg3) {
 				selectedCustomerType = customerValues.get(customerTypeSpn
 						.getSelectedItemPosition());
 				System.out.println("CustomerType:" + selectedCustomerType);
@@ -246,10 +246,10 @@ public class LoginActivity extends Activity {
 						+ URLEncoder.encode(deviceId, "UTF-8") + "&type="
 						+ URLEncoder.encode("truck", "UTF-8");
 				String res = parser.excutePost(TruckApp.loginURL, urlParameters);
-				 System.out.println("urlParameters o/p"+urlParameters);
+				System.out.println("EG eeurlParameters o/p"+urlParameters);
 				json = new JSONObject(res);
 			} catch (Exception e) {
-				Log.e("Login DoIN EX", e.toString());
+				Log.e("EG Login DoIN EX", e.toString());
 			}
 			return json;
 		}
@@ -298,7 +298,7 @@ public class LoginActivity extends Activity {
 						editor.putInt("orders", s.getJSONObject("success")
 								.getInt("orders"));
 						editor.putInt("truckavailable",s.getJSONObject("success").getInt(
-										"truckavailable"));
+								"truckavailable"));
 						editor.putInt("distanceReport",s.getJSONObject("success").getInt(
 								"DistanceReport"));
 						editor.putInt("createGroup",s.getJSONObject("success").getInt(
@@ -320,7 +320,7 @@ public class LoginActivity extends Activity {
 								"buyselltrucks"));
 						editor.putInt("egAccount",s.getInt("egAccount"));
 						editor.putInt("login", 1);
-						
+
 						editor.putString("contactName", s.getJSONObject("success")
 								.getString("contactName"));
 						editor.putString("contactPhone", s.getJSONObject("success")
@@ -336,9 +336,7 @@ public class LoginActivity extends Activity {
 						String password = password_et.getText().toString().trim();
 						String mobile   = mobile_et_lgn.getText().toString().trim();
 
-
-							//new ERPLogin().execute(String.valueOf(post_dict));
-							new ERPLogin(username, password,mobile).execute();
+						//new ERPLogin(username, password,mobile).execute();
 
 
 
@@ -349,6 +347,7 @@ public class LoginActivity extends Activity {
 				}
 			} else {
 				progressFrame.setVisibility(View.GONE);
+				new ERPLogin(un, pwd,mobileNo).execute();
 				Toast.makeText(getApplicationContext(), res.getString(R.string.exceptionmsg),
 						Toast.LENGTH_LONG).show();
 			}
@@ -557,7 +556,7 @@ public class LoginActivity extends Activity {
 		String fn, phn, address, type;
 
 		public SignUp(String fName, String phone, String address,
-				String customerType) {
+					  String customerType) {
 			this.fn = fName;
 			this.phn = phone;
 			this.address = address;
@@ -660,20 +659,20 @@ public class LoginActivity extends Activity {
 				JSONObject post_dict = new JSONObject();
 
 				try {
-					post_dict.put("userName" , un);
-					post_dict.put("accountName",mobileNo);
-					post_dict.put("password", pwd+"78");
+					post_dict.put("userName" , "test");
+					post_dict.put("name","easyGaadi");
+					post_dict.put("password", "password");
 
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				System.out.println("" + String.valueOf(post_dict));
+				System.out.println("ERPlogin" + "--"+TruckApp.userLoginURL);
 				String result = parser.easyyExcutePost(LoginActivity.this,TruckApp.userLoginURL,String.valueOf(post_dict));
-				System.out.println("login o/p"+result);
+				System.out.println("ERPlogin o/p"+result);
 				res = new JSONObject(result);
 
 			} catch (Exception e) {
-				Log.e("Login DoIN EX", e.toString());
+				Log.e("ERP Login DoIN EX", e.toString());
 				res = null;
 			}
 			return res;
@@ -696,7 +695,7 @@ public class LoginActivity extends Activity {
 
 						SharedPreferences.Editor editor = getSharedPreferences(getResources().getString(R.string.shareP_erp), MODE_PRIVATE).edit();
 						editor.putString("token", s.getString("token"));
-						editor.putString("role", s.getString("role"));
+						//editor.putString("role", s.getString("role"));
 						editor.apply();
 						startActivity(new Intent(context,HomeScreenActivity.class));//HomeScreenActivity
 						finish();

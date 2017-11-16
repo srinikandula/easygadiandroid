@@ -271,8 +271,7 @@ public class TripsActivity extends AppCompatActivity {
 						editor.putString(Constants.TOLL_USERNAME_KEY,"").commit();
 						editor.putString(Constants.TOLL_PASSWORD_KEY,"").commit();
 						editor.putString(Constants.TOLL_CUSTOMERID_KEY,"").commit();
-						startActivity(new Intent(context,
-								LoginActivity.class));
+						startActivity(new Intent(context,LoginActivity.class));
 						finish();
 					}  else if (1 == result.getInt("status")) {
 						totalTrips = result.getInt("count");

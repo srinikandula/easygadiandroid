@@ -28,7 +28,6 @@ import org.json.JSONObject;
 public class Party_Activity extends AppCompatActivity {
 
     EditText partNameET,partCitryET,partLaneET,party_mobileET,party_mailET;
-    Button formLL;
     TextView party_name_TV,party_mobile_TV,party_mail_TV,party_city_TV,pary_lne_TV;
     Context context;
     Resources res;

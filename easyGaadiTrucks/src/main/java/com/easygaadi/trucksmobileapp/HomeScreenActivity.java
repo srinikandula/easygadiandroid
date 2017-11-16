@@ -177,7 +177,7 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
         }
 
-       // intializeAd();
+        // intializeAd();
         //intializieProfileDialog();
         intializieSettingsDialog();
 
@@ -1132,13 +1132,12 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
             try {
                 String urlParameters = "uid=" + URLEncoder.encode(uid, "UTF-8")
                         +"&access_token="+URLEncoder.encode(sharedPreferences.getString("access_token",""), "UTF-8");
-                String res = parser.excutePost(TruckApp.logoutURL,
-                        urlParameters);
+                String res = parser.excutePost(TruckApp.logoutURL,urlParameters);
                 // System.out.println("URL:"+TruckApp.logoutURL+
                 // urlParameters+"logout o/p"+res);
                 json = new JSONObject(res);
             } catch (Exception e) {
-                Log.e("Login DoIN EX", e.toString());
+                Log.e("Logout DoIN EX", e.toString());
             }
             return json;
 

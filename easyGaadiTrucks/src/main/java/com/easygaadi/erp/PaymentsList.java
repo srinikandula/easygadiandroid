@@ -24,7 +24,9 @@ import android.widget.Toast;
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.MaitenanceVo;
+import com.easygaadi.models.PaymentsVo;
 import com.easygaadi.trucksmobileapp.Maintenance_Activity;
+import com.easygaadi.trucksmobileapp.PaymentsActivity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.TruckApp;
 
@@ -60,7 +62,7 @@ public class PaymentsList extends Fragment {
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
-    private static ArrayList<MaitenanceVo> data;
+    private static ArrayList<PaymentsVo> data;
     private ConnectionDetector detectConnection;
     JSONParser parser;
     ProgressDialog pDialog;
@@ -102,8 +104,7 @@ public class PaymentsList extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_trunk_list, container, false);
 
@@ -151,7 +152,7 @@ public class PaymentsList extends Fragment {
             @Override
             public void onClick(View v) {
                 /*startActivity(new Intent(getActivity(), Driver_Activity.class));*/
-                Intent intent = new Intent(getActivity(), Maintenance_Activity.class);
+                Intent intent = new Intent(getActivity(), PaymentsActivity.class);
                 intent.putExtra("hitupdate", "");
 
                 startActivityForResult(intent, requestCode);
@@ -176,29 +177,27 @@ public class PaymentsList extends Fragment {
 
     public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> implements Filterable {
 
-        private ArrayList<MaitenanceVo> dataSet;
+        private ArrayList<PaymentsVo> dataSet;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView textViewName,textViewDate,textViewamt,textViewRArea,textViewRType;
+            TextView textViewName,textViewDate,textViewamt;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
-                this.textViewName = (TextView) itemView.findViewById(R.id.truckRegNo_tv);
-                this.textViewDate = (TextView) itemView.findViewById(R.id.tv_lastupadate);
-                this.textViewRType = (TextView) itemView.findViewById(R.id.repairtype_tv);
-                this.textViewRArea = (TextView) itemView.findViewById(R.id.repairarea_tv);
-                this.textViewamt = (TextView) itemView.findViewById(R.id.repairamt_tv);
+                this.textViewDate = (TextView) itemView.findViewById(R.id.date_tv);
+                this.textViewName = (TextView) itemView.findViewById(R.id.partyname_tv);
+                this.textViewamt = (TextView) itemView.findViewById(R.id.payment_tv);
             }
         }
 
-        public CustomAdapter(ArrayList<MaitenanceVo> data) {
+        public CustomAdapter(ArrayList<PaymentsVo> data) {
             this.dataSet = data;
         }
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mcatitem_layout, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.payments_catitem_layout, parent, false);
             MyViewHolder myViewHolder = new MyViewHolder(view);
             return myViewHolder;
         }
@@ -208,15 +207,13 @@ public class PaymentsList extends Fragment {
 
             TextView textViewName = holder.textViewName;
             TextView textViewDate = holder.textViewDate;
-            TextView textViewRType = holder.textViewRType;
-            TextView textViewRArea = holder.textViewRArea;
             TextView textViewamt = holder.textViewamt;
 
-            textViewName.setText(dataSet.get(listPosition).getVehicleNumber());
+            textViewName.setText(dataSet.get(listPosition).getPartyName());
+
             textViewDate.setText(getFormatDate(dataSet.get(listPosition).getDate()));
-            textViewRType.setText(dataSet.get(listPosition).getDescription());
-            textViewRArea.setText(dataSet.get(listPosition).getCity());
-            textViewamt.setText(dataSet.get(listPosition).getCostString());
+
+            textViewamt.setText(dataSet.get(listPosition).getAmount());
         }
 
         @Override
@@ -249,10 +246,10 @@ public class PaymentsList extends Fragment {
                 } else {
                     //Need Filter
                     // it matches the text  entered in the edittext and set the data in adapter list
-                    ArrayList<MaitenanceVo> fRecords = new ArrayList<MaitenanceVo>();
+                    ArrayList<PaymentsVo> fRecords = new ArrayList<PaymentsVo>();
 
-                    for (MaitenanceVo s : dataSet) {
-                        if (s.getVehicleNumber().toString().toUpperCase().trim().contains(constraint.toString().toUpperCase().trim())) {
+                    for (PaymentsVo s : dataSet) {
+                        if (s.getPartyName().toString().toUpperCase().trim().contains(constraint.toString().toUpperCase().trim())) {
                             fRecords.add(s);
                         }
                     }
@@ -265,7 +262,7 @@ public class PaymentsList extends Fragment {
 
             @Override
             protected void publishResults(CharSequence constraint, FilterResults results) {
-                dataSet = (ArrayList<MaitenanceVo>) results.values;
+                dataSet = (ArrayList<PaymentsVo>) results.values;
                 notifyDataSetChanged();
             }
         }
@@ -338,30 +335,44 @@ public class PaymentsList extends Fragment {
                         JSONArray partArray = result.getJSONArray("paymentsCosts");
                         if(partArray.length() > 0)
                         {
-                            data = new ArrayList<MaitenanceVo>();
+                            data = new ArrayList<PaymentsVo>();
                             for (int i = 0; i < partArray.length(); i++) {
                                 JSONObject partData = partArray.getJSONObject(i);
-                                MaitenanceVo voData = new MaitenanceVo();
+                                PaymentsVo voData = new PaymentsVo();
 
                                 voData.set_id(partData.getString("_id"));
-                                voData.setCostString(partData.getString("cost"));
-                                if(partData.has("shedArea")){
-                                    voData.setCity(partData.getString("shedArea"));
-                                }else{
-                                    voData.setCity("Location not found");
-                                }
-                                voData.setDate(""+partData.getString("date"));
+                                voData.setAmount(partData.getString("amount"));
                                 voData.setDescription(partData.getString("description"));
+
+                                voData.setDate(""+partData.getString("date"));
 
 
                                 JSONObject attributes = partData.getJSONObject("attrs");
-                                if(attributes.has("truckName"))
+                                if(attributes.has("createdByName"))
                                 {
-                                    voData.setVehicleNumber(attributes.getString("truckName"));
+                                    voData.setCreatedByName(attributes.getString("createdByName"));
                                 }else{
-                                    voData.setVehicleNumber("XXXXXX");
+                                    voData.setCreatedByName("XXXXXX");
+                                }
+                                if(attributes.has("tripId"))
+                                {
+                                    voData.setTripId(attributes.getString("tripId"));
+                                }else{
+                                    voData.setTripId("XXXXXX");
                                 }
 
+                                if(attributes.has("partyName"))
+                                {
+                                    voData.setPartyName(attributes.getString("partyName"));
+                                }else{
+                                    voData.setPartyName("XXXXXX");
+                                }
+                                if(attributes.has("truckName"))
+                                {
+                                    voData.setTruckName(attributes.getString("truckName"));
+                                }else{
+                                    voData.setTruckName("XXXXXX");
+                                }
 
 
                                 data.add(voData);

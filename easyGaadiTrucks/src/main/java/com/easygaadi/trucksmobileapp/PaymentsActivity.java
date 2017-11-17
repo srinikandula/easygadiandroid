@@ -35,37 +35,41 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class ExpenseActivity extends AppCompatActivity {
+public class PaymentsActivity extends AppCompatActivity {
     TextView maintDatelblTV,maintnce_dateTV,maintnce_trunknum_lbl,maintnce_lbl,maintnce_cost_lbl,
             maintnce_are_lbl;
-    String truckID = "",expensesID = "";
+    String truckID = "",tripID = "",partyID = "";
     Context context;
     Resources res;
     JSONParser parser;
     private ConnectionDetector detectCnnection;
     FrameLayout progressFrame;
     ProgressDialog pDialog;
-    ArrayList<TruckVo> datat,dataE;
-    Spinner spinTruck,spinExpense;
+    ArrayList<TruckVo> datat,dataTrips,dataP;
+    Spinner spinTruck,spinParties,spinTrips;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_expense);
+        setContentView(R.layout.activity_payments);
 
 
-        context = ExpenseActivity.this;
+        context = PaymentsActivity.this;
         parser = JSONParser.getInstance();
         pDialog = new ProgressDialog(context);
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);
         datat = new ArrayList<TruckVo>();
-        dataE = new ArrayList<TruckVo>();
+        dataTrips = new ArrayList<TruckVo>();
+        dataP = new ArrayList<TruckVo>();
         detectCnnection = new ConnectionDetector(context);
-
+//spinParties,spinTrips
         spinTruck = (Spinner) findViewById(R.id.spnr_trunknum);
-        spinExpense = (Spinner) findViewById(R.id.spnr_expense);
+        spinParties = (Spinner) findViewById(R.id.spnr_trip);
+        spinTrips = (Spinner) findViewById(R.id.spnr_party);
+        spinTruck.setVisibility(View.GONE);
+        spinTrips.setVisibility(View.GONE);
 
         maintnce_dateTV = (TextView)findViewById(R.id.maintnce_date);
         maintDatelblTV = (TextView)findViewById(R.id.maintnce_date_lbl);
@@ -90,12 +94,16 @@ public class ExpenseActivity extends AppCompatActivity {
 
         TruckVo voDatae = new TruckVo();
         voDatae.set_id("");
-        voDatae.setRegistrationNo("Select Expenses");
-        dataE.add(voDatae);
+        voDatae.setRegistrationNo("Select Trip");
+        dataTrips.add(voDatae);
 
+        TruckVo voDatap = new TruckVo();
+        voDatap.set_id("");
+        voDatap.setRegistrationNo("Select Party");
+        dataP.add(voDatap);
 
         if (detectCnnection.isConnectingToInternet()) {
-            new GetAllTrucks("trucks").execute();
+            new GetAllTrucks("party").execute();
         } else {
             Toast.makeText(context,res.getString(R.string.internet_str),Toast.LENGTH_LONG).show();
         }
@@ -160,19 +168,19 @@ public class ExpenseActivity extends AppCompatActivity {
     public void callTruckAct(View view){
         String maintenanceDate = maintnce_dateTV.getText().toString().trim();
         String maintenanceTrucknum = truckID;
-        String maintenanceExpenseID = expensesID;
+
         String maintenancCost = maintnce_costET.getText().toString().trim();
         String maintenancArea = maintnce_areET.getText().toString().trim();
 
         if(maintenanceDate.contains("-")){
-            if(maintenanceTrucknum.trim().length()>0){
-                if(maintenanceExpenseID.trim().length()>0){
+            if(true){
+                if(true){
                     if(true){
                         if(maintenancCost.trim().length()>0){
                             if(true){
                                 if(maintenancArea.trim().length()>0){
                                     if (detectCnnection.isConnectingToInternet()) {
-                                        new AddMaintenance(maintenanceDate, maintenanceTrucknum,maintenanceExpenseID,maintenancCost,maintenancArea).execute();
+                                        new AddMaintenance(maintenanceDate, maintenanceTrucknum,maintenancCost,maintenancArea).execute();
                                     } else {
                                         Toast.makeText(context,res.getString(R.string.internet_str),Toast.LENGTH_LONG).show();
                                     }
@@ -207,7 +215,7 @@ public class ExpenseActivity extends AppCompatActivity {
         int month = c.get(Calendar.MONTH);
         int day = c.get(Calendar.DAY_OF_MONTH);
 
-        DatePickerDialog dpd = new DatePickerDialog(ExpenseActivity  .this,R.style.MyDialogTheme ,new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog dpd = new DatePickerDialog(PaymentsActivity.this,R.style.MyDialogTheme ,new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
@@ -280,10 +288,13 @@ public class ExpenseActivity extends AppCompatActivity {
                 String res ="";
                 if(type.equalsIgnoreCase("trucks"))
                 {
-                     res = parser.erpExecuteGet(context,TruckApp.truckListURL);
+                    res = parser.erpExecuteGet(context,TruckApp.truckListURL);
                     Log.e("truckListURL",res.toString());
-                }else if(type.equalsIgnoreCase("expenses")){
-                    res = parser.erpExecuteGet(context,TruckApp.ExpensesURL+"/getAllExpense");
+                }else if(type.equalsIgnoreCase("party")){
+                    res = parser.erpExecuteGet(context,TruckApp.paryListURL);
+                    Log.e("ExpensesURL",res.toString());
+                }else if(type.equalsIgnoreCase("trips")){
+                    res = parser.erpExecuteGet(context,TruckApp.tripsListURL+"/getAllAccountTrips");
                     Log.e("ExpensesURL",res.toString());
                 }
                 System.out.print("type"+res);
@@ -312,33 +323,41 @@ public class ExpenseActivity extends AppCompatActivity {
                                     TruckVo voData = new TruckVo();
                                     voData.set_id(partData.getString("_id"));
                                     voData.setRegistrationNo("" + partData.getString("registrationNo"));
-
                                     datat.add(voData);
                                 }
                                 SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),datat,this.type);
                                 spinTruck.setAdapter(customAdapter);
                                 pDialog.dismiss();
-                                new GetAllTrucks("expenses").execute();
+                                new GetAllTrucks("party").execute();
                             }
-                        }else if(this.type.equalsIgnoreCase("expenses")){
-                            JSONArray partArray = result.getJSONArray("maintanenceCosts");
+                        }else if(this.type.equalsIgnoreCase("trips")){
+                            JSONArray partArray = result.getJSONArray("trips");
                             if (partArray.length() > 0) {
                                 for (int i = 0; i < partArray.length(); i++) {
                                     JSONObject partData = partArray.getJSONObject(i);
                                     TruckVo voData = new TruckVo();
                                     voData.set_id(partData.getString("_id"));
-                                    //voData.setRegistrationNo("" + partData.getString("expenseType"));
-                                    JSONObject attributes = partData.getJSONObject("attrs");
-                                    if(attributes.has("expenseName"))
-                                    {
-                                        voData.setRegistrationNo(attributes.getString("expenseName"));
-                                    }
-                                    dataE.add(voData);
+                                    voData.setRegistrationNo("" + partData.getString("tripId"));
+                                    dataTrips.add(voData);
                                 }
-                                SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataE,this.type);
-                                spinExpense.setAdapter(customAdapter);
+                                SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataTrips,this.type);
+                                spinTrips.setAdapter(customAdapter);
                                 pDialog.dismiss();
-
+                            }
+                        }else if(this.type.equalsIgnoreCase("party")){
+                            JSONArray partArray = result.getJSONArray("parties");
+                            if (partArray.length() > 0) {
+                                for (int i = 0; i < partArray.length(); i++) {
+                                    JSONObject partData = partArray.getJSONObject(i);
+                                    TruckVo voData = new TruckVo();
+                                    voData.set_id(partData.getString("_id"));
+                                    voData.setRegistrationNo("" + partData.getString("name"));
+                                    dataP.add(voData);
+                                }
+                                SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataP,this.type);
+                                spinParties.setAdapter(customAdapter);
+                                pDialog.dismiss();
+                                new GetAllTrucks("trips").execute();
                             }
                         }
                     }
@@ -399,13 +418,17 @@ public class ExpenseActivity extends AppCompatActivity {
                 }else{
                     truckID  = book.get_id();
                 }
-
-            }else if(this.Type.equalsIgnoreCase("expenses")){
-
+            }else if(this.Type.equalsIgnoreCase("trips")){
                 if(i == 0){
-                    expensesID = "";
+                    tripID = "";
                 }else{
-                    expensesID  = book.get_id();
+                    tripID  = book.get_id();
+                }
+            }else if(this.Type.equalsIgnoreCase("party")){
+                if(i == 0){
+                    partyID = "";
+                }else{
+                    partyID  = book.get_id();
                 }
             }
 
@@ -416,12 +439,11 @@ public class ExpenseActivity extends AppCompatActivity {
 
 
     private class AddMaintenance extends AsyncTask<String, String, JSONObject> {
-        String maintenanceDate, maintenanceTrucknum,maintenanceExpensesnum,maintenanceRepair, maintenancPay, maintenancCost,maintenancArea;
+        String maintenanceDate, maintenanceTrucknum, maintenancCost,maintenancArea;
 
-        public AddMaintenance(String maintenanceDate, String maintenanceTrucknum,String maintenanceExpensesnum,String maintenancCost,String maintenancArea) {
+        public AddMaintenance(String maintenanceDate,String maintenanceTrucknum,String maintenancCost,String maintenancArea) {
             this.maintenanceDate = maintenanceDate;
             this.maintenanceTrucknum=maintenanceTrucknum;
-            this.maintenanceExpensesnum=maintenanceExpensesnum;
             this.maintenancCost =maintenancCost;
             this.maintenancArea=maintenancArea;
         }
@@ -439,11 +461,10 @@ public class ExpenseActivity extends AppCompatActivity {
                 JSONObject post_dict = new JSONObject();
 
                 try {
-                    post_dict.put("vehicleNumber",truckID);
-                    post_dict.put("cost", maintenancCost);
+                    post_dict.put("partyId",partyID);
+                    post_dict.put("amount", maintenancCost);
                     post_dict.put("date", maintenanceDate);
                     post_dict.put("description", maintenancArea);
-                    post_dict.put("expenseType",maintenanceExpensesnum);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -451,7 +472,7 @@ public class ExpenseActivity extends AppCompatActivity {
                 System.out.println("" + String.valueOf(post_dict));
                 String result="";
 
-                result = parser.easyyExcutePost(context, TruckApp.ExpensesURL+"/"+"addExpense", String.valueOf(post_dict));
+                result = parser.easyyExcutePost(context, TruckApp.PaymentURL+"/"+"addPayments", String.valueOf(post_dict));
                 System.out.println("addExpense-->" +result);
                 res = new JSONObject(result);
 
@@ -512,3 +533,4 @@ public class ExpenseActivity extends AppCompatActivity {
     }
 
 }
+

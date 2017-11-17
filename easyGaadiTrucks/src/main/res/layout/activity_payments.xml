@@ -34,7 +34,7 @@
                     android:onClick="callback"/>
                 <TextView  android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="Add Expenses"
+                    android:text="Add Payments"
                     android:textSize="20dp"
                     android:textStyle="bold"
                     android:gravity="left|center_vertical"
@@ -112,23 +112,24 @@
                     android:orientation="vertical"
                     android:layout_weight="1"
                     android:layout_marginLeft="@dimen/margin_5"
-                    android:layout_marginRight="@dimen/margin_5">
+                    android:layout_marginRight="@dimen/margin_5"
+                    android:visibility="gone">
                     <TextView
-                        android:id="@+id/maintnce_trunknum_lbl"
+                        android:id="@+id/pymnts_party_lbl"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/padding_5"
-                        android:hint="@string/maintnce_trunknum"
+                        android:hint="@string/payments_party"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:textColorHint="@color/actionbar_clr"
                         android:gravity="left"
                         android:visibility="invisible"/>
                     <Spinner
-                        android:id="@+id/spnr_trunknum"
+                        android:id="@+id/spnr_party"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/erp_height"
                         android:background="@drawable/erp_etborder"
-                        android:hint="@string/maintnce_trunknum"
+                        android:hint="@string/payments_party"
                         android:dropDownWidth="fill_parent"
                         android:spinnerMode="dropdown"
                         android:layout_weight="1"
@@ -146,7 +147,38 @@
                 android:layout_marginLeft="@dimen/margin_5"
                 android:layout_marginRight="@dimen/margin_5">
                 <TextView
-                    android:id="@+id/_expense_lbl"
+                    android:id="@+id/payments_trip_lbl"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/padding_5"
+                    android:hint="@string/payments_trip"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColorHint="@color/actionbar_clr"
+                    android:gravity="left"
+                    android:visibility="invisible"/>
+                <Spinner
+                    android:id="@+id/spnr_trip"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/erp_height"
+                    android:background="@drawable/erp_etborder"
+                    android:hint="@string/payments_trip"
+                    android:dropDownWidth="fill_parent"
+                    android:spinnerMode="dropdown"
+                    android:layout_weight="1"
+                    />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/margin_5"
+                android:layout_marginRight="@dimen/margin_5">
+                <TextView
+                    android:id="@+id/maintnce_trunknum_lbl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/padding_5"
@@ -156,7 +188,7 @@
                     android:gravity="left"
                     android:visibility="invisible"/>
                 <Spinner
-                    android:id="@+id/spnr_expense"
+                    android:id="@+id/spnr_trunknum"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/erp_height"
                     android:background="@drawable/erp_etborder"

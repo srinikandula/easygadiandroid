@@ -386,7 +386,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme1"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ExpenseActivity"></activity>
+        <activity android:name=".ExpenseActivity" />
+        <activity android:name=".PaymentsActivity"></activity>
     </application>
 
 </manifest>

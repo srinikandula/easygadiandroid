@@ -371,9 +371,6 @@ public class ExpenseList extends Fragment {
                                 }else{
                                     voData.setTruckName("XXXXXX");
                                 }
-
-
-
                                 data.add(voData);
                             }
 

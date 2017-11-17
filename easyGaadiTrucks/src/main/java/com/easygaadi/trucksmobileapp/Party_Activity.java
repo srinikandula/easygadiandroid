@@ -230,11 +230,11 @@ public class Party_Activity extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 System.out.println("" + String.valueOf(post_dict));
-                String result = parser.easyyExcutePost(context,TruckApp.addPayURL,String.valueOf(post_dict));
+                String result = parser.easyyExcutePost(context,TruckApp.addPayURL+"/addParty",String.valueOf(post_dict));
                 res = new JSONObject(result);
 
             } catch (Exception e) {
-                Log.e("Login DoIN EX", e.toString());
+                Log.e("addPayURL DoIN EX", e.toString());
                 res = null;
             }
             return res;

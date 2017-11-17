@@ -146,9 +146,7 @@ public class PartList extends Fragment {
         if (detectConnection.isConnectingToInternet()) {
             new GetPartyList().execute();
         }else{
-            Toast.makeText(getActivity(),
-                    getResources().getString(R.string.internet_str),
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
         }
         etSearch=(EditText)view.findViewById(R.id.etSearch);
         etSearch.setText("");
@@ -215,7 +213,6 @@ public class PartList extends Fragment {
             if (result != null) {
 
                 try {
-
                     if (!result.getBoolean("status")) {
                         Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
                     }else
@@ -230,8 +227,7 @@ public class PartList extends Fragment {
                                     PartyVo voData = new PartyVo();
                                     voData.setName(partData.getString("name"));
                                     voData.setContact(""+partData.getString("contact"));
-                                    Log.v("contact",voData.getContact()+"res"+partData.getInt("contact"));
-                                    voData.setOperatingLane(partData.getString("operatingLane"));
+                                    //voData.setOperatingLane(partData.getString("operatingLane"));
                                     data.add(voData);
                                 }
 
@@ -311,7 +307,7 @@ public class PartList extends Fragment {
 
             textViewPName.setText(dataSet.get(listPosition).getName());
             textVieCon.setText(""+dataSet.get(listPosition).getContact());
-            textViewlane.setText(dataSet.get(listPosition).getOperatingLane());
+           // textViewlane.setText(dataSet.get(listPosition).getOperatingLane());
             Log.v("com",""+dataSet.get(listPosition).getContact());
 
 
@@ -409,18 +405,10 @@ public class PartList extends Fragment {
         if(requestCode == this.requestCode){
             String addItem=data.getStringExtra("addItem");
             try {
-                JSONObject partData = new JSONObject(addItem);
-                PartyVo voData = new PartyVo();
-                voData.setName(partData.getString("name"));
-                voData.setContact(""+partData.getInt("contact"));
-                voData.setOperatingLane(partData.getString("operatingLane"));
-                this.data.add(voData);
-                if(this.data.size() == 0)
-                {
-                    partyadapter = new CustomAdapter(this.data);
-                    recyclerView.setAdapter(partyadapter);
+                if (detectConnection.isConnectingToInternet()) {
+                    new GetPartyList().execute();
                 }else{
-                    partyadapter.notifyDataSetChanged();
+                    Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
                 }
             }catch (Exception e)
             {

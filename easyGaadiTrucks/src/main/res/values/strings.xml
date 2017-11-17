@@ -469,6 +469,11 @@
     <string name="truck_mamt">Maintance Amount</string>
     <string name="truck_tonnage">Tonnage</string>
 
+    <!--Payments-->
+    <string name="payments_party">Party</string>
+    <string name="payments_trip">Trip</string>
+    <string name="payments_truck">Truck</string>
+
 
     <!--Reports-->
     <string name="reports_vech">Select Vechile</string>

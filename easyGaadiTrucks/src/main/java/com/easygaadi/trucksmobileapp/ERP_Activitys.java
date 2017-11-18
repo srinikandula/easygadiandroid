@@ -47,6 +47,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.easygaadi.erp.DriverList;
+import com.easygaadi.erp.ERP_DashBroad;
 import com.easygaadi.erp.ExpenseList;
 import com.easygaadi.erp.ExpensesList;
 import com.easygaadi.erp.MaintenanceList;
@@ -196,9 +197,11 @@ public class ERP_Activitys extends AppCompatActivity implements NavigationView.O
         int id = item.getItemId();
         setTitle(item.getTitle() +"List");
         Fragment fragment = null;
-        if (id == R.id.nav_truck) {
+        if (id == R.id.nav_dash) {
+            fragment =  new ERP_DashBroad();
+        } else if (id == R.id.nav_truck) {
             fragment =  new TruckList();
-        } else if (id == R.id.nav_driver) {
+        }else if (id == R.id.nav_driver) {
             fragment =  new DriverList();
         } else if (id == R.id.nav_party) {
             fragment =  new PartList();

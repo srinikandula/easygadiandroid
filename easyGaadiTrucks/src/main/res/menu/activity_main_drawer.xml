@@ -6,6 +6,11 @@
     <group android:checkableBehavior="single"
         >
         <item
+            android:id="@+id/nav_dash"
+            android:icon="@drawable/erp_truck"
+            android:title="DashBroad "
+            />
+        <item
             android:id="@+id/nav_truck"
             android:icon="@drawable/erp_truck"
             android:title="Truck "

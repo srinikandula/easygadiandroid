@@ -264,7 +264,7 @@ public class LoginActivity extends Activity {
 					if (0 == s.getInt("status")) {
 						progressFrame.setVisibility(View.GONE);
 						Toast.makeText(getApplicationContext(),res.getString(R.string.loginFailed),Toast.LENGTH_LONG).show();
-						new ERPLogin(un, pwd,mobileNo).execute();
+						//new ERPLogin(un, pwd,mobileNo).execute();
 					} else {
 						if (rememberme_cb.isChecked()) {
 							editor.putString("username", un);
@@ -336,7 +336,7 @@ public class LoginActivity extends Activity {
 						String password = password_et.getText().toString().trim();
 						String mobile   = mobile_et_lgn.getText().toString().trim();
 
-						//new ERPLogin(username, password,mobile).execute();
+						new ERPLogin(username, password,mobile).execute();
 
 
 
@@ -347,7 +347,7 @@ public class LoginActivity extends Activity {
 				}
 			} else {
 				progressFrame.setVisibility(View.GONE);
-				new ERPLogin(un, pwd,mobileNo).execute();
+				//new ERPLogin(un, pwd,mobileNo).execute();
 				Toast.makeText(getApplicationContext(), res.getString(R.string.exceptionmsg),
 						Toast.LENGTH_LONG).show();
 			}

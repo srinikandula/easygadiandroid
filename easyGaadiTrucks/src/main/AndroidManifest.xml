@@ -386,8 +386,39 @@
             android:screenOrientation="portrait"
             android:theme="@style/BaseTheme1"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ExpenseActivity" />
-        <activity android:name=".PaymentsActivity"></activity>
+        <activity
+            android:name=".ExpenseActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".PaymentsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ExpiryTruck_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ERP_DashBroad_Elements"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".ERP_Eleemnt_SubActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".PendingSub_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".PendingPayments_Activty"
+            android:screenOrientation="portrait"
+            android:theme="@style/BaseTheme1"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

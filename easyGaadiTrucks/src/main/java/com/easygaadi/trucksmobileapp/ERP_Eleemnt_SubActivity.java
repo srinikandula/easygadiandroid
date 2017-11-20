@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
+import com.easygaadi.models.ERPsubVo;
 import com.easygaadi.models.PartyVo;
 
 import org.json.JSONArray;
@@ -43,7 +44,7 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
     private TextView headerTv;
-    private static ArrayList<PartyVo> data;
+    private static ArrayList<ERPsubVo> data;
     CustomAdapter partyadapter;
     String headerText="",urlLink="";
     @Override
@@ -71,7 +72,7 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
         headerText = bundle.getString("Header");
         urlLink = bundle.getString("url");
         ((TextView)findViewById(R.id.header_tv)).setText(headerText);
-
+        System.out.println("riyaz"+urlLink);
 
         if (detectCnnection.isConnectingToInternet()) {
             new GetReacordList().execute();
@@ -122,19 +123,32 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
                         Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
                     }else
                     {
-                        if(urlLink.contains("trips")){
-                            JSONArray partArray = result.getJSONArray("trips");
+                        if(urlLink.contains("party")){
+                            JSONArray partArray = result.getJSONArray("trips");//"trips");
                             if(partArray.length() > 0)
                             {
-                                data = new ArrayList<PartyVo>();
+                                data = new ArrayList<ERPsubVo>();
                                 for (int i = 0; i < partArray.length(); i++) {
                                     JSONObject partData = partArray.getJSONObject(i);
-                                    PartyVo voData = new PartyVo();
-                                    voData.setId(""+partData.getString("_id"));
-                                    voData.setContact(""+partData.getInt("freightAmount"));
-                                    voData.setUpdatedAt(getFormatDate(""+partData.getString("date")));
-                                    JSONObject pObj = partData.getJSONObject("attrs");
-                                    voData.setName(pObj.getString("truckName"));
+                                    ERPsubVo voData = new ERPsubVo();
+                                    if(partData.has("cost"))
+                                    {
+                                        voData.setExpense(""+partData.getString("cost"));
+                                        voData.setPartyname("-");
+                                        voData.setDate(getFormatDate(""+partData.getString("date")));
+                                        voData.setTripid("-");
+                                        voData.setFreight("-");
+                                    }else{
+
+                                        voData.setExpense("-");
+                                        voData.setDate(getFormatDate(""+partData.getString("date")));
+                                        voData.setTripid(partData.getString("tripId"));
+                                        voData.setFreight(""+partData.getString("freightAmount"));
+                                        JSONObject pObj = partData.getJSONObject("attrs");
+                                        voData.setPartyname(pObj.getString("truckName"));
+                                    }
+
+
                                     data.add(voData);
                                 }
 
@@ -150,16 +164,49 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
                             JSONArray partArray = result.getJSONArray("expenses");
                             if(partArray.length() > 0)
                             {
-                                data = new ArrayList<PartyVo>();
+                                data = new ArrayList<ERPsubVo>();
                                 for (int i = 0; i < partArray.length(); i++) {
                                     JSONObject partData = partArray.getJSONObject(i);
-                                    PartyVo voData = new PartyVo();
+                                    ERPsubVo voData = new ERPsubVo();
+                                    /*PartyVo voData = new PartyVo();
                                     voData.setId(""+partData.getString("_id"));
                                     voData.setContact(""+partData.getInt("cost"));
                                     voData.setUpdatedAt(getFormatDate(""+partData.getString("date")));
                                     JSONObject pObj = partData.getJSONObject("attrs");
                                     voData.setName(pObj.getString("expenseName"));
+                                    data.add(voData);*/
+
+
+
+                                    voData.setDate(getFormatDate(""+partData.getString("date")));
+                                    JSONObject pObj = partData.getJSONObject("attrs");
+
+                                    if((pObj.getString("expenseName")).equalsIgnoreCase("Toll")){
+                                        voData.setTripid(""+partData.getInt("cost"));
+                                    }else
+                                    {
+                                        voData.setTripid("-");
+                                    }
+
+                                    if ((pObj.getString("expenseName")).equalsIgnoreCase("Diesel")){
+                                        voData.setFreight(""+partData.getInt("cost"));
+                                    }else{
+                                        voData.setFreight("-");
+                                        }
+
+                                    if ((pObj.getString("expenseName")).contains("Main")){
+                                        voData.setExpense(""+partData.getInt("cost"));
+                                    }else{
+                                            voData.setExpense("-");
+                                        }
+
+                                    if ((voData.getTripid()).contains("-") && voData.getFreight().contains("-") && voData.getExpense().contains("-") ){
+                                        voData.setMis(""+partData.getInt("cost"));
+                                    }else{
+                                            voData.setMis("-");
+                                        }
                                     data.add(voData);
+
                                 }
 
                                 partyadapter = new CustomAdapter(data);
@@ -187,35 +234,44 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
 
     public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder>  {
 
-        private ArrayList<PartyVo> dataSet;
+        private ArrayList<ERPsubVo> dataSet;
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView textPartyName,textPartyVechile,textPartyAmount,textHeaderName,textHeaderAmount,textHeaderVechile;
+            TextView textPartyDate,textPartyTripID,textPartyName,textPartyFAmount,textPartyEAmount,
+                    textHeaderDate,textHeaderTripID,textHeaderPartyName,textHeaderFAmount,textHeaderEAmount;
             LinearLayout heaserLL;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
 
-                this.textHeaderName = (TextView) itemView.findViewById(R.id.vehicle_tv);
-                this.textHeaderAmount = (TextView) itemView.findViewById(R.id.exp_on_tv);
-                this.textHeaderVechile = (TextView) itemView.findViewById(R.id.amount_tv);
 
-                this.textPartyName = (TextView) itemView.findViewById(R.id.vehiclenum_tv);
-                this.textPartyVechile = (TextView) itemView.findViewById(R.id.vexp_on_tv);
-                this.textPartyAmount = (TextView) itemView.findViewById(R.id.vamunot_tv);
+
+                this.textPartyDate = (TextView) itemView.findViewById(R.id.vdate_tv);
+                this.textPartyTripID = (TextView) itemView.findViewById(R.id.vtripID_tv);
+                this.textPartyName = (TextView) itemView.findViewById(R.id.vparty_tv);
+                this.textPartyFAmount = (TextView) itemView.findViewById(R.id.vfreight_amt_tv);
+                this.textPartyEAmount = (TextView) itemView.findViewById(R.id.vexpenceses_amt_tv);
+
+                this.textHeaderDate = (TextView) itemView.findViewById(R.id.date_tv);
+                this.textHeaderTripID = (TextView) itemView.findViewById(R.id.tripID_tv);
+                this.textHeaderPartyName = (TextView) itemView.findViewById(R.id.party_tv);
+                this.textHeaderFAmount = (TextView) itemView.findViewById(R.id.freight_amt_tv);
+                this.textHeaderEAmount = (TextView) itemView.findViewById(R.id.expenceses_amt_tv);
+
+
 
                 this.heaserLL = (LinearLayout) itemView.findViewById(R.id.expiry_header);
             }
         }
 
-        public CustomAdapter(ArrayList<PartyVo> data) {
+        public CustomAdapter(ArrayList<ERPsubVo> data) {
             this.dataSet = data;
         }
 
         @Override
         public CustomAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.expiry_sub_items, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.erp_subrevenue_items, parent, false);
             MyViewHolder myViewHolder = new MyViewHolder(view);
             return myViewHolder;
         }
@@ -223,31 +279,49 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final CustomAdapter.MyViewHolder holder, final int listPosition) {
 
+            TextView textPartyDate = holder.textPartyDate;
+            TextView textPartyTripID = holder.textPartyTripID;
             TextView textPartyName = holder.textPartyName;
-            TextView textPartyVechile = holder.textPartyVechile;
-            TextView textPartyAmount = holder.textPartyAmount;
+            TextView textPartyFAmount = holder.textPartyFAmount;
+            TextView textPartyEAmount = holder.textPartyEAmount;
+            //textHeaderDate,textHeaderTripID,textHeaderPartyName,textHeaderFAmount,textHeaderEAmount
+            TextView textHeaderDate = holder.textHeaderDate;
+            TextView textHeaderTripID = holder.textHeaderTripID;
+            TextView textHeaderPartyName = holder.textHeaderPartyName;
+            TextView textHeaderFAmount = holder.textHeaderFAmount;
+            TextView textHeaderEAmount = holder.textHeaderEAmount;
 
-            TextView textHeaderName = holder.textHeaderName;
-            TextView textHeaderVechile = holder.textHeaderVechile;
-            TextView textHeaderAmount = holder.textHeaderAmount;
+
+
             if(listPosition == 0)
             {
                 holder.heaserLL.setVisibility(View.VISIBLE);
-                if(urlLink.contains("trips")) {
-                    textHeaderName.setText("Date");
-                    textHeaderVechile.setText("Amount");
-                    textHeaderAmount.setText("V.No");
+                if(urlLink.contains("party")) {//trips
+
                 }else{
-                    textHeaderName.setText("Date");
-                    textHeaderVechile.setText("Amount");
-                    textHeaderAmount.setText("Type");
+                    textHeaderDate.setText("Date");
+                    textHeaderTripID.setText("Diesel");
+                    textHeaderPartyName.setText("Toll");
+                    textHeaderFAmount.setText("Maint...");
+                    textHeaderEAmount.setText("Misc....");
                 }
 
             }
+            if(urlLink.contains("party")) {//trips
+                textPartyName.setText(dataSet.get(listPosition).getPartyname());
+                textPartyDate.setText(dataSet.get(listPosition).getDate());
+                textPartyTripID.setText(dataSet.get(listPosition).getTripid());
+                textPartyFAmount.setText(dataSet.get(listPosition).getFreight());
+                textPartyEAmount.setText(dataSet.get(listPosition).getExpense());
+            }else {
 
-            textPartyName.setText(dataSet.get(listPosition).getUpdatedAt());
-            textPartyAmount.setText(dataSet.get(listPosition).getContact());
-            textPartyVechile.setText(dataSet.get(listPosition).getName());
+
+                textPartyName.setText(dataSet.get(listPosition).getTripid());
+                textPartyDate.setText(dataSet.get(listPosition).getDate());
+                textPartyTripID.setText(dataSet.get(listPosition).getFreight());
+                textPartyFAmount.setText(dataSet.get(listPosition).getExpense());
+                textPartyEAmount.setText(dataSet.get(listPosition).getMis());
+            }
         }
 
         @Override
@@ -267,7 +341,7 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
         dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         try {
             date = dateFormat.parse(fdate);
-            formatter = new SimpleDateFormat("dd-MM-yyyy"); //If you need time just put specific format for time like 'HH:mm:ss'
+            formatter = new SimpleDateFormat("dd MMM yy"); //If you need time just put specific format for time like 'HH:mm:ss'
             diff = formatter.format(date);
         } catch (ParseException e) {
             e.printStackTrace();

@@ -206,7 +206,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="5dp">
+                android:padding="5dp"
+                >
                 <TextView
                     android:id="@+id/pary_lne_lbl"
                     android:layout_width="match_parent"
@@ -229,7 +230,35 @@
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:background="@drawable/erp_etborder"
                     android:layout_weight="1"
-                    android:inputType="text"/>
+                    android:inputType="text"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/addmore"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/stop_alert_time_et"
+                    android:layout_margin="5dp"
+                    android:padding="5dp"
+                    android:background="@android:color/transparent"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentLeft="true"
+                    android:textColor="@color/actionbar_clr"
+                    android:drawableEnd="@android:drawable/ic_input_add"
+                    android:drawablePadding="10dp"
+                    android:drawableRight="@android:drawable/ic_input_add"
+                    android:text="@string/party_operating_routes" />
+
+                <LinearLayout
+                    android:id="@+id/operatingroutes"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/addmore"
+                    android:background="@color/yellow"
+                    android:minHeight="5dp"
+                    android:orientation="vertical"
+                    android:padding="5dp" >
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

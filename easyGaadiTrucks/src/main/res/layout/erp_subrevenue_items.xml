@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_alignParentTop="true"
+    android:id="@+id/title_rc"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
+    <LinearLayout
+        android:id="@+id/expiry_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/expencese_title_bg"
+        android:weightSum="5"
+        android:padding="@dimen/margin_5"
+        android:visibility="gone">
+        <TextView
+            android:id="@+id/date_tv"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="Date"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/tripID_tv"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="1dp"
+            android:layout_weight="1"
+            android:text="Trip ID "
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/party_tv"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="1dp"
+            android:layout_weight="1"
+            android:text="Party Name "
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/freight_amt_tv"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="1dp"
+            android:layout_weight="1"
+            android:text="Freight "
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+            android:id="@+id/expenceses_amt_tv"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="1dp"
+            android:layout_weight="1"
+            android:text="Expenses "
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:weightSum="5"
+        android:layout_margin="@dimen/margin_5">
+        <TextView
+            android:id="@+id/vdate_tv"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="Date"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/vtripID_tv"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="1dp"
+            android:layout_weight="1"
+            android:text="Trip ID "
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/vparty_tv"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="1dp"
+            android:layout_weight="1"
+            android:text="Party Name "
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+        <TextView
+            android:id="@+id/vfreight_amt_tv"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="1dp"
+            android:layout_weight="1"
+            android:text="Freight "
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <TextView
+            android:id="@+id/vexpenceses_amt_tv"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/secondary_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="1dp"
+            android:layout_weight="1"
+            android:text="Expenses "
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+    </LinearLayout>
+
+
+</LinearLayout>

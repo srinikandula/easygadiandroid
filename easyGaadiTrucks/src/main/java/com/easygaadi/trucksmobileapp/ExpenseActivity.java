@@ -16,10 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,8 +38,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class ExpenseActivity extends AppCompatActivity {
-    TextView maintDatelblTV,maintnce_dateTV,maintnce_trunknum_lbl,maintnce_lbl,maintnce_cost_lbl,
-            maintnce_are_lbl;
+    TextView maintDatelblTV,maintnce_dateTV,maintnce_trunknum_lbl,maintnce_lbl,maintnce_other_lbl,maintnce_cost_lbl,maintnce_are_lbl;
     String truckID = "",expensesID = "";
     Context context;
     Resources res;
@@ -47,12 +48,12 @@ public class ExpenseActivity extends AppCompatActivity {
     ProgressDialog pDialog;
     ArrayList<TruckVo> datat,dataE;
     Spinner spinTruck,spinExpense;
+    LinearLayout other_ll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expense);
-
 
         context = ExpenseActivity.this;
         parser = JSONParser.getInstance();
@@ -60,6 +61,7 @@ public class ExpenseActivity extends AppCompatActivity {
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);
+        other_ll = (LinearLayout) findViewById(R.id.other_ll);
         datat = new ArrayList<TruckVo>();
         dataE = new ArrayList<TruckVo>();
         detectCnnection = new ConnectionDetector(context);
@@ -73,6 +75,7 @@ public class ExpenseActivity extends AppCompatActivity {
         maintnce_lbl = (TextView)findViewById(R.id.maintnce_rType_lbl);
 
         maintnce_cost_lbl = (TextView)findViewById(R.id.maintnce_cost_lbl);
+        maintnce_other_lbl = (TextView)findViewById(R.id.maintnce_other_lbl);
         maintnce_are_lbl = (TextView)findViewById(R.id.maintnce_are_lbl);
         initilizationView();
         maintnce_dateTV.setOnClickListener(new View.OnClickListener() {
@@ -99,23 +102,50 @@ public class ExpenseActivity extends AppCompatActivity {
         } else {
             Toast.makeText(context,res.getString(R.string.internet_str),Toast.LENGTH_LONG).show();
         }
+
+        AdapterView.OnItemSelectedListener countrySelectedListener = new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> spinner, View container,int position, long id) {
+                if(spinner.getId() == R.id.spnr_expense){
+                    //String selected = spinner.getItemAtPosition(position).toString();
+                    TruckVo truck = dataE.get(position);
+                    if(truck.get_id().isEmpty() && truck.getRegistrationNo().equalsIgnoreCase("others"))
+                    {
+                        other_ll.setVisibility(View.VISIBLE);
+                            expensesID="";
+
+                    }else{
+                        other_ll.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+        };
+
+        spinExpense.setOnItemSelectedListener(countrySelectedListener);
     }
 
-    EditText maintnce_PTypeET,maintnce_rTypeET,maintnce_costET,maintnce_shedET,maintnce_areET;
+    EditText maintnce_PTypeET,maintnce_rTypeET,maintnce_costET,maintnce_otherET,maintnce_areET;
     public void initilizationView() {
         //frghtET,AdvnceET,BalnceET
         //erp_frghtamt,erp_advamt,erp_balamt
 
+        maintnce_otherET = (EditText) findViewById(R.id.maintnce_other);
         maintnce_costET = (EditText) findViewById(R.id.maintnce_cost);
         maintnce_areET = (EditText) findViewById(R.id.maintnce_are);
 
+        chnageTextView(maintnce_otherET);
         chnageTextView(maintnce_costET);
         chnageTextView(maintnce_areET);
     }
 
 
     public void chnageTextView(final EditText etview){
-
         etview.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -141,6 +171,13 @@ public class ExpenseActivity extends AppCompatActivity {
                     }else{
                         maintnce_are_lbl.setVisibility(View.INVISIBLE);
                     }
+                }else if(R.id.maintnce_other == etview.getId()) {
+                    if (string.trim().length() != 0) {
+                        maintnce_other_lbl.setVisibility(View.VISIBLE);
+                        slideUp(maintnce_other_lbl);
+                    }else{
+                        maintnce_other_lbl.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
 
@@ -160,13 +197,27 @@ public class ExpenseActivity extends AppCompatActivity {
     public void callTruckAct(View view){
         String maintenanceDate = maintnce_dateTV.getText().toString().trim();
         String maintenanceTrucknum = truckID;
+
+
         String maintenanceExpenseID = expensesID;
+        String maintenanceExpenseOther = "";
+        if(other_ll.getVisibility() != View.VISIBLE ){
+            maintenanceExpenseOther = maintnce_otherET.getText().toString().trim();
+        }
+
         String maintenancCost = maintnce_costET.getText().toString().trim();
         String maintenancArea = maintnce_areET.getText().toString().trim();
 
         if(maintenanceDate.contains("-")){
             if(maintenanceTrucknum.trim().length()>0){
-                if(maintenanceExpenseID.trim().length()>0){
+                String tempStr= "";
+                if(other_ll.getVisibility() != View.VISIBLE ){
+                    tempStr = maintenanceExpenseOther;
+                }else{
+                    tempStr = expensesID;
+                }
+
+                if(tempStr.trim().length()>0){
                     if(true){
                         if(maintenancCost.trim().length()>0){
                             if(true){
@@ -335,10 +386,23 @@ public class ExpenseActivity extends AppCompatActivity {
                                     }
                                     dataE.add(voData);
                                 }
+                                TruckVo voData = new TruckVo();
+                                voData.set_id("");
+                                voData.setRegistrationNo("others");
+                                dataE.add(voData);
                                 SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataE,this.type);
                                 spinExpense.setAdapter(customAdapter);
                                 pDialog.dismiss();
 
+                            }else{
+                                TruckVo voData = new TruckVo();
+                                voData.set_id("");
+                                voData.setRegistrationNo("others");
+                                dataE.add(voData);
+
+                                SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataE,this.type);
+                                spinExpense.setAdapter(customAdapter);
+                                pDialog.dismiss();
                             }
                         }
                     }

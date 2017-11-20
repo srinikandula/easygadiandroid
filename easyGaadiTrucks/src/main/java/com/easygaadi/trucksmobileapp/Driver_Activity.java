@@ -246,7 +246,7 @@ public class Driver_Activity extends AppCompatActivity {
         String drivertrunl = truckAssigned;
         String drivermobile = drivermobET.getText().toString().trim();
         String driverLicNum = driverlicnumET.getText().toString().trim();
-        String driverDOJ = drvr_doj.getText().toString().trim();
+        String driverDOJ = "";// drvr_doj.getText().toString().trim();
         String driverlicval = drvr_lic_date.getText().toString().trim();
         String driversal = driverSalET.getText().toString().trim();
 
@@ -254,7 +254,7 @@ public class Driver_Activity extends AppCompatActivity {
             if(spin.getSelectedItemPosition() > 0){
                 if(drivermobile.length() == 10){
                     if(driverLicNum.length() > 0){
-                        if(driverDOJ.contains("-")) {
+                        if(true) {//driverDOJ.contains("-")
                             if(driverlicval.contains("-")) {
                                 if(driversal.length() > 1) {
                                     if (detectCnnection.isConnectingToInternet()) {

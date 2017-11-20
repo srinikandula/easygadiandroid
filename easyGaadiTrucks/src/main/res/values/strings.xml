@@ -439,7 +439,8 @@
     <string name="party_mail">Email</string>
     <string name="party_city">City</string>
     <string name="party_operatn_lane">Operation Lane</string>
-
+    <string name="party_operating_routes">Add Trip Lane</string>
+    <string name="party_trip_lane"> Trip Lane Name</string>
     <!--Maintenance string-->
     <string name="maintnce_id">Maintenance ID</string>
     <string name="maintnce_date">Select Date</string>

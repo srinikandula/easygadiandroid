@@ -60,8 +60,6 @@ public class ExpenseList extends Fragment {
     private String mParam1;
     private String mParam2;
 
-
-
     private int requestCode = 123;
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;

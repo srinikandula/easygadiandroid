@@ -15,44 +15,59 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
+
                     <RelativeLayout
                         android:id="@+id/revenueLayout1"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
-                        android:padding="5dp"
                         android:layout_margin="@dimen/margin_5"
                         android:layout_weight="1"
-                        android:background="@color/white">
-                    <ImageView
-                        android:layout_height="64dp"
-                        android:id="@+id/revenueimageView1"
-                        android:layout_width="64dp"
-                        android:src="@drawable/erp_truck"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true">
-                    </ImageView>
-                    <TextView
-                        android:text="Revenue"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/revenuetextView1"
-                        android:layout_width="wrap_content"
-                        android:textColor="@color/actionbar_clr"
-                        android:layout_below="@+id/revenueimageView1"
-                        android:layout_marginTop="2dp"
-                        android:layout_centerHorizontal="true"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:ellipsize="marquee"></TextView>
-                    <TextView
-                        android:text="XXXX"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/revenueamt1"
-                        android:layout_width="wrap_content"
-                        android:layout_below="@+id/revenuetextView1"
-                        android:layout_marginTop="2dp"
-                        android:layout_centerHorizontal="true"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:ellipsize="marquee"></TextView>
+                        android:background="@drawable/erp_effect_bg"
+                        android:paddingLeft="@dimen/margin_10"
+                        >
+
+                        <!--<ImageView
+                            android:id="@+id/revenueimageView1"
+                            android:layout_width="64dp"
+                            android:layout_height="64dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/erp_truck"
+                            ></ImageView>-->
+
+                        <TextView
+                            android:id="@+id/revenuetextView1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginTop="2dp"
+                            android:ellipsize="marquee"
+                            android:text="Revenue"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@color/actionbar_clr"></TextView>
+
+                        <TextView
+                            android:id="@+id/revenue_mode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/revenuetextView1"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginTop="2dp"
+                            android:ellipsize="marquee"
+                            android:text="From All Vechicles"
+                            android:textAppearance="?android:attr/textAppearanceSmall"></TextView>
+
+                        <TextView
+                            android:id="@+id/revenueamt1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/revenue_mode"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginTop="2dp"
+                            android:ellipsize="marquee"
+                            android:text="XXXX"
+                            android:textAppearance="?android:attr/textAppearanceMedium"></TextView>
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -61,35 +76,44 @@
                         android:layout_height="fill_parent"
                         android:padding="5dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
+                        android:background="@drawable/erp_effect_bg"
                         android:layout_margin="@dimen/margin_5">
-                        <ImageView
+                        <!--<ImageView
                             android:layout_height="64dp"
                             android:id="@+id/expenseimageView1"
                             android:layout_width="64dp"
                             android:src="@drawable/erp_truck"
                             android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true">
-                        </ImageView>
+                        </ImageView>-->
                         <TextView
                             android:text="Expencess"
                             android:layout_height="wrap_content"
                             android:id="@+id/expensetextView1"
                             android:layout_width="wrap_content"
-                            android:layout_below="@+id/expenseimageView1"
                             android:layout_marginTop="2dp"
                             android:textColor="@color/actionbar_clr"
-                            android:layout_centerHorizontal="true"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_alignParentLeft="true"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
                             android:ellipsize="marquee"></TextView>
+                        <TextView
+                            android:id="@+id/expense_mode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/expensetextView1"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginTop="2dp"
+                            android:ellipsize="marquee"
+                            android:text="For All Vechicles"
+                            android:textAppearance="?android:attr/textAppearanceSmall"></TextView>
                         <TextView
                             android:text="xxxx"
                             android:layout_height="wrap_content"
                             android:id="@+id/expenseamt1"
                             android:layout_width="wrap_content"
-                            android:layout_below="@+id/expensetextView1"
+                            android:layout_below="@+id/expense_mode"
                             android:layout_marginTop="2dp"
-                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentLeft="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:ellipsize="marquee"></TextView>
                     </RelativeLayout>
@@ -100,15 +124,15 @@
                         android:padding="5dp"
                         android:layout_margin="@dimen/margin_5"
                         android:layout_weight="1"
-                        android:background="@color/white">
-                        <ImageView
+                        android:background="@drawable/erp_effect_bg">
+                        <!--<ImageView
                             android:layout_height="64dp"
                             android:id="@+id/paymentsimageView1"
                             android:layout_width="64dp"
                             android:src="@drawable/erp_truck"
                             android:layout_alignParentTop="true"
                             android:layout_centerHorizontal="true">
-                        </ImageView>
+                        </ImageView>-->
                         <TextView
                             android:text="Payment Recievable"
                             android:layout_height="wrap_content"
@@ -116,20 +140,29 @@
                             android:layout_width="wrap_content"
                             android:gravity="center"
                             android:textAlignment="center"
-                            android:layout_below="@+id/paymentsimageView1"
                             android:layout_marginTop="2dp"
                             android:textColor="@color/actionbar_clr"
-                            android:layout_centerHorizontal="true"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:layout_alignParentTop="true"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
                             android:ellipsize="marquee"></TextView>
+                        <TextView
+                            android:id="@+id/paymenyts_mode"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/paymentstextView1"
+                            android:layout_alignParentLeft="true"
+                            android:layout_marginTop="2dp"
+                            android:ellipsize="marquee"
+                            android:text="From All Parties"
+                            android:textAppearance="?android:attr/textAppearanceSmall"></TextView>
                         <TextView
                             android:text="TextView"
                             android:layout_height="wrap_content"
                             android:id="@+id/paymentsamt1"
                             android:layout_width="wrap_content"
-                            android:layout_below="@+id/paymentstextView1"
+                            android:layout_below="@+id/paymenyts_mode"
                             android:layout_marginTop="2dp"
-                            android:layout_centerHorizontal="true"
+                            android:layout_alignParentLeft="true"
                             android:textAppearance="?android:attr/textAppearanceMedium"
                             android:ellipsize="marquee"></TextView>
                     </RelativeLayout>
@@ -150,11 +183,24 @@
                     android:id="@+id/expirytextView1"
                     android:layout_width="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:ellipsize="marquee"/>
-                <LinearLayout
+                    android:ellipsize="marquee"
+                    android:textColor="@color/actionbar_clr"/>
+                <TextView
+                    android:text="For All Vechicles"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/expiry_mode"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="2dp"
                     android:layout_below="@+id/expirytextView1"
+                    android:layout_centerHorizontal="true"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:ellipsize="marquee"/>
+
+                <LinearLayout
+                    android:layout_below="@+id/expiry_mode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
@@ -172,7 +218,8 @@
                             android:layout_weight="1"
                             android:padding="@dimen/margin_5"
                             android:layout_margin="@dimen/margin_5"
-                            android:onClick="CallActivty">
+                            android:onClick="CallActivty"
+                            android:background="@drawable/erp_effect_bg">
                             <TextView
                                 android:text="XX"
                                 android:layout_height="wrap_content"
@@ -200,6 +247,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:layout_weight="1"
+                            android:background="@drawable/erp_effect_bg"
                             android:padding="@dimen/margin_5"
                             android:layout_margin="@dimen/margin_5"
                             android:onClick="CallActivty">
@@ -238,6 +286,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:background="@drawable/erp_effect_bg"
                             android:layout_weight="1"
                             android:padding="@dimen/margin_5"
                             android:layout_margin="@dimen/margin_5"
@@ -269,6 +318,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
+                            android:background="@drawable/erp_effect_bg"
                             android:layout_weight="1"
                             android:padding="@dimen/margin_5"
                             android:layout_margin="@dimen/margin_5"
@@ -307,7 +357,8 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:padding="@dimen/margin_5"
-                        android:layout_margin="@dimen/margin_5">
+                        android:layout_margin="@dimen/margin_5"
+                        android:background="@drawable/erp_effect_bg">
                         <TextView
                             android:text="XX"
                             android:layout_height="wrap_content"

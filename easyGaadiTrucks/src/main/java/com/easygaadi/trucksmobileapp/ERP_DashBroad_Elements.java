@@ -133,10 +133,12 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
                                 for (int i = 0; i < partArray.length(); i++) {
                                     JSONObject partData = partArray.getJSONObject(i);
                                     PartyVo voData = new PartyVo();
-                                    voData.setId(""+partData.getString("_id"));
+                                    voData.setId(""+partData.getString("registrationNo"));
                                     voData.setContact(""+partData.getInt("totalFreight"));
+                                    voData.setCity(""+partData.getInt("totalExpense"));
+                                    voData.setCreatedAt(""+partData.getInt("totalRevenue"));
                                     JSONObject pObj = partData.getJSONObject("attrs");
-                                    voData.setName(pObj.getString("partyName"));
+                                    voData.setName(pObj.getString("truckName"));
                                     data.add(voData);
                                 }
 
@@ -154,12 +156,20 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
                             {
                                 data = new ArrayList<PartyVo>();
                                 for (int i = 0; i < partArray.length(); i++) {
+
+
                                     JSONObject partData = partArray.getJSONObject(i);
+
+                                    JSONArray innerArr = partData.getJSONArray("exps");
+
                                     PartyVo voData = new PartyVo();
-                                    voData.setId(""+partData.getString("_id"));
-                                    voData.setContact(""+partData.getInt("totalExpenses"));
-                                    JSONObject pObj = partData.getJSONObject("attrs");
-                                    voData.setName(pObj.getString("truckName"));
+                                    JSONObject innerOBj = innerArr.getJSONObject(0);
+
+                                    voData.setId(""+partData.getString("id"));
+                                    voData.setName(""+partData.getString("regNumber"));
+                                    voData.setContact(""+innerOBj.getInt("dieselExpense"));
+                                    voData.setCity(""+innerOBj.getInt("tollExpense"));
+                                    voData.setCreatedAt(""+innerOBj.getInt("misc"));
                                     data.add(voData);
                                 }
 
@@ -172,8 +182,6 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
                                 pDialog.dismiss();
                             }
                         }
-
-
                     }
                 } catch (Exception e) {
                     System.out.println("ex in get leads" + e.toString());
@@ -193,17 +201,24 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView textPartyName,textPartyAmount,textHeaderName,textHeaderAmount;
+            TextView textPartyVName,textPartyFAmount,textPartyEAmount,textPartyRAmount,textHeaderVName,textHeaderFAmount,textHeaderEAmount,textHeaderRAmount;
             LinearLayout heaserLL,containerLL;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
 
-                this.textHeaderName = (TextView) itemView.findViewById(R.id.vehicle_tv);
-                this.textHeaderAmount = (TextView) itemView.findViewById(R.id.exp_on_tv);
+                //this.textHeaderName = (TextView) itemView.findViewById(R.id.vehicle_tv);
+                //this.textHeaderAmount = (TextView) itemView.findViewById(R.id.exp_on_tv);
+                this.textPartyVName = (TextView) itemView.findViewById(R.id.vehiclenum_tv);
+                this.textPartyFAmount = (TextView) itemView.findViewById(R.id.vfreight_amt_tv);
+                this.textPartyEAmount = (TextView) itemView.findViewById(R.id.vexpenses_amt_tv);
+                this.textPartyRAmount = (TextView) itemView.findViewById(R.id.vrevenue_amt_tv);
 
-                this.textPartyName = (TextView) itemView.findViewById(R.id.vehiclenum_tv);
-                this.textPartyAmount = (TextView) itemView.findViewById(R.id.vexp_on_tv);
+                this.textHeaderVName = (TextView) itemView.findViewById(R.id.vehicle_tv);
+                this.textHeaderFAmount = (TextView) itemView.findViewById(R.id.freight_amt_tv);
+                this.textHeaderEAmount = (TextView) itemView.findViewById(R.id.expenceses_amt_tv);
+                this.textHeaderRAmount = (TextView) itemView.findViewById(R.id.revene_amt_tv);
+
 
                 this.heaserLL = (LinearLayout) itemView.findViewById(R.id.expiry_header);
                 this.containerLL = (LinearLayout) itemView.findViewById(R.id.container);
@@ -217,7 +232,7 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.expiry_items, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.erp_revenue_items, parent, false);
             MyViewHolder myViewHolder = new MyViewHolder(view);
             return myViewHolder;
         }
@@ -225,28 +240,38 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
         @Override
         public void onBindViewHolder(final CustomAdapter.MyViewHolder holder, final int listPosition) {
 
-            TextView textPartyName = holder.textPartyName;
-            TextView textPartyAmount = holder.textPartyAmount;
-
-            TextView textHeaderName = holder.textHeaderName;
-            TextView textHeaderAmount = holder.textHeaderAmount;
+            TextView textPartyName = holder.textPartyVName;
+            TextView textPartyFAmount = holder.textPartyFAmount;
+            TextView textPartyEAmount = holder.textPartyEAmount;
+            TextView textPartyRAmount = holder.textPartyRAmount;
+            //textHeaderVName,textHeaderFAmount,textHeaderEAmount,textHeaderRAmount
+            TextView textHeaderVName = holder.textHeaderVName;
+            TextView textHeaderFAmount = holder.textHeaderFAmount;
+            TextView textHeaderEAmount = holder.textHeaderEAmount;
+            TextView textHeaderRAmount = holder.textHeaderRAmount;
             if(listPosition == 0)
             {
                 holder.heaserLL.setVisibility(View.VISIBLE);
 
                 if(urlLink.contains("trips")) {
-                    textHeaderName.setText("Party Name");
-                    textHeaderAmount.setText("Amount");
+                    //textHeaderName.setText("Party Name");
+                    //textHeaderAmount.setText("Amount");
                 }else{
-                    textHeaderName.setText("V.No");
-                    textHeaderAmount.setText("Amount");
+                    //textHeaderVName,textHeaderFAmount,textHeaderEAmount,textHeaderRAmount
+                    textHeaderVName.setText("V.No");
+                    textHeaderFAmount.setText("Diesel");
+                    textHeaderEAmount.setText("Toll");
+                    textHeaderEAmount.setText("Maitenance");
+                    textHeaderRAmount.setText("misce...");
                 }
             }
 
             SpannableString content = new SpannableString(dataSet.get(listPosition).getName());
             content.setSpan(new UnderlineSpan(), 0, (dataSet.get(listPosition).getName()).length(), 0);
             textPartyName.setText(content);
-            textPartyAmount.setText(dataSet.get(listPosition).getContact());
+            textPartyFAmount.setText(dataSet.get(listPosition).getContact());
+            textPartyEAmount.setText(dataSet.get(listPosition).getCity());
+            textPartyRAmount.setText(dataSet.get(listPosition).getCreatedAt());
 
             holder.containerLL.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -255,7 +280,8 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
 
                     if(urlLink.contains("trips")) {
                         intent.putExtra("Header","Revenue -"+ dataSet.get(listPosition).getName());
-                        intent.putExtra("url", "trips/find/tripsByParty" + "/" + dataSet.get(listPosition).getId());
+                        intent.putExtra("url", "party/vehiclePayments" + "/" + dataSet.get(listPosition).getId());
+                       // intent.putExtra("url", "trips/find/tripsByParty" + "/" + dataSet.get(listPosition).getId());
                     }else{
                         intent.putExtra("Header"," Expenses for "+ dataSet.get(listPosition).getName());
                         intent.putExtra("url", "expense/vehicleExpense" + "/" + dataSet.get(listPosition).getId());

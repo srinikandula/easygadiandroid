@@ -150,13 +150,6 @@ public class ERP_DashBroad extends Fragment implements View.OnClickListener{
     }
 
 
-    public void UnderLineTV(TextView view){
-
-    }
-
-
-
-
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.permit_LL){
@@ -192,7 +185,7 @@ public class ERP_DashBroad extends Fragment implements View.OnClickListener{
         }else if(view.getId() == R.id.revenueLayout1){
             Intent intent = new Intent(getActivity(), ERP_DashBroad_Elements.class);
             intent.putExtra("Header", "Revenue");
-            intent.putExtra("url", "trips/find/revenueByParty");
+            intent.putExtra("url", "trips/find/revenueByVehicle");//revenueByParty
             startActivity(intent);
         }else if(view.getId() == R.id.expenseLayout1){
             Intent intent = new Intent(getActivity(), ERP_DashBroad_Elements.class);
@@ -250,8 +243,6 @@ public class ERP_DashBroad extends Fragment implements View.OnClickListener{
                         Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
                     }else
                     {
-
-
                         JSONObject resultObj = result.getJSONObject("result");
 
                         ((TextView)mview.findViewById(R.id.revenueamt1)).setText(""+resultObj.getInt("totalRevenue"));
@@ -264,11 +255,6 @@ public class ERP_DashBroad extends Fragment implements View.OnClickListener{
                         ((TextView)mview.findViewById(R.id.tax_num)).setText(""+partArray.getInt("taxExpiryCount"));
                         ((TextView)mview.findViewById(R.id.insurance_num)).setText(""+partArray.getInt("insuranceExpiryCount"));
                         ((TextView)mview.findViewById(R.id.fitness_num)).setText(""+partArray.getInt("fitnessExpiryCount"));
-
-
-
-
-
                     }
                     pDialog.dismiss();
                 } catch (Exception e) {

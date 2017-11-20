@@ -69,7 +69,6 @@ public class ExpiryTruck_Activity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
 
-
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -85,8 +85,7 @@ public class SettingsActivity extends AppCompatActivity {
         mContext             = this;
         sharedPreferences = getApplicationContext().getSharedPreferences(
                 getResources().getString(R.string.app_name), MODE_PRIVATE);
-        layoutInflater =
-                (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater =(LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         pDialog             = new ProgressDialog(this);
         parser              = JSONParser.getInstance();
         detectConnection    = new ConnectionDetector(mContext);
@@ -293,12 +292,9 @@ public class SettingsActivity extends AppCompatActivity {
                                 getApplicationContext(),
                                 android.R.layout.simple_list_item_1, names) {
                             @Override
-                            public View getView(int position,
-                                                View convertView, ViewGroup parent) {
-                                View view = super.getView(position,
-                                        convertView, parent);
-                                TextView text = (TextView) view
-                                        .findViewById(android.R.id.text1);
+                            public View getView(int position,View convertView, ViewGroup parent) {
+                                View view = super.getView(position,convertView, parent);
+                                TextView text = (TextView) view.findViewById(android.R.id.text1);
                                 text.setTextColor(Color.BLACK);
                                 return view;
                             }

@@ -7,7 +7,7 @@
         >
         <item
             android:id="@+id/nav_dash"
-            android:icon="@drawable/erp_truck"
+            android:icon="@drawable/erp_dashb"
             android:title="DashBroad "
             />
         <item

@@ -246,6 +246,7 @@ public class LoginActivity extends Activity {
 						+ URLEncoder.encode(deviceId, "UTF-8") + "&type="
 						+ URLEncoder.encode("truck", "UTF-8");
 				String res = parser.excutePost(TruckApp.loginURL, urlParameters);
+				System.out.println("EG eeurlParameters o/p"+res+""+urlParameters);
 				System.out.println("EG eeurlParameters o/p"+urlParameters);
 				json = new JSONObject(res);
 			} catch (Exception e) {

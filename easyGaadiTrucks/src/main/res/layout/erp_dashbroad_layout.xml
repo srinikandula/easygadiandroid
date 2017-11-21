@@ -2,6 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -43,7 +47,7 @@
                             android:layout_alignParentTop="true"
                             android:layout_marginTop="2dp"
                             android:ellipsize="marquee"
-                            android:text="Revenue"
+                            android:text="Vehicle Revenue"
                             android:textAppearance="?android:attr/textAppearanceLarge"
                             android:textColor="@color/actionbar_clr"></TextView>
 
@@ -87,7 +91,7 @@
                             android:layout_centerHorizontal="true">
                         </ImageView>-->
                         <TextView
-                            android:text="Expencess"
+                            android:text="Expenses "
                             android:layout_height="wrap_content"
                             android:id="@+id/expensetextView1"
                             android:layout_width="wrap_content"
@@ -134,7 +138,7 @@
                             android:layout_centerHorizontal="true">
                         </ImageView>-->
                         <TextView
-                            android:text="Payment Recievable"
+                            android:text="Payment Receivables "
                             android:layout_height="wrap_content"
                             android:id="@+id/paymentstextView1"
                             android:layout_width="wrap_content"
@@ -184,7 +188,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentLeft="true"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:ellipsize="marquee"
                     android:textColor="@color/actionbar_clr"/>
@@ -195,7 +199,7 @@
                     android:layout_width="wrap_content"
                     android:layout_marginTop="2dp"
                     android:layout_below="@+id/expirytextView1"
-                    android:layout_centerHorizontal="true"
+                    android:layout_alignParentLeft="true"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:ellipsize="marquee"/>
 
@@ -391,5 +395,5 @@
 
 
     </RelativeLayout>
-
+    </ScrollView>
 </FrameLayout>

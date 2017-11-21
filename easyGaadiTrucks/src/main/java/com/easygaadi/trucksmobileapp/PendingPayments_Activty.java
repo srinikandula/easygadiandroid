@@ -177,7 +177,7 @@ public class PendingPayments_Activty extends AppCompatActivity {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView textPartyName,textPartyAmount,textPartypaidAmount;
+            TextView textPartyName,textPartyAmount,textPartypaidAmount,textPartyDueAmount;
             LinearLayout heaserLL,containerLL;
 
             public MyViewHolder(View itemView) {
@@ -186,6 +186,7 @@ public class PendingPayments_Activty extends AppCompatActivity {
                 this.textPartyName = (TextView) itemView.findViewById(R.id.partyname_tv);
                 this.textPartyAmount = (TextView) itemView.findViewById(R.id.partyamt_on_tv);
                 this.textPartypaidAmount = (TextView) itemView.findViewById(R.id.partydue_on_tv);
+                this.textPartyDueAmount = (TextView) itemView.findViewById(R.id.vdue_on_tv);
 
                 this.heaserLL = (LinearLayout) itemView.findViewById(R.id.expiry_header);
                 this.containerLL = (LinearLayout) itemView.findViewById(R.id.container);
@@ -210,6 +211,7 @@ public class PendingPayments_Activty extends AppCompatActivity {
             TextView textPartyName = holder.textPartyName;
             TextView textPartyAmount = holder.textPartyAmount;
             TextView textPartypaidAmount = holder.textPartypaidAmount;
+            TextView textPartyDueAmount = holder.textPartyDueAmount;
 
 
             if(listPosition == 0)
@@ -222,6 +224,9 @@ public class PendingPayments_Activty extends AppCompatActivity {
             textPartyName.setText(content);
             textPartyAmount.setText(dataSet.get(listPosition).getContact());
             textPartypaidAmount.setText(dataSet.get(listPosition).getAccountId());
+
+            textPartyDueAmount.setText(""+(Integer.parseInt(dataSet.get(listPosition).getContact())-Integer.parseInt(dataSet.get(listPosition).getAccountId())));
+
 
             holder.containerLL.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -21,6 +21,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:padding="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:background="@color/white"
             android:layout_weight="1"
             android:text="V .No"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
@@ -31,7 +35,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="1dp"
+            android:padding="5dp"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
+            android:background="@color/white"
             android:layout_weight="1"
             android:text="Date of Expiry"
             android:textAppearance="?android:attr/textAppearanceLarge"/>
@@ -40,27 +47,33 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+
         android:weightSum="2"
         android:layout_margin="@dimen/margin_5">
         <TextView
             android:id="@+id/vehiclenum_tv"
             android:textColor="@color/actionbar_clr"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/margin_5"
             android:layout_weight="1"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
             android:text="@string/vehicle_str"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
         <TextView
             android:id="@+id/vexp_on_tv"
             android:textColor="@color/yellowdclr"
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/margin_5"
             android:layout_weight="1"
+            android:layout_marginLeft="1dp"
+            android:layout_marginRight="1dp"
             android:text="@string/exp_km_str"
             android:textAppearance="?android:attr/textAppearanceMedium"/>
     </LinearLayout>

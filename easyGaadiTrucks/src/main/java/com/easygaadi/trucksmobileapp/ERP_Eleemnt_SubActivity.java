@@ -38,12 +38,13 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
     Resources res;
     JSONParser parser;
     private ConnectionDetector detectCnnection;
+    LinearLayout containerLL;
     FrameLayout progressFrame;
     ProgressDialog pDialog;
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
-    private TextView headerTv;
+    private TextView freightTv,expensesTv;
     private static ArrayList<ERPsubVo> data;
     CustomAdapter partyadapter;
     String headerText="",urlLink="";
@@ -57,11 +58,15 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);
+        containerLL = (LinearLayout) findViewById(R.id.container);
         detectCnnection = new ConnectionDetector(context);
 
         recyclerView = (RecyclerView) findViewById(R.id.quotes_rc);
         recyclerView.setHasFixedSize(true);
 
+
+        freightTv = (TextView)findViewById(R.id.vexpenses_amt_tv);
+        //expensesTv= (TextView)findViewById(R.id.);
 
 
         layoutManager = new LinearLayoutManager(context);
@@ -124,9 +129,18 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
                     }else
                     {
                         if(urlLink.contains("party")){
+
+
                             JSONArray partArray = result.getJSONArray("trips");//"trips");
                             if(partArray.length() > 0)
                             {
+                                if(result.has("totalRevenue")){
+                                    JSONObject tRevenue = result.getJSONObject("totalRevenue");
+                                    freightTv.setText(""+tRevenue.getInt("totalFreight"));
+                                    ((TextView) findViewById(R.id.vrevenue_amt_tv)).setText(""+tRevenue.getInt("totalExpenses"));
+
+                                    containerLL.setVisibility(View.VISIBLE);
+                                }
                                 data = new ArrayList<ERPsubVo>();
                                 for (int i = 0; i < partArray.length(); i++) {
                                     JSONObject partData = partArray.getJSONObject(i);
@@ -145,7 +159,7 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
                                         voData.setTripid(partData.getString("tripId"));
                                         voData.setFreight(""+partData.getString("freightAmount"));
                                         JSONObject pObj = partData.getJSONObject("attrs");
-                                        voData.setPartyname(pObj.getString("truckName"));
+                                        voData.setPartyname(pObj.getString("partyName"));
                                     }
 
 
@@ -157,6 +171,15 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
                                 recyclerView.invalidate();
                                 pDialog.dismiss();
                             }else{
+                                if(result.has("totalRevenue")){
+                                    containerLL.setVisibility(View.VISIBLE);
+                                    JSONObject tRevenue = result.getJSONObject("totalRevenue");
+                                    ((TextView) findViewById(R.id.vexpenses_amt_tv)).setText(tRevenue.getInt("totalFreight"));
+                                    ((TextView) findViewById(R.id.vrevenue_amt_tv)).setText(tRevenue.getInt("totalExpenses"));
+
+
+                                }
+
                                 Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
                                 pDialog.dismiss();
                             }

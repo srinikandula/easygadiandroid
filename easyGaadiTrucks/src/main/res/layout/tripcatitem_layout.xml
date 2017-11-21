@@ -64,8 +64,6 @@
                         android:textSize="10sp" />
                 </LinearLayout>
 
-
-
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -102,7 +100,7 @@
                         android:orientation="vertical"
                         android:layout_weight="1">
                         <TextView
-                            android:id="@+id/diesel_tv"
+                            android:id="@+id/freight_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
@@ -110,10 +108,10 @@
                             android:textAppearance="?android:attr/textAppearanceSmall"
                             android:textColor="@android:color/black"
                             android:maxLines="1"
-                            android:text="Diesel"
+                            android:text="freight"
                             android:layout_weight="1"/>
                         <TextView
-                            android:id="@+id/dieselamt_tv"
+                            android:id="@+id/freightamt_tv"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="start|center_vertical"
@@ -124,165 +122,10 @@
                             android:text="5us"
                             android:layout_weight="1"/>
                     </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_weight="1">
-                        <TextView
-                            android:id="@+id/toll_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|center_vertical"
-                            android:layout_margin="3dp"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@android:color/black"
-                            android:maxLines="1"
-                            android:text="Toll      "
-                            android:layout_weight="1"/>
-                        <TextView
-                            android:id="@+id/tollamt_tv"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="start|center_vertical"
-                            android:layout_margin="3dp"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@android:color/black"
-                            android:maxLines="1"
-                            android:text="Pollution"
-                            android:layout_weight="1"/>
-                    </LinearLayout>
-
-
 
                 </LinearLayout>
             </LinearLayout>
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#c4c1c1"
-                android:visibility="gone"/>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="horizontal"
-                android:layout_marginTop="2dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
-                    <TextView
-                        android:id="@+id/freight_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:layout_margin="3dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@android:color/black"
-                        android:maxLines="1"
-                        android:text="Freight"
-                        android:layout_weight="1"/>
-                    <TextView
-                        android:id="@+id/freightamt_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:layout_margin="3dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@android:color/black"
-                        android:maxLines="1"
-                        android:paddingRight="5dp"
-                        android:text="xxxx"
-                        android:layout_weight="1"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
-                    <TextView
-                        android:id="@+id/adv_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:layout_margin="3dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@android:color/black"
-                        android:maxLines="1"
-                        android:text="Advance"
-                        android:layout_weight="1"/>
-                    <TextView
-                        android:id="@+id/advamt_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:layout_margin="3dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@android:color/black"
-                        android:maxLines="1"
-                        android:paddingRight="5dp"
-                        android:text="5000"
-                        android:layout_weight="1"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1">
-                    <TextView
-                        android:id="@+id/balance_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:layout_margin="3dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@android:color/black"
-                        android:maxLines="1"
-                        android:text="Balance"
-                        android:layout_weight="1"/>
-                    <TextView
-                        android:id="@+id/balanceamt_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:layout_margin="3dp"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@android:color/black"
-                        android:maxLines="1"
-                        android:paddingRight="5dp"
-                        android:text="5000"
-                        android:layout_weight="1"/>
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="5dp">
 
-                    <TextView
-                        android:id="@+id/edit_tv"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:layout_margin="3dp"
-                        android:layout_weight="1"
-                        android:drawablePadding="5dp"
-                        android:drawableTop="@drawable/erp_editbutton"
-                        android:gravity="center"
-                        android:maxLines="1"
-                        android:text=""
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColor="@android:color/black" />
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
 
 
         </LinearLayout>

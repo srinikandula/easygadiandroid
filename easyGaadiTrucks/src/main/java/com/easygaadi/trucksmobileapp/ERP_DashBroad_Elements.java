@@ -49,6 +49,7 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
     private TextView headerTv;
     private static ArrayList<PartyVo> data;
     CustomAdapter partyadapter;
+    CustomAdapters partyadapters;
     String headerText="",urlLink="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +125,6 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
                         Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
                     }else
                     {
-
                         if(urlLink.contains("trips")){
                             JSONArray partArray = result.getJSONArray("revenue");
                             if(partArray.length() > 0)
@@ -142,7 +142,7 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
                                     data.add(voData);
                                 }
 
-                                partyadapter = new CustomAdapter(data,context);
+                                partyadapter= new CustomAdapter(data,context);
                                 recyclerView.setAdapter(partyadapter);
                                 recyclerView.invalidate();
                                 pDialog.dismiss();
@@ -151,15 +151,13 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
                                 pDialog.dismiss();
                             }
                         }else{
+                           // Toast.makeText(context, "expenses", Toast.LENGTH_SHORT).show();
                             JSONArray partArray = result.getJSONArray("expenses");
                             if(partArray.length() > 0)
                             {
                                 data = new ArrayList<PartyVo>();
                                 for (int i = 0; i < partArray.length(); i++) {
-
-
                                     JSONObject partData = partArray.getJSONObject(i);
-
                                     JSONArray innerArr = partData.getJSONArray("exps");
 
                                     PartyVo voData = new PartyVo();
@@ -168,13 +166,14 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
                                     voData.setId(""+partData.getString("id"));
                                     voData.setName(""+partData.getString("regNumber"));
                                     voData.setContact(""+innerOBj.getInt("dieselExpense"));
-                                    voData.setCity(""+innerOBj.getInt("tollExpense"));
-                                    voData.setCreatedAt(""+innerOBj.getInt("misc"));
+                                    voData.setCity(""+innerOBj.getInt("tollExpense"));//Riyaz
+                                    voData.setCreatedAt(""+innerOBj.getInt("mExpense"));
+                                    voData.setUpdatedAt(""+innerOBj.getInt("misc"));
                                     data.add(voData);
                                 }
-
-                                partyadapter = new CustomAdapter(data,context);
-                                recyclerView.setAdapter(partyadapter);
+                                System.out.println("leads" + data.size());
+                                partyadapters = new CustomAdapters(data,context);
+                                recyclerView.setAdapter(partyadapters);
                                 recyclerView.invalidate();
                                 pDialog.dismiss();
                             }else{
@@ -218,7 +217,6 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
                 this.textHeaderFAmount = (TextView) itemView.findViewById(R.id.freight_amt_tv);
                 this.textHeaderEAmount = (TextView) itemView.findViewById(R.id.expenceses_amt_tv);
                 this.textHeaderRAmount = (TextView) itemView.findViewById(R.id.revene_amt_tv);
-
 
                 this.heaserLL = (LinearLayout) itemView.findViewById(R.id.expiry_header);
                 this.containerLL = (LinearLayout) itemView.findViewById(R.id.container);
@@ -298,9 +296,104 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
         public int getItemCount() {
             return dataSet.size();
         }
-
-
     }
+
+
+
+    public class CustomAdapters extends RecyclerView.Adapter<CustomAdapters.MyViewHolder>  {
+
+        private ArrayList<PartyVo> dataSet;
+        private Context context;
+
+        public class MyViewHolder extends RecyclerView.ViewHolder {
+
+            TextView textPartyVName,textPartyDAmount,textPartyTAmount,textPartyMAmount,textPartyMisAmount;
+            LinearLayout heaserLL,containerLL;
+
+            public MyViewHolder(View itemView) {
+                super(itemView);
+
+                System.out.print("Riyazzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz");
+                this.textPartyVName = (TextView) itemView.findViewById(R.id.vehiclenum_tv);
+                this.textPartyDAmount = (TextView) itemView.findViewById(R.id.vdiesel_amt_tv);
+                this.textPartyTAmount = (TextView) itemView.findViewById(R.id.vtoll_amt_tv);
+                this.textPartyMAmount = (TextView) itemView.findViewById(R.id.vmaint_amt_tv);
+                this.textPartyMisAmount = (TextView) itemView.findViewById(R.id.vmisce_amt_tv);
+
+
+                this.heaserLL = (LinearLayout) itemView.findViewById(R.id.expiry_header);
+                this.containerLL = (LinearLayout) itemView.findViewById(R.id.container);
+            }
+        }
+
+        public CustomAdapters(ArrayList<PartyVo> data,Context context) {
+            this.dataSet = data;
+            this.context = context;
+        }
+
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.erp_expense_items, parent, false);
+            MyViewHolder myViewHolder = new MyViewHolder(view);
+            return myViewHolder;
+        }
+
+        @Override
+        public void onBindViewHolder(final CustomAdapters.MyViewHolder holder, final int listPosition) {
+
+            TextView textPartyName = holder.textPartyVName;
+            TextView textPartyDAmount = holder.textPartyDAmount;
+            TextView textPartyTAmount = holder.textPartyTAmount;
+            TextView textPartyMAmount = holder.textPartyMAmount;
+            TextView textPartyMisAmount = holder.textPartyMisAmount;
+
+            if(listPosition == 0)
+            {
+                holder.heaserLL.setVisibility(View.VISIBLE);
+            }
+
+            SpannableString content = new SpannableString(dataSet.get(listPosition).getName());
+            content.setSpan(new UnderlineSpan(), 0, (dataSet.get(listPosition).getName()).length(), 0);
+            textPartyName.setText(content);
+
+
+            textPartyDAmount.setText(dataSet.get(listPosition).getContact());
+            textPartyTAmount.setText(dataSet.get(listPosition).getCity());
+            textPartyMAmount.setText(dataSet.get(listPosition).getCreatedAt());
+            textPartyMisAmount.setText(dataSet.get(listPosition).getUpdatedAt());
+
+            holder.containerLL.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ERP_Eleemnt_SubActivity.class);
+
+                    if(urlLink.contains("trips")) {
+                        intent.putExtra("Header","Revenue -"+ dataSet.get(listPosition).getName());
+                        intent.putExtra("url", "party/vehiclePayments" + "/" + dataSet.get(listPosition).getId());
+                        // intent.putExtra("url", "trips/find/tripsByParty" + "/" + dataSet.get(listPosition).getId());
+                    }else{
+                        intent.putExtra("Header"," Expenses for "+ dataSet.get(listPosition).getName());
+                        intent.putExtra("url", "expense/vehicleExpense" + "/" + dataSet.get(listPosition).getId());
+                    }
+
+                    startActivity(intent);
+                }
+            });
+
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return dataSet.size();
+        }
+    }
+
+
+
+
+
+
 
     public String getFormatDate(String fdate){
 

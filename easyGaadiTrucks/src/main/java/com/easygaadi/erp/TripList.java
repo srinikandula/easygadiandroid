@@ -131,8 +131,7 @@ public class TripList extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_trunk_list, container, false);
 
@@ -208,8 +207,7 @@ public class TripList extends Fragment {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView tripID_tv,truckRegNo_tv,tv_lastupadate,triperName_tv,dieselamt_tv,tollamt_tv,freightamt_tv,advamt_tv,
-                    balanceamt_tv,edit_tv;
+            TextView tripID_tv,truckRegNo_tv,tv_lastupadate,triperName_tv,freightamt_tv;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -217,12 +215,7 @@ public class TripList extends Fragment {
                 this.truckRegNo_tv = (TextView) itemView.findViewById(R.id.truckRegNo_tv);
                 this.tv_lastupadate = (TextView) itemView.findViewById(R.id.tv_lastupadate);
                 this.triperName_tv = (TextView) itemView.findViewById(R.id.triperName_tv);
-                this.dieselamt_tv = (TextView) itemView.findViewById(R.id.dieselamt_tv);
-                this.tollamt_tv = (TextView) itemView.findViewById(R.id.tollamt_tv);
                 this.freightamt_tv = (TextView) itemView.findViewById(R.id.freightamt_tv);
-                this.advamt_tv = (TextView) itemView.findViewById(R.id.advamt_tv);
-                this.balanceamt_tv = (TextView) itemView.findViewById(R.id.balanceamt_tv);
-                this.edit_tv = (TextView) itemView.findViewById(R.id.edit_tv);
             }
         }
 
@@ -246,22 +239,13 @@ public class TripList extends Fragment {
             TextView truckRegNo_tv = holder.truckRegNo_tv;
             TextView tv_lastupadate = holder.tv_lastupadate;
             TextView triperName_tv = holder.triperName_tv;
-            TextView dieselamt_tv = holder.dieselamt_tv;
-            TextView tollamt_tv = holder.tollamt_tv;
             TextView freightamt_tv = holder.freightamt_tv;
-            TextView advamt_tv = holder.advamt_tv;
-            TextView balanceamt_tv = holder.balanceamt_tv;
-            TextView edit_tv = holder.edit_tv;
 
             tripID_tv.setText(Html.fromHtml("<u>"+dataSet.get(listPosition).getTripId()+"<u>"));
             truckRegNo_tv.setText(dataSet.get(listPosition).getTruckName());
 
             triperName_tv.setText(dataSet.get(listPosition).getPartyName());
-            dieselamt_tv.setText(dataSet.get(listPosition).getDieselAmount());
-            tollamt_tv.setText(dataSet.get(listPosition).getTollgateAmount());
             freightamt_tv.setText(dataSet.get(listPosition).getFreightAmount());
-            advamt_tv.setText(dataSet.get(listPosition).getAdvance());
-            balanceamt_tv.setText(dataSet.get(listPosition).getBalance());
 
             Date date;
 
@@ -292,12 +276,12 @@ public class TripList extends Fragment {
             });
 
             //tripID_tv
-            edit_tv.setOnClickListener(new View.OnClickListener() {
+            /*edit_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     setReportDialog(dataSet.get(listPosition).get_id());
                 }
-            });
+            });*/
 
         }
 
@@ -547,17 +531,12 @@ public class TripList extends Fragment {
                                 TripVo voData = new TripVo();
                                 voData.set_id(""+partData.getString("_id"));
                                 voData.setTripId(""+partData.getString("tripId"));
-                                voData.setAdvance(""+partData.getInt("advance"));
-                                voData.setDieselAmount(""+partData.getInt("dieselAmount"));
 
                                 if(partData.has("freightAmount")){
                                     voData.setFreightAmount(""+partData.getInt("freightAmount"));
                                 }else{
                                     voData.setFreightAmount("XXXXX");
                                 }
-
-                                voData.setTollgateAmount(""+partData.getInt("tollgateAmount"));
-                                voData.setBalance(""+partData.getInt("balance"));
                                 voData.setUpdatedAt(""+partData.getString("updatedAt"));
 
                                 JSONObject perObj = partData.getJSONObject("attrs");

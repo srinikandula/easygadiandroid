@@ -345,7 +345,7 @@ public class TruckList extends Fragment{
         long diff = 0;
         //Log.i("start date",fdate);
         DateFormat dateFormat,formatter;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         String newDates = null;
         try {
             date = dateFormat.parse(fdate);

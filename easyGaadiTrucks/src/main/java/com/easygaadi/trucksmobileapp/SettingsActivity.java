@@ -99,7 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
         route_notification_spn = (Spinner) findViewById(R.id.notification_spn);
         email_daily_spn = (Spinner) findViewById(R.id.email_daily_report_spn);
         adView = (AdView)findViewById(R.id.adView);
-        intializeBannerAd();
+        //intializeBannerAd();
         names               = new ArrayList<String>();
         pDialog.setCancelable(false);
         pDialog.setIndeterminate(true);
@@ -136,16 +136,16 @@ public class SettingsActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        if (adView != null) {
+       /* if (adView != null) {
             adView.pause();
-        }
+        }*/
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (adView != null)
-        { adView.destroy(); }
+        /*if (adView != null)
+        { adView.destroy(); }*/
         super.onDestroy();
     }
 
@@ -683,9 +683,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         TruckApp.getInstance().trackScreenView("Settings Screen");
-        if (adView != null) {
+        /*if (adView != null) {
             adView.resume();
-        }
+        }*/
 
     }
 

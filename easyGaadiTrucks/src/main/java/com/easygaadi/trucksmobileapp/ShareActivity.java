@@ -98,7 +98,7 @@ public class ShareActivity extends AppCompatActivity implements GetTrucksInterfa
         options_spinner = (Spinner) findViewById(R.id.options_spn);
         share_rv = (RecyclerView) findViewById(R.id.share_rv);
         adView = (AdView)findViewById(R.id.adView);
-        intializeBannerAd();
+        //intializeBannerAd();
         shareArray = new JSONArray();
         devicesArray = new JSONArray();
 
@@ -177,24 +177,24 @@ public class ShareActivity extends AppCompatActivity implements GetTrucksInterfa
     protected void onResume() {
         super.onResume();
         TruckApp.getInstance().trackScreenView("ShareVehicle Screen");
-        if (adView != null) {
+        /*if (adView != null) {
             adView.resume();
-        }
+        }*/
 
     }
 
     @Override
     protected void onPause() {
-        if (adView != null) {
+        /*if (adView != null) {
             adView.pause();
-        }
+        }*/
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (adView != null)
-        { adView.destroy(); }
+       /* if (adView != null)
+        { adView.destroy(); }*/
         super.onDestroy();
     }
 

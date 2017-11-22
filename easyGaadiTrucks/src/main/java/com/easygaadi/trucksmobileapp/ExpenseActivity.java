@@ -112,6 +112,7 @@ public class ExpenseActivity extends AppCompatActivity {
                     TruckVo truck = dataE.get(position);
                     if(truck.get_id().isEmpty() && truck.getRegistrationNo().equalsIgnoreCase("others"))
                     {
+                        Toast.makeText(context, "working", Toast.LENGTH_SHORT).show();
                         other_ll.setVisibility(View.VISIBLE);
                             expensesID="";
 
@@ -197,11 +198,9 @@ public class ExpenseActivity extends AppCompatActivity {
     public void callTruckAct(View view){
         String maintenanceDate = maintnce_dateTV.getText().toString().trim();
         String maintenanceTrucknum = truckID;
-
-
         String maintenanceExpenseID = expensesID;
         String maintenanceExpenseOther = "";
-        if(other_ll.getVisibility() != View.VISIBLE ){
+        if(other_ll.getVisibility() == View.VISIBLE ){
             maintenanceExpenseOther = maintnce_otherET.getText().toString().trim();
         }
 
@@ -211,8 +210,9 @@ public class ExpenseActivity extends AppCompatActivity {
         if(maintenanceDate.contains("-")){
             if(maintenanceTrucknum.trim().length()>0){
                 String tempStr= "";
-                if(other_ll.getVisibility() != View.VISIBLE ){
+                if(other_ll.getVisibility() == View.VISIBLE ){
                     tempStr = maintenanceExpenseOther;
+                    maintenanceExpenseID = tempStr;
                 }else{
                     tempStr = expensesID;
                 }
@@ -221,7 +221,7 @@ public class ExpenseActivity extends AppCompatActivity {
                     if(true){
                         if(maintenancCost.trim().length()>0){
                             if(true){
-                                if(maintenancArea.trim().length()>0){
+                                if(true){
                                     if (detectCnnection.isConnectingToInternet()) {
                                         new AddMaintenance(maintenanceDate, maintenanceTrucknum,maintenanceExpenseID,maintenancCost,maintenancArea).execute();
                                     } else {
@@ -263,8 +263,9 @@ public class ExpenseActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
                 //(view).setText(view.getDayOfMonth()+"/"+view.getMonth()+"/"+view.getYear());
+                int month = view.getMonth()+1;
                 if(Tview.getId() == R.id.maintnce_date){
-                    maintnce_dateTV.setText(view.getYear()+"-"+view.getMonth()+"-"+view.getDayOfMonth());
+                    maintnce_dateTV.setText(view.getYear()+"-"+month+"-"+view.getDayOfMonth());
                     if(maintnce_dateTV.getText().toString().length()>0){
                         maintDatelblTV.setVisibility(View.VISIBLE);
                         slideUp(maintDatelblTV);
@@ -334,7 +335,7 @@ public class ExpenseActivity extends AppCompatActivity {
                      res = parser.erpExecuteGet(context,TruckApp.truckListURL);
                     Log.e("truckListURL",res.toString());
                 }else if(type.equalsIgnoreCase("expenses")){
-                    res = parser.erpExecuteGet(context,TruckApp.ExpensesURL+"/getAllExpense");
+                    res = parser.erpExecuteGet(context,TruckApp.ExpensesURL+"/getAllExpenses");
                     Log.e("ExpensesURL",res.toString());
                 }
                 System.out.print("type"+res);

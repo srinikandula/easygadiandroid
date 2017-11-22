@@ -176,7 +176,7 @@ public class ERP_DashBroad extends Fragment implements View.OnClickListener{
             intent.putExtra("Header", "Insurance Expiry");
             intent.putExtra("url", "insuranceExpiryTrucks");
             startActivity(intent);
-        }else if(view.getId() == R.id.insurance_ll)
+        }else if(view.getId() == R.id.fitness_ll)
         {
             Intent intent = new Intent(getActivity(), ExpiryTruck_Activity.class);
             intent.putExtra("Header", "Fitness Expiry");

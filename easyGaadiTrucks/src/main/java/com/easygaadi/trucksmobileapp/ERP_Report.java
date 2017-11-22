@@ -171,6 +171,19 @@ public class ERP_Report extends AppCompatActivity {
 
     }
 
+    public void callback(View view){
+
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        finish();
+        super.onBackPressed();
+        // Do extra stuff here
+    }
+
     public void GenerateReport(View v){
         //truckID="",registrationNo="",DriverID=""
         String fromDate = trip_frm_dateTV.getText().toString().trim();
@@ -316,8 +329,12 @@ public class ERP_Report extends AppCompatActivity {
                                     TruckVo voData = new TruckVo();
                                     voData.set_id(partData.getString("_id"));
                                     voData.setRegistrationNo(""+partData.getString("registrationNo"));
-                                    voData.setDriverID(""+partData.getString("driverId"));
 
+                                    if(partData.has("driverId")) {
+                                        voData.setDriverID("" + partData.getString("driverId"));//driverId
+                                    }else{
+                                        voData.setDriverID("" );//driverId
+                                    }
                                     datat.add(voData);
                                 }
                                 pDialog.dismiss();
@@ -331,7 +348,7 @@ public class ERP_Report extends AppCompatActivity {
 
                     }
                 } catch (Exception e) {
-                    System.out.println("ex in truck leads" + e.toString());
+                    System.out.println(this.type+"type truck leads" + e.toString());
                 }
 
             } else {

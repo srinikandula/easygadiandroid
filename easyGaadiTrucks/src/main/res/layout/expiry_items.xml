@@ -52,7 +52,7 @@
         android:layout_margin="@dimen/margin_5">
         <TextView
             android:id="@+id/vehiclenum_tv"
-            android:textColor="@color/actionbar_clr"
+            android:textColor="@color/txt_black"
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"/>
         <TextView
             android:id="@+id/vexp_on_tv"
-            android:textColor="@color/yellowdclr"
+            android:textColor="@color/txt_black"
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

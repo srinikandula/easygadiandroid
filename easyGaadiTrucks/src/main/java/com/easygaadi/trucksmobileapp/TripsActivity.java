@@ -94,7 +94,7 @@ public class TripsActivity extends AppCompatActivity {
 		search_btn = (Button) findViewById(R.id.trips_search_btn);
 		count_tv = (TextView) findViewById(R.id.trips_count_tv);
 		adView = (AdView)findViewById(R.id.adView);
-		intializeBannerAd();
+		//intializeBannerAd();
 
 		confirm_dlg_title_tv = (TextView) confirmDialog.findViewById(R.id.confirm_dlg_title_tv);
 		confirm_btn = (Button) confirmDialog.findViewById(R.id.confirm_dlg_confirm_btn);
@@ -173,25 +173,25 @@ public class TripsActivity extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 		TruckApp.getInstance().trackScreenView("Trips Screen");
-		if (adView != null) {
+		/*if (adView != null) {
 			adView.resume();
-		}
+		}*/
 
 	}
 
 
 	@Override
 	protected void onPause() {
-		if (adView != null) {
+		/*if (adView != null) {
 			adView.pause();
-		}
+		}*/
 		super.onPause();
 	}
 
 	@Override
 	protected void onDestroy() {
-		if (adView != null)
-		{ adView.destroy(); }
+		/*if (adView != null)
+		{ adView.destroy(); }*/
 		super.onDestroy();
 	}
 

@@ -148,7 +148,7 @@ public class TripList extends Fragment {
         detectConnection = new ConnectionDetector(getActivity());
         parser = JSONParser.getInstance();
         pDialog = new ProgressDialog(getActivity());
-        pDialog.setCancelable(false);
+        pDialog.setCancelable(true);
         if (detectConnection.isConnectingToInternet()) {
             new GetTripsList().execute();
         }else{
@@ -250,7 +250,7 @@ public class TripList extends Fragment {
             Date date;
 
             DateFormat dateFormat,formatter;
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             String newDates = null;
             try {
                 date = dateFormat.parse(dataSet.get(listPosition).getUpdatedAt());

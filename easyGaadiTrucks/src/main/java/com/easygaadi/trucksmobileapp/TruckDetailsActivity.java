@@ -174,7 +174,7 @@ public class TruckDetailsActivity extends AppCompatActivity implements View.OnCl
         insurance_browse_btn = (Button) findViewById(R.id.insurance_browse_btn);
 
         adView = (AdView)findViewById(R.id.adView);
-        intializeBannerAd();
+        //intializeBannerAd();
 
         levelAdapter = new ArrayAdapter<String>(mContext,R.layout.custom_spinner_item,R.id.title_tv,getResources().getStringArray(R.array.level_array));
         positionAdapter = new ArrayAdapter<String>(mContext,R.layout.custom_spinner_item,R.id.title_tv,getResources().getStringArray(R.array.position_array));
@@ -871,24 +871,24 @@ public class TruckDetailsActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onResume() {
         super.onResume();
-        if (adView != null) {
+        /*if (adView != null) {
             adView.resume();
-        }
+        }*/
         TruckApp.getInstance().trackScreenView("VehicleDetails Screen");
     }
 
     @Override
     protected void onPause() {
-        if (adView != null) {
+        /*if (adView != null) {
             adView.pause();
-        }
+        }*/
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (adView != null)
-        { adView.destroy(); }
+        /*if (adView != null)
+        { adView.destroy(); }*/
         super.onDestroy();
     }
 

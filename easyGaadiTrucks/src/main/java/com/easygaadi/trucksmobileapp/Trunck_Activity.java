@@ -685,7 +685,7 @@ public class Trunck_Activity extends AppCompatActivity {
         String diff = "";
         System.out.println("getDate--"+"getDate"+fdate);
         DateFormat dateFormat,formatter;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         try {
             date = dateFormat.parse(fdate);
             formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'

@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
+import com.easygaadi.models.TripLanesVo;
 import com.easygaadi.models.TripVo;
 import com.easygaadi.models.TruckVo;
 
@@ -47,12 +48,12 @@ public class Trips_Activty extends AppCompatActivity  {
 
 
     String[] payment = { "Payment Type","Cheque", "Chash"  };
-    String truckID="",registrationNo="",DriverID="",paymentType="",PartyID="";
-    TextView tripDate,trip_lbl,trip_frmdatelbl,trip_bookbl,trip_todatelbl,trip_trunklbl,
-            trip_drnmelbl, trip_pymtbl,trip_diesalamtlbl,trip_tollgateamtlbl,trip_tonnagelbl,trip_ratelbl,trip_frghtbl,trip_advbalbl,trip_balbl,trip_remrksl;
-    EditText tripFromDateET,tripToDateET,trip_diesalamtET,trip_tollgateamtET,trip_tonnageamtET,trip_rateET,frghtET,AdvnceET,BalnceET,erp_remarkET;
+    String truckID="",registrationNo="",DriverID="",paymentType="",PartyID="",tripLaneName="";
+    TextView tripDate,trip_lbl,trip_bookbl,trip_trunklbl,trip_lanelbl,
+            trip_drnmelbl, trip_pymtbl,trip_tonnagelbl,trip_ratelbl,trip_frghtbl,trip_remrksl;
+    EditText trip_tonnageamtET,trip_rateET,frghtET,erp_remarkET;
     Button formLL;
-     Spinner spin,drspin,bookspin;
+     Spinner spin,drspin,bookspin,triplanespin;
     Context context;
     Resources res;
     JSONParser parser;
@@ -61,6 +62,7 @@ public class Trips_Activty extends AppCompatActivity  {
     ProgressDialog pDialog;
     String lookuup;
     ArrayList<TruckVo> datat,datad,datap;
+    ArrayList<TripLanesVo> datalane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,18 +71,13 @@ public class Trips_Activty extends AppCompatActivity  {
 
         trip_lbl =(TextView)findViewById(R.id.trip_lbl);
         trip_trunklbl=(TextView)findViewById(R.id.trip_trunklbl);
-        trip_frmdatelbl=(TextView)findViewById(R.id.trip_frmdatelbl);
-        trip_todatelbl=(TextView)findViewById(R.id.trip_todatelbl);
         trip_bookbl=(TextView)findViewById(R.id.trip_bookbl);
+        trip_lanelbl=(TextView)findViewById(R.id.trip_laneslbl);
 
         trip_drnmelbl=(TextView)findViewById(R.id.trip_drnmelbl);
-        trip_diesalamtlbl=(TextView)findViewById(R.id.trip_diesalamtlbl);
         trip_tonnagelbl=(TextView)findViewById(R.id.trip_tonnagelbl);
         trip_ratelbl=(TextView)findViewById(R.id.trip_ratelbl);
-        trip_tollgateamtlbl=(TextView)findViewById(R.id.trip_tollgateamtlbl);
         trip_frghtbl=(TextView)findViewById(R.id.trip_frghtbl);
-        trip_advbalbl=(TextView)findViewById(R.id.trip_advbalbl);
-        trip_balbl=(TextView)findViewById(R.id.trip_balbl);
         trip_pymtbl=(TextView)findViewById(R.id.trip_pymtbl);
         trip_remrksl=(TextView)findViewById(R.id.trip_remrksl);
         initilizationView();
@@ -97,9 +94,11 @@ public class Trips_Activty extends AppCompatActivity  {
          spin = (Spinner) findViewById(R.id.spnr_trunknum);
         drspin = (Spinner) findViewById(R.id.spnr_drivername);
         bookspin = (Spinner) findViewById(R.id.spnr_book);
+        triplanespin = (Spinner) findViewById(R.id.spnr_triplanes);
         datat = new ArrayList<TruckVo>();
         datad = new ArrayList<TruckVo>();
         datap = new ArrayList<TruckVo>();
+        datalane = new ArrayList<TripLanesVo>();
         TruckVo voDatas = new TruckVo();
         voDatas.set_id("");
         voDatas.setRegistrationNo("Assigned Truck");
@@ -114,7 +113,7 @@ public class Trips_Activty extends AppCompatActivity  {
         voDatasp.set_id("");
         voDatasp.setRegistrationNo("Book For");
         datap.add(voDatasp);
-
+        setTripLanes("");
         lookuup = getIntent().getStringExtra("hitupdate");
         if (detectCnnection.isConnectingToInternet()) {
             new GetBuyingTrucks("truck").execute();
@@ -182,7 +181,22 @@ public class Trips_Activty extends AppCompatActivity  {
 
                     }else{
                         trip_bookbl.setVisibility(View.VISIBLE);
+                        TruckVo tvo = new TruckVo();
+                        tvo =  datap.get(position);
+                        Log.v("bond",tvo.get__v());
+                        System.out.print("bond===="+tvo.get__v());
+                        setTripLanes(tvo.get__v());
                     }
+                }else  if(spinner.getId() == R.id.spnr_triplanes){
+                    if(position ==0)
+                    {
+                        trip_lanelbl.setVisibility(View.INVISIBLE);
+
+                    }else{
+                        trip_lanelbl.setVisibility(View.VISIBLE);
+                    }
+
+
                 }
             }
 
@@ -194,7 +208,6 @@ public class Trips_Activty extends AppCompatActivity  {
                         trip_pymtbl.setVisibility(View.VISIBLE);
                     }
                 }
-
             }
         };
 
@@ -202,9 +215,52 @@ public class Trips_Activty extends AppCompatActivity  {
         spin.setOnItemSelectedListener(countrySelectedListener);
         drspin.setOnItemSelectedListener(countrySelectedListener);
         bookspin.setOnItemSelectedListener(countrySelectedListener);
+        triplanespin.setOnItemSelectedListener(countrySelectedListener);
 
     }
 
+
+
+    private void setTripLanes(String jString){
+        System.out.print("mtw"+jString);
+        datalane = new ArrayList<TripLanesVo>();
+        TripLanesVo voDataLane = new TripLanesVo();
+        voDataLane.setIndex("");
+        voDataLane.setName("Select Lane");
+        voDataLane.setFrom("");
+        voDataLane.setTo("");
+        datalane.add(voDataLane);
+        if(jString !=null && !jString.isEmpty()) {
+
+            try {
+                JSONArray laneArr = new JSONArray(jString);
+                if (laneArr.length() > 0) {
+                    for (int i = 0; i < laneArr.length(); i++) {
+                        JSONObject laneData = laneArr.getJSONObject(i);
+                        System.out.println("bonds"+laneArr.toString());
+                        TripLanesVo laneObj = new TripLanesVo();
+                        if(laneData.has("name")){
+                            //laneObj.setIndex(""+laneData.getInt("index"));
+                            laneObj.setName(""+laneData.getString("name"));
+                            laneObj.setFrom(laneData.getString("to"));
+                            laneObj.setTo(laneData.getString("from"));
+                        }
+
+                        datalane.add(laneObj);
+                    }
+                    LaneSpinnerCustomAdapters lanecustomAdapter = new LaneSpinnerCustomAdapters(getApplicationContext(), datalane);
+                    triplanespin.setAdapter(lanecustomAdapter);
+                }
+            } catch (JSONException e) {
+                System.out.print("bonds"+e.getMessage());
+                e.printStackTrace();
+            }
+        }else{
+            LaneSpinnerCustomAdapters lanecustomAdapter = new LaneSpinnerCustomAdapters(getApplicationContext(), datalane);
+            triplanespin.setAdapter(lanecustomAdapter);
+        }
+
+    }
 
     private void updateDriverSpinner(int  position){
         for (int i = 0; i < datad.size(); i++) {
@@ -222,24 +278,15 @@ public class Trips_Activty extends AppCompatActivity  {
     public void initilizationView(){
         //frghtET,AdvnceET,BalnceET
         //erp_frghtamt,erp_advamt,erp_balamt
-        tripFromDateET = (EditText)findViewById(R.id.trip_frm_date);
-        tripToDateET = (EditText)findViewById(R.id.trip_to_date);
 
-        trip_diesalamtET = (EditText)findViewById(R.id.trip_diesalamt);
-        trip_tollgateamtET = (EditText)findViewById(R.id.trip_tollgateamt);
         trip_tonnageamtET = (EditText)findViewById(R.id.trip_tonnageamt);
         trip_rateET = (EditText)findViewById(R.id.trip_rate);
         frghtET = (EditText)findViewById(R.id.erp_frghtamt);
-        AdvnceET = (EditText)findViewById(R.id.erp_advamt);
-        BalnceET = (EditText)findViewById(R.id.erp_balamt);
         erp_remarkET = (EditText)findViewById(R.id.erp_remark);
-        chnageTextView(trip_diesalamtET);
-        chnageTextView(trip_tollgateamtET);
+
         chnageTextView(trip_tonnageamtET);
         chnageTextView(trip_rateET);
         chnageTextView(frghtET);
-        chnageTextView(AdvnceET);
-        chnageTextView(BalnceET);
         chnageTextView(erp_remarkET);
 
     }
@@ -250,40 +297,39 @@ public class Trips_Activty extends AppCompatActivity  {
         //tripToDateET,trip_diesalamtET,trip_tollgateamtET,trip_tonnageamtET,trip_rateET,frghtET,AdvnceET,BalnceET,erp_remarkET;
         String tripDatestr =  tripDate.getText().toString().trim();
         String tripTruckID =  truckID.toString().trim();
-        String tripFrom =  tripFromDateET.getText().toString().trim();
-        String tripTo =  tripToDateET.getText().toString().trim();
         String trip_load =  PartyID.toString().trim();
         String tripDriverID =  DriverID.toString().trim();
-        String tripDieselAmt =  trip_diesalamtET.getText().toString().trim();
-        String tripTollAmt =  trip_tollgateamtET.getText().toString().trim();
+        String tripDieselAmt =  "";
+        String tripTollAmt =  "";
         String tripTonnageAmt =  trip_tonnageamtET.getText().toString().trim();
         String tripRateAmt =  trip_rateET.getText().toString().trim();
         String tripfrghtAmt =  frghtET.getText().toString().trim();
-        String tripAdvnceAmt =  AdvnceET.getText().toString().trim();
-        String tripBalnceAmt =  BalnceET.getText().toString().trim();
+        String tripAdvnceAmt =  "";
+        String tripBalnceAmt =  "";
         String triperp_remark =  erp_remarkET.getText().toString().trim();
         String trippaymentType =  paymentType.toString().trim();
+        String tripLaneIndex =  tripLaneName;
 
 
         if(tripDatestr.contains("-")){
             if(tripTruckID.length()>0){
-                if(tripFrom.length()>0){
-                    if(tripTo.length()>0){
+                if(true){
+                    if(true){
                         if(trip_load.length()>0){
                             if(tripDriverID.length()>0){
                                 if(true){//tripTonnageAmt.length()>0--tripRateAmt.length()>0--tripAdvnceAmt.length()>0
                                     if(true){
                                         if(tripfrghtAmt.length()>0){
                                             if(true){
-                                                if(tripDieselAmt.length()>0){
-                                                    if(tripBalnceAmt.length()>0){
-                                                        if(tripTollAmt.length()>0){
+                                                if(true){
+                                                    if(true){
+                                                        if(true){
                                                             if(trippaymentType.length()>0){
                                                                 if (detectCnnection.isConnectingToInternet()) {
                                                                     Log.i("shaaka",
-                                                                            tripDatestr +" -->"+tripTruckID+" -->"+tripFrom +" -->"+tripTo +" -->"+trip_load +" -->"+tripDriverID+" -->"+tripDieselAmt+" -->"+tripTollAmt +" -->"+tripTonnageAmt+" -->"+tripRateAmt+" -->"+tripfrghtAmt +" -->"+tripAdvnceAmt+" -->"+tripBalnceAmt+" -->"+triperp_remark+" -->"+trippaymentType);
-                                                                    new AddTrip( tripDatestr ,tripTruckID,tripFrom ,tripTo ,trip_load ,tripDriverID,tripDieselAmt,tripTollAmt ,tripTonnageAmt,tripRateAmt,tripfrghtAmt ,tripAdvnceAmt,
-                                                                            tripBalnceAmt,triperp_remark,trippaymentType).execute();
+                                                                            tripDatestr +" -->"+tripTruckID+" -->"+"+ -->"+" -->"+trip_load +" -->"+tripDriverID+" -->"+tripDieselAmt+" -->"+tripTollAmt +" -->"+tripTonnageAmt+" -->"+tripRateAmt+" -->"+tripfrghtAmt +" -->"+tripAdvnceAmt+" -->"+tripBalnceAmt+" -->"+triperp_remark+" -->"+trippaymentType);
+                                                                    new AddTrip( tripDatestr ,tripTruckID, trip_load ,tripDriverID,tripDieselAmt,tripTollAmt ,tripTonnageAmt,tripRateAmt,tripfrghtAmt ,tripAdvnceAmt,
+                                                                            tripBalnceAmt,triperp_remark,trippaymentType,tripLaneIndex).execute();
                                                                 } else {
                                                                     Toast.makeText(context,res.getString(R.string.internet_str),Toast.LENGTH_LONG).show();
                                                                 }
@@ -295,7 +341,6 @@ public class Trips_Activty extends AppCompatActivity  {
                                                         {
                                                             Toast.makeText(context, "Please Enter Toll Amount ", Toast.LENGTH_SHORT).show();
                                                         }
-
                                                     }else
                                                     {
                                                         Toast.makeText(context, "Please Enter Diesel Amount", Toast.LENGTH_SHORT).show();
@@ -361,21 +406,7 @@ public class Trips_Activty extends AppCompatActivity  {
             @Override
             public void afterTextChanged(Editable s) {
                 String string = s.toString();
-                if(R.id.trip_diesalamt == etview.getId()) {
-                    if (string.trim().length() != 0) {
-                        trip_diesalamtlbl.setVisibility(View.VISIBLE);
-                        slideUp(trip_diesalamtlbl);
-                    }else{
-                        trip_diesalamtlbl.setVisibility(View.INVISIBLE);
-                    }
-                }else if(R.id.trip_tollgateamt == etview.getId()) {
-                    if (string.trim().length() != 0) {
-                        trip_tollgateamtlbl.setVisibility(View.VISIBLE);
-                        slideUp(trip_tollgateamtlbl);
-                    }else{
-                        trip_tollgateamtlbl.setVisibility(View.INVISIBLE);
-                    }
-                }else if(R.id.trip_tonnageamt == etview.getId()) {
+                 if(R.id.trip_tonnageamt == etview.getId()) {
                     if (string.trim().length() != 0) {
                         trip_tonnagelbl.setVisibility(View.VISIBLE);
                         slideUp(trip_tonnagelbl);
@@ -412,58 +443,8 @@ public class Trips_Activty extends AppCompatActivity  {
                     if (string.trim().length() != 0) {
                         trip_frghtbl.setVisibility(View.VISIBLE);
                         slideUp(((TextView)findViewById(R.id.trip_frghtbl)));
-                        int tempFamt= Integer.parseInt(string);
-                        if(tempFamt > 0) {
-                            String advStr = AdvnceET.getText().toString().toString();
-                            if (advStr.length() > 0 && Integer.parseInt(advStr) > 0) {
-                                int tempAdvamt= Integer.parseInt(advStr);
-                                if(tempAdvamt > tempFamt){
-                                    AdvnceET.setText("");
-                                    BalnceET.setText(string);
-                                }else{
-                                    int bal = tempFamt - tempAdvamt;
-                                    BalnceET.setText(""+bal);
-                                }
-
-                            }else{
-                                BalnceET.setText(string);
-                            }
-                        }
                     }else{
                         trip_frghtbl.setVisibility(View.INVISIBLE);
-                        BalnceET.setText("");
-                    }
-                }else if(R.id.erp_advamt == etview.getId()) {
-                    if (string.trim().length() != 0) {
-                        trip_advbalbl.setVisibility(View.VISIBLE);
-                        slideUp(((TextView)findViewById(R.id.trip_advbalbl)));
-                        int tempadvamt= Integer.parseInt(string);
-                        if(tempadvamt > 0) {
-                            String freightStr = frghtET.getText().toString().toString();
-                            if (freightStr.length() > 0 && Integer.parseInt(freightStr) > 0) {
-                                int tempFreightamt= Integer.parseInt(freightStr);
-                                if(tempadvamt > tempFreightamt){
-                                    AdvnceET.setText("");
-                                    BalnceET.setText(freightStr);
-                                }else{
-                                    int bal = tempFreightamt - tempadvamt;
-                                    BalnceET.setText(""+bal);
-                                }
-
-                            }else{
-                                BalnceET.setText(string);
-                            }
-                        }
-
-                    }else{
-                        trip_advbalbl.setVisibility(View.INVISIBLE);
-                    }
-                }else if(R.id.erp_balamt == etview.getId()) {
-                    if (string.trim().length() != 0) {
-                        trip_balbl.setVisibility(View.VISIBLE);
-                        slideUp(((TextView)findViewById(R.id.trip_balbl)));
-                    }else{
-                        trip_balbl.setVisibility(View.INVISIBLE);
                     }
                 }else if(R.id.erp_remark == etview.getId()) {
                     if (string.trim().length() != 0) {
@@ -654,7 +635,13 @@ public class Trips_Activty extends AppCompatActivity  {
                                     TruckVo voData = new TruckVo();
                                     voData.set_id(partData.getString("_id"));
                                     voData.setRegistrationNo(""+partData.getString("registrationNo"));
-                                    voData.setDriverID(""+partData.getString("driverId"));
+
+                                    if(partData.has("driverId")){
+                                        voData.setDriverID(""+partData.getString("driverId"));
+                                    }else{
+                                        voData.setDriverID("nothing");
+                                    }
+
 
                                     datat.add(voData);
                                 }
@@ -675,8 +662,10 @@ public class Trips_Activty extends AppCompatActivity  {
                                     TruckVo voData = new TruckVo();
                                     voData.set_id(partData.getString("_id"));
                                     voData.setRegistrationNo(""+partData.getString("name"));
+                                    voData.set__v(partData.getString("tripLanes"));
 
                                     datap.add(voData);
+                                    //break;
                                 }
                                 pDialog.dismiss();
                             }else{
@@ -797,6 +786,56 @@ public class Trips_Activty extends AppCompatActivity  {
     }
 
 
+    public class LaneSpinnerCustomAdapters extends BaseAdapter {
+        Context mcontext;
+        ArrayList<TripLanesVo> dataset;
+        LayoutInflater inflter;
+
+        public LaneSpinnerCustomAdapters(Context applicationContext, ArrayList<TripLanesVo> dataset) {
+            this.mcontext = applicationContext;
+            this.dataset = dataset;
+            inflter = (LayoutInflater.from(applicationContext));
+        }
+
+        @Override
+        public int getCount() {
+            return dataset.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(final int i, View view, ViewGroup viewGroup) {
+            LayoutInflater inflator=LayoutInflater.from(mcontext);
+            View bookRow=inflator.inflate(R.layout.erp_spinner_item, viewGroup, false);
+            TextView names = (TextView) bookRow.findViewById(R.id.text1);
+            //TripLanesVo book= dataset.get(i);
+            names.setText(dataset.get(i).getName());
+
+            if(i == 0){
+                tripLaneName = "";
+            }else{
+                tripLaneName  = dataset.get(i).getName();
+            }
+
+
+
+
+            return bookRow;
+        }
+    }
+
+
+
+
     public class PartySpinnerCustomAdapters extends BaseAdapter {
         Context mcontext;
         ArrayList<TruckVo> dataset;
@@ -836,21 +875,22 @@ public class Trips_Activty extends AppCompatActivity  {
             }else{
                 PartyID  = book.get_id();
             }
+
+
+
             return bookRow;
         }
     }
 
     private class AddTrip extends AsyncTask<String, String, JSONObject> {
-        String tripDatestr ,tripTruckID,tripFrom ,tripTo ,trip_load ,tripDriverID,tripDieselAmt,tripTollAmt ,tripTonnageAmt,tripRateAmt,tripfrghtAmt ,tripAdvnceAmt,
-                tripBalnceAmt,triperp_remark,trippaymentType;
+        String tripDatestr ,tripTruckID,trip_load ,tripDriverID,tripDieselAmt,tripTollAmt ,tripTonnageAmt,tripRateAmt,tripfrghtAmt ,tripAdvnceAmt,
+                tripBalnceAmt,triperp_remark,trippaymentType,tripLaneIndex;
 
-        public AddTrip(String tripDatestr ,String tripTruckID,String tripFrom ,String tripTo ,String trip_load ,String tripDriverID,String tripDieselAmt,String tripTollAmt ,String tripTonnageAmt,String
+        public AddTrip(String tripDatestr ,String tripTruckID,String trip_load ,String tripDriverID,String tripDieselAmt,String tripTollAmt ,String tripTonnageAmt,String
                 tripRateAmt,String tripfrghtAmt ,String tripAdvnceAmt,
-                       String tripBalnceAmt,String triperp_remark,String  trippaymentType) {
+                       String tripBalnceAmt,String triperp_remark,String  trippaymentType,String tripLaneIndex) {
             this.tripDatestr = tripDatestr;
             this.tripTruckID =  tripTruckID;
-            this.tripFrom =  tripFrom;
-            this.tripTo = tripTo;
             this.trip_load =  trip_load;
             this.tripDriverID =tripDriverID ;
             this.tripDieselAmt = tripDieselAmt;
@@ -862,6 +902,7 @@ public class Trips_Activty extends AppCompatActivity  {
             this.tripBalnceAmt = tripBalnceAmt;
             this.triperp_remark = triperp_remark;
             this.trippaymentType = trippaymentType;
+            this.tripLaneIndex = tripLaneIndex;
 
         }
         @Override
@@ -882,19 +923,18 @@ public class Trips_Activty extends AppCompatActivity  {
                     post_dict.put("driver",DriverID);
                     post_dict.put("registrationNo",tripTruckID);
                     post_dict.put("freightAmount", Integer.parseInt(tripfrghtAmt));
-                    post_dict.put("bookedFor", PartyID);
-                    post_dict.put("advance", Integer.parseInt(tripAdvnceAmt));
+                    post_dict.put("partyId", PartyID);
+                    post_dict.put("advance", "");
                     //post_dict.put("bookLoad",trip_load);
-                    post_dict.put("dieselAmount", Integer.parseInt(tripDieselAmt));
-                    post_dict.put("tollgateAmount", Integer.parseInt(tripTollAmt));
-                    post_dict.put("from", tripFrom);
-                    post_dict.put("to", tripTo);
+                    post_dict.put("dieselAmount", "");
+                    post_dict.put("tollgateAmount", "");
                     post_dict.put("tonnage", Integer.parseInt(tripTonnageAmt));
                     post_dict.put("rate", Integer.parseInt(tripRateAmt));
-                    post_dict.put("balance", Integer.parseInt(tripBalnceAmt));
+                    post_dict.put("balance", "");
                     post_dict.put("paymentType", trippaymentType);
                     post_dict.put("remarks", triperp_remark);
                     post_dict.put("bookedFor", PartyID);
+                    post_dict.put("tripLane", tripLaneIndex);
 
                 } catch (JSONException e) {
                     Log.i("post_dict EX", e.toString());

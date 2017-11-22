@@ -180,10 +180,14 @@ public class Party_Activity extends AppCompatActivity {
                 if(partyName.length()>0){
                     if(isValidEmail(partyMail)){
                         if(partyCity.length()>=3){
-                            if (detectCnnection.isConnectingToInternet()) {
-                                new AddParty(partyName, partyMob,partyMail, partyCity, partyLane).execute();
-                            } else {
-                                Toast.makeText(context,res.getString(R.string.internet_str),Toast.LENGTH_LONG).show();
+                            if(partyLane.length() >0){
+                                if (detectCnnection.isConnectingToInternet()) {
+                                    new AddParty(partyName, partyMob,partyMail, partyCity, partyLane).execute();
+                                } else {
+                                    Toast.makeText(context,res.getString(R.string.internet_str),Toast.LENGTH_LONG).show();
+                                }
+                            }else{
+                                Toast.makeText(context, "Please provide trip Lane name", Toast.LENGTH_SHORT).show();
                             }
                         }else
                         {
@@ -468,7 +472,7 @@ public class Party_Activity extends AppCompatActivity {
                     String src_str =((AutoCompleteTextView)v.findViewById(R.id.source_et)).getText().toString().trim();
                     String des_str =((AutoCompleteTextView)v.findViewById(R.id.destination_et)).getText().toString().trim();
                     System.out.println("Value @ "+i+" src :"+src_str+" des :"+des_str);
-                    //if (src_str.length()!=0 && des_str.length()!=0) {
+                    if (triplane_str.length() !=0 ) {//&& src_str.length()!=0 && des_str.length()!=0
                         try {
                             JSONObject jsonObj = new JSONObject();
                             jsonObj.putOpt("name", triplane_str);
@@ -479,7 +483,10 @@ public class Party_Activity extends AppCompatActivity {
                             // TODO Auto-generated catch block
                             e.printStackTrace();
                         }
-                    //}
+                    }else{
+                        return "";
+
+                    }
                 }
                 return arraySrcDes.toString();
                /* if (arraySrcDes.length() == childcount) {

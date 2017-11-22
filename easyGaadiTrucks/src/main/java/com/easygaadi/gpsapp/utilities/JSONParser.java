@@ -218,14 +218,13 @@ public class JSONParser {
 			InputStream is = connection.getInputStream();
 			BufferedReader rd = new BufferedReader(new InputStreamReader(is));
 			String line;
-			System.out.println("buffer"+rd.toString());
-			StringBuffer response = new StringBuffer(); 
+			StringBuffer response = new StringBuffer();
 			while((line = rd.readLine()) != null) {
 				response.append(line);
 				response.append('\r');
 			}
 			rd.close();
-			System.out.println(response.toString());
+			System.out.println("Buffer ..................."+ response.toString());
 			return response.toString();
 
 		} catch(SocketTimeoutException e){

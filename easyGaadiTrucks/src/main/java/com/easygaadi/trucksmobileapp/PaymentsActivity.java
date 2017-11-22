@@ -178,7 +178,7 @@ public class PaymentsActivity extends AppCompatActivity {
                     if(true){
                         if(maintenancCost.trim().length()>0){
                             if(true){
-                                if(maintenancArea.trim().length()>0){
+                                if(true){
                                     if (detectCnnection.isConnectingToInternet()) {
                                         new AddMaintenance(maintenanceDate, maintenanceTrucknum,maintenancCost,maintenancArea).execute();
                                     } else {
@@ -220,8 +220,10 @@ public class PaymentsActivity extends AppCompatActivity {
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 
                 //(view).setText(view.getDayOfMonth()+"/"+view.getMonth()+"/"+view.getYear());
+
+                int motnh = view.getMonth() + 1;
                 if(Tview.getId() == R.id.maintnce_date){
-                    maintnce_dateTV.setText(view.getYear()+"-"+view.getMonth()+"-"+view.getDayOfMonth());
+                    maintnce_dateTV.setText(view.getYear()+"-"+motnh+"-"+view.getDayOfMonth());
                     if(maintnce_dateTV.getText().toString().length()>0){
                         maintDatelblTV.setVisibility(View.VISIBLE);
                         slideUp(maintDatelblTV);

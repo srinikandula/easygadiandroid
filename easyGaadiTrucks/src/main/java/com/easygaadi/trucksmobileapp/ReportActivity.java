@@ -54,7 +54,7 @@ public class ReportActivity extends AppCompatActivity {
         download_report = (Button)findViewById(R.id.download_report);
         report_rv = (RecyclerView)findViewById(R.id.report_rv);
         mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        adView = (AdView)findViewById(R.id.adView);
+        //adView = (AdView)findViewById(R.id.adView);
         intializeBannerAd();
 
         if(getIntent().hasExtra("data")){
@@ -90,30 +90,30 @@ public class ReportActivity extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onResume();
         TruckApp.getInstance().trackScreenView("Toll/Fuel Report Screen");
-        if (adView != null) {
+       /* if (adView != null) {
             adView.resume();
-        }
+        }*/
     }
 
     @Override
     protected void onPause() {
-        if (adView != null) {
+        /*if (adView != null) {
             adView.pause();
-        }
+        }*/
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (adView != null)
-        { adView.destroy(); }
+       /* if (adView != null)
+        { adView.destroy(); }*/
         super.onDestroy();
     }
 
 
     private void intializeBannerAd() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        //AdRequest adRequest = new AdRequest.Builder().build();
+        //adView.loadAd(adRequest);
     }
 
 

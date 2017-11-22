@@ -170,7 +170,7 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
         empty_tv = (TextView) findViewById(R.id.empty_pts_tv);
 
         adView = (AdView)findViewById(R.id.adView);
-        intializeBannerAd();
+       // intializeBannerAd();
 
 
         if(getIntent().hasExtra("vehicleType")){
@@ -944,8 +944,8 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
         parser = null;
         pDialog = null;
         markersMap = null;
-        if (adView != null)
-        { adView.destroy(); }
+        /*if (adView != null)
+        { adView.destroy(); }*/
         super.onDestroy();
     }
 
@@ -1201,18 +1201,18 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
         super.onResume();
         //initializeMap();
         TruckApp.getInstance().trackScreenView("TrackVehicle/Trip Screen");
-        if (adView != null) {
+        /*if (adView != null) {
             adView.resume();
-        }
+        }*/
 
     }
 
 
     @Override
     protected void onPause() {
-        if (adView != null) {
+       /* if (adView != null) {
             adView.pause();
-        }
+        }*/
         super.onPause();
     }
 

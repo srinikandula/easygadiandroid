@@ -63,7 +63,7 @@ public class VideoPlayback extends FragmentActivity implements OnMapReadyCallbac
         plotData = new ArrayList<>();
 
         adView = (AdView)findViewById(R.id.adView);
-        intializeBannerAd();
+        //intializeBannerAd();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -79,17 +79,17 @@ public class VideoPlayback extends FragmentActivity implements OnMapReadyCallbac
     protected void onResume() {
         super.onResume();
         TruckApp.getInstance().trackScreenView("TrackVehiclePlayback Screen");
-        if (adView != null) {
+       /* if (adView != null) {
             adView.resume();
-        }
+        }*/
     }
 
 
 
     @Override
     protected void onDestroy() {
-        if (adView != null)
-        { adView.destroy(); }
+        /*if (adView != null)
+        { adView.destroy(); }*/
         super.onDestroy();
     }
 
@@ -102,9 +102,9 @@ public class VideoPlayback extends FragmentActivity implements OnMapReadyCallbac
     @Override
     protected void onPause() {
         super.onPause();
-        if (adView != null) {
+      /*  if (adView != null) {
             adView.pause();
-        }
+        }*/
         TruckApp.checkPDialog(progressDialog);
     }
 

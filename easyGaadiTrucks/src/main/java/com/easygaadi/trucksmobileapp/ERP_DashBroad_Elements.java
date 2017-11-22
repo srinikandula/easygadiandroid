@@ -401,7 +401,7 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
         String diff = "";
 
         DateFormat dateFormat,formatter;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         try {
             date = dateFormat.parse(fdate);
             formatter = new SimpleDateFormat("dd-MM-yyyy"); //If you need time just put specific format for time like 'HH:mm:ss'

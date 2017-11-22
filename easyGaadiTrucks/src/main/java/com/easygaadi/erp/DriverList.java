@@ -280,7 +280,7 @@ public class DriverList extends Fragment {
             long diff = 0;
 
             DateFormat dateFormat,formatter;
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
             String newDates = null;
             try {
                 date = dateFormat.parse(dataSet.get(listPosition).getLicenseValidity());

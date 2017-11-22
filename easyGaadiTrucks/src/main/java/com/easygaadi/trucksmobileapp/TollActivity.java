@@ -102,8 +102,8 @@ public class TollActivity extends RootActivity implements TrucksAsyncInterface {
             }
         });
         setAdapter();
-        intializeGoogleAd();
-        intializeBannerAd();
+        //intializeGoogleAd();
+        //intializeBannerAd();
         if (this.detectCnnection.isConnectingToInternet())
         {
             new GetCardDetails().execute();
@@ -1081,23 +1081,23 @@ public class TollActivity extends RootActivity implements TrucksAsyncInterface {
     protected void onResume() {
         super.onResume();
         TruckApp.getInstance().trackScreenView("TollGate Screen");
-        if (adView != null) {
+        /*if (adView != null) {
             adView.resume();
-        }
+        }*/
     }
 
     @Override
     protected void onPause() {
-        if (adView != null) {
+        /*if (adView != null) {
             adView.pause();
-        }
+        }*/
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (adView != null)
-        { adView.destroy(); }
+       /* if (adView != null)
+        { adView.destroy(); }*/
         super.onDestroy();
     }
 }

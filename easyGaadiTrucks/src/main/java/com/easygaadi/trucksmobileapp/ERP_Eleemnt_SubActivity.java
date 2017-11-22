@@ -361,7 +361,7 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
         String diff = "";
 
         DateFormat dateFormat,formatter;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         try {
             date = dateFormat.parse(fdate);
             formatter = new SimpleDateFormat("dd MMM yy"); //If you need time just put specific format for time like 'HH:mm:ss'

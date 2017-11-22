@@ -90,7 +90,7 @@ public class LoadActivity extends AppCompatActivity {
 		price_et     = (EditText) pricedialog.findViewById(R.id.price_et);
 		load_tv      = (TextView) pricedialog.findViewById(R.id.load_tv);
 		adView = (AdView)findViewById(R.id.adView);
-		intializeBannerAd();
+		//intializeBannerAd();
 		fetchMessages();
 		intializeGoogleAd();
 	}
@@ -145,9 +145,9 @@ public class LoadActivity extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 		TruckApp.getInstance().trackScreenView("Loads Screen");
-		if (adView != null) {
+		/*if (adView != null) {
 			adView.resume();
-		}
+		}*/
 
 	}
 
@@ -302,9 +302,9 @@ public class LoadActivity extends AppCompatActivity {
 
 	@Override
 	protected void onPause() {
-		if (adView != null) {
+		/*if (adView != null) {
 			adView.pause();
-		}
+		}*/
 		super.onPause();
 	}
 
@@ -316,8 +316,8 @@ public class LoadActivity extends AppCompatActivity {
 		parser=null;
 		pDialog=null;
 		infoLV=null;
-		if (adView != null)
-		{ adView.destroy(); }
+		/*if (adView != null)
+		{ adView.destroy(); }*/
 		super.onDestroy();
 	}
 

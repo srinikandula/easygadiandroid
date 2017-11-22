@@ -245,8 +245,9 @@ public class LoginActivity extends Activity {
 						+ URLEncoder.encode(mobileNo, "UTF-8") + "&deviceid="
 						+ URLEncoder.encode(deviceId, "UTF-8") + "&type="
 						+ URLEncoder.encode("truck", "UTF-8");
+				System.out.println("EG eeurlParameters o/p"+urlParameters);
 				String res = parser.excutePost(TruckApp.loginURL, urlParameters);
-				System.out.println("EG eeurlParameters o/p"+res+""+urlParameters);
+				System.out.println("EG eeurlParameters o/p response:-->"+res+"    "+urlParameters);
 				System.out.println("EG eeurlParameters o/p"+urlParameters);
 				json = new JSONObject(res);
 			} catch (Exception e) {
@@ -660,16 +661,15 @@ public class LoginActivity extends Activity {
 				JSONObject post_dict = new JSONObject();
 
 				try {
-					post_dict.put("userName" , "test");
-					post_dict.put("name","easyGaadi");
-					post_dict.put("password", "password");
+					post_dict.put("userName" ,un);
+					post_dict.put("contactPhone",mobileNo);
+					post_dict.put("password", pwd);
 
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				System.out.println("ERPlogin" + "--"+TruckApp.userLoginURL);
 				String result = parser.easyyExcutePost(LoginActivity.this,TruckApp.userLoginURL,String.valueOf(post_dict));
-				System.out.println("ERPlogin o/p"+result);
+				//System.out.println("ERPlogin o/p"+result);
 				res = new JSONObject(result);
 
 			} catch (Exception e) {

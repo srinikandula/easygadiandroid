@@ -630,8 +630,8 @@ public class Driver_Activity extends AppCompatActivity {
                         drivermobET.setText(partData.getString("mobile"));
                         driverlicnumET.setText(partData.getString("licenseNumber"));
                         driverSalET.setText("");
-                        drvr_doj.setText(getDate(partData.getString("joiningDate")));
-                       // drvr_doj.setText("");
+                        //drvr_doj.setText(getDate(partData.getString("joiningDate")));
+                        drvr_doj.setText("");
                         if(drvr_doj.getText().toString().length() >0){
                             trip_dojlbl.setVisibility(View.VISIBLE);
                         }
@@ -673,7 +673,7 @@ public class Driver_Activity extends AppCompatActivity {
         String diff = "";
         System.out.println("getDate--"+"getDate"+fdate);
         DateFormat dateFormat,formatter;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         try {
             date = dateFormat.parse(fdate);
             formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'

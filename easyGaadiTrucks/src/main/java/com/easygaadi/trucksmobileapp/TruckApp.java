@@ -17,6 +17,7 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.acra.annotation.ReportsCrashes;
 import org.apache.commons.io.IOUtils;
 
 import android.annotation.SuppressLint;
@@ -56,6 +57,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.StandardExceptionParser;
 import com.google.android.gms.analytics.Tracker;
 
+//@ReportsCrashes(formKey = "",mailTo = "riyaz.m@mtwlabs.com")
 public class TruckApp extends MultiDexApplication {
 
 
@@ -68,6 +70,9 @@ public class TruckApp extends MultiDexApplication {
     ///added by ajay ///
 
     public static String BASE_URL = "http://egcrm.cloudapp.net/operations/index.php/GPSapiV3/";
+    //public static String BASE_URL = "http://192.168.0.132/crm/operations/index.php/GPSapiV3/";
+
+
     public static String CHANGE_PASSWORD_URL = BASE_URL + "SetPassword";
 
     public static String tollCardSettingsURL = BASE_URL + "tollCardSettings";
@@ -330,6 +335,7 @@ public class TruckApp extends MultiDexApplication {
         }
         return null;
     }
+
 
     @Override
     public void onCreate() {

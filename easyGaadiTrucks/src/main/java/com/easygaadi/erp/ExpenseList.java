@@ -281,7 +281,7 @@ public class ExpenseList extends Fragment {
         String diff = "";
 
         DateFormat dateFormat,formatter;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         try {
             date = dateFormat.parse(fdate);
             formatter = new SimpleDateFormat("dd-MM-yyyy"); //If you need time just put specific format for time like 'HH:mm:ss'
@@ -318,7 +318,7 @@ public class ExpenseList extends Fragment {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(getActivity(), TruckApp.ExpensesURL+"/getAllExpense");
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.ExpensesURL+"/getAllExpenses");
                 json = new JSONObject(res);
 
             } catch (Exception e) {

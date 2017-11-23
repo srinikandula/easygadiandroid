@@ -50,7 +50,7 @@ public class PendingSub_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_expiry_truck_);
+        setContentView(R.layout.activity_pending_sub_);
         context = PendingSub_Activity.this;
         parser = JSONParser.getInstance();
         pDialog = new ProgressDialog(context);
@@ -123,6 +123,9 @@ public class PendingSub_Activity extends AppCompatActivity {
                         Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
                     }else
                     {
+                        JSONObject totalObj = result.getJSONObject("totalPendingPayments");
+                        ((TextView) findViewById(R.id.vfreight_tv)).setText(""+totalObj.getInt("totalFreight"));
+                        ((TextView) findViewById(R.id.vpaid_tv)).setText(""+totalObj.getInt("totalPaid"));
                          JSONArray partArray = result.getJSONArray("results");
                             if(partArray.length() > 0)
                             {
@@ -218,7 +221,7 @@ public class PendingSub_Activity extends AppCompatActivity {
 
             if(listPosition == 0)
             {
-                holder.heaserLL.setVisibility(View.VISIBLE);
+                //holder.heaserLL.setVisibility(View.VISIBLE);
             }
 
             textPartyDate.setText(dataSet.get(listPosition).getDate());

@@ -38,36 +38,36 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
     Resources res;
     JSONParser parser;
     private ConnectionDetector detectCnnection;
-    LinearLayout containerLL;
     FrameLayout progressFrame;
     ProgressDialog pDialog;
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
-    private TextView freightTv,expensesTv;
     private static ArrayList<ERPsubVo> data;
     CustomAdapter partyadapter;
     String headerText="",urlLink="";
+    LinearLayout revenue_header,revenue_footer,expiry_header,expiry_footer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_expiry_truck_);
+        setContentView(R.layout.activity_erp__eleemnt__sub);
         context = ERP_Eleemnt_SubActivity.this;
         parser = JSONParser.getInstance();
         pDialog = new ProgressDialog(context);
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);
-        containerLL = (LinearLayout) findViewById(R.id.container);
+
         detectCnnection = new ConnectionDetector(context);
 
         recyclerView = (RecyclerView) findViewById(R.id.quotes_rc);
         recyclerView.setHasFixedSize(true);
 
 
-        freightTv = (TextView)findViewById(R.id.vexpenses_amt_tv);
-        //expensesTv= (TextView)findViewById(R.id.);
-
+        revenue_header = (LinearLayout)findViewById(R.id.revenue_header);
+        revenue_footer = (LinearLayout)findViewById(R.id.revenue_footer);
+        expiry_header = (LinearLayout)findViewById(R.id.expense_header);
+        expiry_footer = (LinearLayout)findViewById(R.id.expense_footer);
 
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
@@ -78,6 +78,15 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
         urlLink = bundle.getString("url");
         ((TextView)findViewById(R.id.header_tv)).setText(headerText);
         System.out.println("riyaz"+urlLink);
+
+        if(urlLink.contains("party")){
+            revenue_header.setVisibility(View.VISIBLE);
+            revenue_footer.setVisibility(View.VISIBLE);
+        }else{
+            expiry_header.setVisibility(View.VISIBLE);
+            expiry_footer.setVisibility(View.VISIBLE);
+        }
+
 
         if (detectCnnection.isConnectingToInternet()) {
             new GetReacordList().execute();
@@ -130,16 +139,13 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
                     {
                         if(urlLink.contains("party")){
 
-
                             JSONArray partArray = result.getJSONArray("trips");//"trips");
                             if(partArray.length() > 0)
                             {
                                 if(result.has("totalRevenue")){
                                     JSONObject tRevenue = result.getJSONObject("totalRevenue");
-                                    freightTv.setText(""+tRevenue.getInt("totalFreight"));
-                                    ((TextView) findViewById(R.id.vrevenue_amt_tv)).setText(""+tRevenue.getInt("totalExpenses"));
-
-                                    containerLL.setVisibility(View.VISIBLE);
+                                    ((TextView) findViewById(R.id.vfreight_amt_tv)).setText(""+tRevenue.getInt("totalFreight"));
+                                    ((TextView) findViewById(R.id.vexpenceses_amt_tv)).setText(""+tRevenue.getInt("totalExpenses"));
                                 }
                                 data = new ArrayList<ERPsubVo>();
                                 for (int i = 0; i < partArray.length(); i++) {
@@ -171,20 +177,20 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
                                 recyclerView.invalidate();
                                 pDialog.dismiss();
                             }else{
-                                if(result.has("totalRevenue")){
-                                    containerLL.setVisibility(View.VISIBLE);
-                                    JSONObject tRevenue = result.getJSONObject("totalRevenue");
-                                    ((TextView) findViewById(R.id.vexpenses_amt_tv)).setText(tRevenue.getInt("totalFreight"));
-                                    ((TextView) findViewById(R.id.vrevenue_amt_tv)).setText(tRevenue.getInt("totalExpenses"));
 
-
-                                }
 
                                 Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
                                 pDialog.dismiss();
                             }
                         }else{
                             JSONArray partArray = result.getJSONArray("expenses");
+                            if(result.has("totalExpenses")){
+                                JSONObject tRevenue = result.getJSONObject("totalExpenses");
+                                ((TextView) findViewById(R.id.exp_vdiesel_tv)).setText(""+tRevenue.getInt("totalDieselExpense"));
+                                ((TextView) findViewById(R.id.exp_vtoll_tv)).setText(""+tRevenue.getInt("totaltollExpense"));
+                                ((TextView) findViewById(R.id.exp_vmaint_amt_tv)).setText(""+tRevenue.getInt("totalmExpense"));
+                                ((TextView) findViewById(R.id.exp_vMisc_tv)).setText(""+tRevenue.getInt("totalmisc"));
+                            }
                             if(partArray.length() > 0)
                             {
                                 data = new ArrayList<ERPsubVo>();
@@ -318,7 +324,7 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
 
             if(listPosition == 0)
             {
-                holder.heaserLL.setVisibility(View.VISIBLE);
+                //holder.heaserLL.setVisibility(View.VISIBLE);
                 if(urlLink.contains("party")) {//trips
 
                 }else{

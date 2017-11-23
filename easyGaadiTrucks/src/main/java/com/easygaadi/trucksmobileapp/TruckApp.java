@@ -70,7 +70,7 @@ public class TruckApp extends MultiDexApplication {
     ///added by ajay ///
 
     public static String BASE_URL = "http://egcrm.cloudapp.net/operations/index.php/GPSapiV3/";
-    //public static String BASE_URL = "http://192.168.0.132/crm/operations/index.php/GPSapiV3/";
+    //public static String BASE_URL = "http://192.168.1.39:3000/crm/operations/index.php/GPSapiV3/";
 
 
     public static String CHANGE_PASSWORD_URL = BASE_URL + "SetPassword";
@@ -152,7 +152,7 @@ public class TruckApp extends MultiDexApplication {
 
     //public static String ERP_URL= "http://35.154.47.181:3000/v1/";
     public static String ERP_URL= "http://demo.easygaadi.com/v1/";
-    //public static String ERP_URL= "http://192.168.0.132:3000/v1/";
+    //public static String ERP_URL= "http://192.168.1.39:3000/v1/";
     public static String userLoginURL =  ERP_URL+"group/login";
     public static String paryListURL =  ERP_URL+"party/get/accountParties";
     public static String addPayURL =  ERP_URL+"party";

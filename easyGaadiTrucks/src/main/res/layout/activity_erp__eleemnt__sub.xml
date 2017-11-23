@@ -1,9 +1,434 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.easygaadi.trucksmobileapp.ERP_Eleemnt_SubActivity">
+    android:background="#e1e1e1"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:layout_alignParentTop="true"
+        android:id="@+id/header">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/actionbar_clr"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="left|center_vertical">
+                <Button
+                    android:id="@+id/backbtn"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/erp_back_btn"
+                    android:gravity="left|center_vertical"
+                    android:layout_centerVertical="true"
+                    android:padding="@dimen/margin_5"
+                    android:onClick="callback"/>
+                <TextView
+                    android:id="@+id/header_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="EasyGaadi"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    android:gravity="left|center_vertical"
+                    android:layout_toRightOf="@+id/backbtn"
+                    android:layout_toLeftOf="@+id/mailBtn"/>
+                <ImageView
+                    android:id="@+id/mailBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:gravity="center"
+                    android:src="@drawable/erp_mail"
+                    android:layout_alignParentRight="true"
+                    android:text="Send MAil"
+                    android:layout_margin="@dimen/margin_5"/>
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/formLL"
+        android:layout_below="@+id/header"
+        android:layout_above="@+id/ll_footer"
+        android:background="#e1e1e1">
+        <LinearLayout
+            android:id="@+id/revenue_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/expencese_title_bg"
+            android:weightSum="5"
+            android:padding="3dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/date_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Date"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/tripID_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:text="Trip ID "
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/party_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:text="Party Name "
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/freight_amt_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:text="Freight "
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <TextView
+                android:id="@+id/expenceses_amt_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:text="Expenses "
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/expense_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/expencese_title_bg"
+            android:weightSum="5"
+            android:padding="3dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/exp_date_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Date"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/exp_diesel_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:text="Diesel "
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/exp_toll_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:text="Toll"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/exp_freight_amt_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:text="Maint.. "
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <TextView
+                android:id="@+id/exp_expenceses_amt_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:text="Misc.. "
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+        </LinearLayout>
+
+
+
+        <FrameLayout
+            android:id="@+id/progressFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:visibility="gone" >
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/quotes_rc"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/etSearch"
+            >
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:id="@+id/ll_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/revenue_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/erp_footer_bg"
+            android:weightSum="5"
+            android:padding="3dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/vdate_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Date"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:visibility="invisible"/>
+            <TextView
+                android:id="@+id/vtripID_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:text="Trip ID "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:visibility="invisible"/>
+            <TextView
+                android:id="@+id/vparty_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:text="Total"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/vfreight_amt_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:text="Freight "
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <TextView
+                android:id="@+id/vexpenceses_amt_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:text="Expenses "
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/expense_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/erp_footer_bg"
+            android:weightSum="5"
+            android:padding="3dp"
+            android:visibility="gone">
+            <TextView
+                android:id="@+id/exp_vtotal_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Total"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/exp_vdiesel_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:text="Diesel "
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/exp_vtoll_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:text="Toll"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+            <TextView
+                android:id="@+id/exp_vmaint_amt_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:text="Maint.. "
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+            <TextView
+                android:id="@+id/exp_vMisc_tv"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/secondary_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:padding="1dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="1dp"
+                android:layout_marginRight="1dp"
+                android:background="@color/white"
+                android:text="Misc.. "
+                android:textAppearance="?android:attr/textAppearanceLarge"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

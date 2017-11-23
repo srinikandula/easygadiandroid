@@ -52,7 +52,7 @@ public class PendingPayments_Activty extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_expiry_truck_);
+        setContentView(R.layout.activity_pending_payments__activty);
         context = PendingPayments_Activty.this;
         parser = JSONParser.getInstance();
         pDialog = new ProgressDialog(context);
@@ -123,6 +123,14 @@ public class PendingPayments_Activty extends AppCompatActivity {
                         Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
                     }else
                     {
+                        JSONObject totalObj = result.getJSONObject("grossAmounts");
+                        ((TextView) findViewById(R.id.vfreight_amt_tv)).setText(""+totalObj.getInt("grossFreight"));
+
+                        ((TextView) findViewById(R.id.vpaid_amt_tv)).setText(""+totalObj.getInt("grossExpenses"));
+
+                        ((TextView) findViewById(R.id.vdue_amt_tv)).setText(""+totalObj.getInt("grossDue"));
+
+
                             JSONArray partArray = result.getJSONArray("parties");
                             if(partArray.length() > 0)
                             {
@@ -161,6 +169,7 @@ public class PendingPayments_Activty extends AppCompatActivity {
                     }
                 } catch (Exception e) {
                     System.out.println("ex in get leads" + e.toString());
+                    pDialog.dismiss();
                 }
 
             } else {
@@ -216,7 +225,7 @@ public class PendingPayments_Activty extends AppCompatActivity {
 
             if(listPosition == 0)
             {
-                holder.heaserLL.setVisibility(View.VISIBLE);
+                //holder.heaserLL.setVisibility(View.VISIBLE);
             }
 
             SpannableString content = new SpannableString(dataSet.get(listPosition).getName());

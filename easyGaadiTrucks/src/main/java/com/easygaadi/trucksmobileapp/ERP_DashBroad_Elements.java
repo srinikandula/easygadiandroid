@@ -43,6 +43,7 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
     private ConnectionDetector detectCnnection;
     FrameLayout progressFrame;
     ProgressDialog pDialog;
+    LinearLayout revenue_header,revenue_footer,expiry_header,expiry_footer;
     private static RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private static RecyclerView recyclerView;
@@ -54,13 +55,18 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_expiry_truck_);
+        setContentView(R.layout.activity_erp__dash_broad__elements);
         context = ERP_DashBroad_Elements.this;
         parser = JSONParser.getInstance();
         pDialog = new ProgressDialog(context);
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);
+        revenue_header = (LinearLayout)findViewById(R.id.revenue_header);
+        revenue_footer = (LinearLayout)findViewById(R.id.revenue_footer);
+        expiry_header = (LinearLayout)findViewById(R.id.expiry_header);
+        expiry_footer = (LinearLayout)findViewById(R.id.expiry_footer);
+    //expiry_header,expiry_footer
         detectCnnection = new ConnectionDetector(context);
 
         recyclerView = (RecyclerView) findViewById(R.id.quotes_rc);
@@ -75,6 +81,14 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
         urlLink = bundle.getString("url");
         ((TextView)findViewById(R.id.header_tv)).setText(headerText);
 
+
+        if(urlLink.contains("trips")){
+            revenue_header.setVisibility(View.VISIBLE);
+            revenue_footer.setVisibility(View.VISIBLE);
+        }else{
+            expiry_header.setVisibility(View.VISIBLE);
+            expiry_footer.setVisibility(View.VISIBLE);
+        }
 
         if (detectCnnection.isConnectingToInternet()) {
             new GetReacordList().execute();
@@ -127,6 +141,12 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
                     {
                         if(urlLink.contains("trips")){
                             JSONArray partArray = result.getJSONArray("revenue");
+
+                            JSONObject totalObj = result.getJSONObject("grossAmounts");
+                            ((TextView) findViewById(R.id.vfreight_amt_tv)).setText(""+totalObj.getInt("grossFreight"));
+                            ((TextView) findViewById(R.id.vexpenceses_amt_tv)).setText(""+totalObj.getInt("grossExpenses"));
+                            ((TextView) findViewById(R.id.vrevene_amt_tv)).setText(""+totalObj.getInt("grossRevenue"));
+
                             if(partArray.length() > 0)
                             {
                                 data = new ArrayList<PartyVo>();
@@ -152,6 +172,14 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
                             }
                         }else{
                            // Toast.makeText(context, "expenses", Toast.LENGTH_SHORT).show();
+
+                            JSONObject totalObj = result.getJSONObject("totalExpenses");
+                            ((TextView) findViewById(R.id.vdiesel_amt_tv)).setText(""+totalObj.getInt("totalDieselExpense"));
+                            ((TextView) findViewById(R.id.vtoll_amt_tv)).setText(""+totalObj.getInt("totaltollExpense"));
+                            ((TextView) findViewById(R.id.vmaint_amt_tv)).setText(""+totalObj.getInt("totalmExpense"));
+                            ((TextView) findViewById(R.id.vmisce_amt_tv)).setText(""+totalObj.getInt("totalmisc"));
+
+
                             JSONArray partArray = result.getJSONArray("expenses");
                             if(partArray.length() > 0)
                             {
@@ -249,7 +277,7 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
             TextView textHeaderRAmount = holder.textHeaderRAmount;
             if(listPosition == 0)
             {
-                holder.heaserLL.setVisibility(View.VISIBLE);
+                //holder.heaserLL.setVisibility(View.VISIBLE);
 
                 if(urlLink.contains("trips")) {
                     //textHeaderName.setText("Party Name");
@@ -349,7 +377,7 @@ public class ERP_DashBroad_Elements extends AppCompatActivity {
 
             if(listPosition == 0)
             {
-                holder.heaserLL.setVisibility(View.VISIBLE);
+                //holder.heaserLL.setVisibility(View.VISIBLE);
             }
 
             SpannableString content = new SpannableString(dataSet.get(listPosition).getName());

@@ -151,7 +151,11 @@ public class TruckApp extends MultiDexApplication {
     //erp url
 
     //public static String ERP_URL= "http://35.154.47.181:3000/v1/";
-    public static String ERP_URL= "http://demo.easygaadi.com/v1/";
+    //development
+    //public static String ERP_URL= "http://demo.easygaadi.com/v1/";
+    //production
+    public static String ERP_URL= "http://erp.easygaadi.com/v1/";
+
     //public static String ERP_URL= "http://192.168.1.39:3000/v1/";
     public static String userLoginURL =  ERP_URL+"group/login";
     public static String paryListURL =  ERP_URL+"party/get/accountParties";

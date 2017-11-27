@@ -50,10 +50,7 @@ import com.easygaadi.network.CustomRetrofitSpiceService;
 import com.easygaadi.network.GroupItemsSpiceRequest;
 import com.easygaadi.network.SaveCardSettings;
 import com.easygaadi.utils.Constants;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.octo.android.robospice.SpiceManager;
 import com.octo.android.robospice.persistence.DurationInMillis;
 import com.octo.android.robospice.persistence.exception.SpiceException;
@@ -63,7 +60,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,7 +86,7 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
     JSONParser parser;
     ProgressDialog pDialog;
     SharedPreferences sharedPreferences;
-    Dialog profileDialog, chnPasswordDialog,generalSettingsDialog;
+    Dialog profileDialog, chnPasswordDialog,generalSettingsDialog,subscribeDialog;
     //String[] menutitles;
     //TypedArray menuIcons;
 
@@ -246,9 +242,9 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
         }
 
         if (truck == 1) {
-            names.add("Trucks");
+            /*names.add("Trucks");
             images.add(R.drawable.n_trucks);
-            ids.add(2);
+            ids.add(2);*/
         }
 
         if (loads == 1) {
@@ -276,36 +272,39 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
         }*/
 
         if (orders == 1) {
-            names.add("Orders");
+            /*names.add("Orders");
             images.add(R.drawable.n_orders);
-            ids.add(7);
+            ids.add(7);*/
         }
 
         if (buyselltrucks == 1) {
-            names.add("Buy/SellTruck");
+           /* names.add("Buy/SellTruck");
             images.add(R.drawable.buysellicon);
-            ids.add(8);
+            ids.add(8);*/
         }
 
-        names.add("ERP");
-        images.add(R.drawable.n_fms);
-        ids.add(9);
+            names.add("ERP");
+            images.add(R.drawable.n_fms);
+            ids.add(9);
+
         /*names.add("Fuel Card");
         images.add(R.drawable.fuel_card);
         ids.add(9);*/
 
-        names.add("Insurance");
+        /*names.add("Insurance");
         images.add(R.drawable.n_insurance);
-        ids.add(10);
+        ids.add(10);*/
 
-        names.add("Toll/Fuel Cards ");
+        /*names.add("Toll/Fuel Cards ");
         images.add(R.drawable.n_tollcard);
-        ids.add(11);
+        ids.add(11);*/
 
         /* names.add("E-Toll ");
         images.add(R.drawable.e_toll);
         ids.add(11);*/
 
+        final SharedPreferences prefs = context.getSharedPreferences(context.getResources().getString(R.string.shareP_erp), MODE_PRIVATE);
+        String restoredText = prefs.getString("token", null);
 
 
         gridView.setAdapter(new GridAdapter(names, images,HomeScreenActivity.this));
@@ -316,23 +315,32 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
                 int id = ids.get(position);
                 switch (id) {
                     case 1:
-                        if(groupID.equals("0")) {
-                            getListOfGroups();
-                        }else {
-                            Intent intent = new Intent(context, ListOfTrackingTrucks.class);
-                            intent.putExtra("home","home");
-                            intent.putExtra(Constants.GROUP_ID, groupID);
-                            intent.putExtra(Constants.GROUP_NAME, groupName);
-                            startActivity(intent);
+                        if( prefs.getBoolean("gpsEnabled",false)){
+                            if (groupID.equals("0")) {
+                                getListOfGroups();
+                            } else {
+                                    Intent intent = new Intent(context, ListOfTrackingTrucks.class);
+                                    intent.putExtra("home", "home");
+                                    intent.putExtra(Constants.GROUP_ID, groupID);
+                                    intent.putExtra(Constants.GROUP_NAME, groupName);
+                                    startActivity(intent);
+
+                            }
+                        }else{
+                            intializieSubscribeDialog();
                         }
                         break;
                     case 2:
                         startActivity(new Intent(context, TrucksActivity.class));
                         break;
                     case 3:
-                        Intent next_in = new Intent(context, LoadActivity.class);//
-                        next_in.putExtra("accountId",sharedPreferences.getString("accountID", ""));
-                        startActivity(next_in);
+                        if( prefs.getBoolean("loadEnabled",false)){
+                            Intent next_in = new Intent(context, LoadActivity.class);//
+                            next_in.putExtra("accountId", sharedPreferences.getString("accountID", ""));
+                            startActivity(next_in);
+                        }else{
+                            intializieSubscribeDialog();
+                        }
                         break;
                     case 4:
                         startActivity(new Intent(context, PostLoadActivity.class));
@@ -352,16 +360,11 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
                         //	startActivity(new Intent(context, SampleBuySellActivity.class));
                         break;
                     case 9:
-                       /* if(!sharedPreferences.getString(FUEL_USERNAME_KEY,"").isEmpty() &&
-                                !sharedPreferences.getString(FUEL_PASSWORD_KEY,"").isEmpty() &&
-                                !sharedPreferences.getString(FUEL_CUSTOMERID_KEY,"").isEmpty()){
-                            next_in(decrypt(sharedPreferences.getString(FUEL_USERNAME_KEY,"")),
-                                    decrypt(sharedPreferences.getString(FUEL_PASSWORD_KEY,"")),
-                                    decrypt(sharedPreferences.getString(FUEL_CUSTOMERID_KEY,"")),"Fuel Card");
+                        if( prefs.getBoolean("erpEnabled",false)){
+                            startActivity(new Intent(context, ERP_Activitys.class));
                         }else{
-                            showSettingsDialog("Fuel Card");
-                        }*/
-                        startActivity(new Intent(context, ERP_Activitys.class));
+                            intializieSubscribeDialog();
+                        }
                         break;
                     case 10:
                         startActivity(new Intent(context, InsuranceActivity.class));
@@ -562,6 +565,12 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
 
     }
 
+
+
+
+
+
+
     private void saveSettings(EditText usernameEt, EditText passwordEt, EditText customerIDEt,String title) {
         if(detectCnnection.isConnectingToInternet()) {
             String username = usernameEt.getText().toString().trim();
@@ -605,6 +614,39 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
         generalSettingsDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         generalSettingsDialog.setContentView(R.layout.general_settings);
     }
+
+    private void intializieSubscribeDialog() {
+        subscribeDialog = new Dialog(HomeScreenActivity.this,android.R.style.Theme_Dialog);
+        subscribeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        subscribeDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+        subscribeDialog.setContentView(R.layout.subscribe_service_layout);
+
+        chnclsDialog_iv = (ImageView) subscribeDialog.findViewById(R.id.close_iv);
+        changePassword = (Button) subscribeDialog.findViewById(R.id.chnpwd_btn);
+
+        subscribeDialog.show();
+        chnclsDialog_iv.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                //old_pwd_et.setText("");
+                subscribeDialog.dismiss();
+                subscribeDialog = null;
+            }
+        });
+
+        changePassword.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                    //new ChangePassword(sharedPreferences.getString("accountID", ""), sharedPreferences.getString("uid", ""), newPwd, "Changing password").execute();
+
+            }
+        });
+
+
+    }
+
 
     private void getListOfGroups() {
         progressDialog = new ProgressDialog(context);
@@ -775,19 +817,14 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
 
     private void changePwdDialog(String string) {
         changePassword = null;
-        chnPasswordDialog = new Dialog(HomeScreenActivity.this,
-                android.R.style.Theme_Dialog);
+        chnPasswordDialog = new Dialog(HomeScreenActivity.this,android.R.style.Theme_Dialog);
         chnPasswordDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        chnPasswordDialog.getWindow().setBackgroundDrawable(
-                new ColorDrawable(0));
+        chnPasswordDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
         chnPasswordDialog.setContentView(R.layout.changepwddialog);
-        chnclsDialog_iv = (ImageView) chnPasswordDialog
-                .findViewById(R.id.close_iv);
-        changePassword = (Button) chnPasswordDialog
-                .findViewById(R.id.chnpwd_btn);
+        chnclsDialog_iv = (ImageView) chnPasswordDialog.findViewById(R.id.close_iv);
+        changePassword = (Button) chnPasswordDialog.findViewById(R.id.chnpwd_btn);
         new_pwd_et = (EditText) chnPasswordDialog.findViewById(R.id.new_pwd_et);
-        repwd_et = (EditText) chnPasswordDialog
-                .findViewById(R.id.reenternew_pwd_et);
+        repwd_et = (EditText) chnPasswordDialog.findViewById(R.id.reenternew_pwd_et);
         /*old_pwd_et = (EditText) chnPasswordDialog.findViewById(old_pwd_et);
         old_pwd_et.setText("");*/
         new_pwd_et.setText("");
@@ -829,14 +866,15 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
         });
     }
 
+
+
+
     private class GetProfile extends AsyncTask<String, String, JSONObject> {
 
         String id, message;
-
         public GetProfile(String id, String message) {
             this.id = id;
             this.message = message;
-
         }
 
         @Override
@@ -1151,9 +1189,7 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
             if (result != null) {
                 try {
                     if (0 == result.getInt("status")) {
-                        Toast.makeText(context,
-                                "Failed to logout .Please try again",
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"Failed to logout .Please try again",Toast.LENGTH_LONG).show();
                     }else if (2 == result.getInt("status")) {
                         //TruckApp.logoutAction(HomeScreenActivity.this);
                         SharedPreferences sharedPreferences = getSharedPreferences(
@@ -1168,8 +1204,7 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
                         editor.putString(TOLL_USERNAME_KEY,"").commit();
                         editor.putString(TOLL_PASSWORD_KEY,"").commit();
                         editor.putString(TOLL_CUSTOMERID_KEY,"").commit();
-                        startActivity(new Intent(context,
-                                LoginActivity.class));
+                        startActivity(new Intent(context,LoginActivity.class));
                         finish();
                     } else if (1 == result.getInt("status")) {
                         System.out.println("add");

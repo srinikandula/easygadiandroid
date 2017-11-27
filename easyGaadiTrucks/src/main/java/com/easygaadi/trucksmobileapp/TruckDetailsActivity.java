@@ -623,8 +623,7 @@ public class TruckDetailsActivity extends AppCompatActivity implements View.OnCl
                         //TruckApp.logoutAction(TruckDetailsActivity.this);
                         SharedPreferences sharedPreferences = getSharedPreferences(
                                 getResources().getString(R.string.app_name), MODE_PRIVATE);
-                        SharedPreferences.Editor
-                                editor = sharedPreferences.edit();
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putInt("login", 0).commit();
                         editor.putString("accountID", "").commit();
                         editor.putString(Constants.FUEL_USERNAME_KEY,"").commit();

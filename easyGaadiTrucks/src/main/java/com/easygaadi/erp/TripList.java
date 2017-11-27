@@ -11,7 +11,9 @@ import android.content.IntentFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -205,9 +207,10 @@ public class TripList extends Fragment {
 
         private ArrayList<TripVo> dataSet;
 
+
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView tripID_tv,truckRegNo_tv,tv_lastupadate,triperName_tv,freightamt_tv;
+            TextView tripID_tv,truckRegNo_tv,tv_lastupadate,triperName_tv,freightamt_tv,whatsapp_tv,sms_tv;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -216,6 +219,8 @@ public class TripList extends Fragment {
                 this.tv_lastupadate = (TextView) itemView.findViewById(R.id.tv_lastupadate);
                 this.triperName_tv = (TextView) itemView.findViewById(R.id.triperName_tv);
                 this.freightamt_tv = (TextView) itemView.findViewById(R.id.freightamt_tv);
+                this.whatsapp_tv = (TextView) itemView.findViewById(R.id.whatsapp_tv);
+                this.sms_tv = (TextView) itemView.findViewById(R.id.sms_tv);
             }
         }
 
@@ -240,6 +245,9 @@ public class TripList extends Fragment {
             TextView tv_lastupadate = holder.tv_lastupadate;
             TextView triperName_tv = holder.triperName_tv;
             TextView freightamt_tv = holder.freightamt_tv;
+            TextView whatsapp_tv = holder.whatsapp_tv;
+            TextView sms_tv = holder.sms_tv;
+
 
             tripID_tv.setText(Html.fromHtml("<u>"+dataSet.get(listPosition).getTripId()+"<u>"));
             truckRegNo_tv.setText(dataSet.get(listPosition).getTruckName());
@@ -276,12 +284,20 @@ public class TripList extends Fragment {
             });
 
             //tripID_tv
-            /*edit_tv.setOnClickListener(new View.OnClickListener() {
+            whatsapp_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    setReportDialog(dataSet.get(listPosition).get_id());
+                    Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+                    whatsappIntent.setType("text/plain");
+                    whatsappIntent.setPackage("com.whatsapp");
+                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "The text you wanted to share");
+                    try {
+                        getContext().startActivity(whatsappIntent);
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(getContext(),"Whatsapp have not been installed.",Toast.LENGTH_SHORT).show();
+                    }
                 }
-            });*/
+            });
 
         }
 
@@ -336,6 +352,33 @@ public class TripList extends Fragment {
         }
 
 
+
+        private void sendSMS(Context context,String phone,String message) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) // At least KitKat
+            {
+                String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(context); // Need to change the build to API 19
+
+                Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                sendIntent.setType("text/plain");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, message);
+
+                if (defaultSmsPackageName != null)// Can be null in case that there is no default, then the user would be able to choose
+                // any app that support this intent.
+                {
+                    sendIntent.setPackage(defaultSmsPackageName);
+                }
+                startActivity(sendIntent);
+
+            }
+            else // For early versions, do what worked for you before.
+            {
+                Intent smsIntent = new Intent(android.content.Intent.ACTION_VIEW);
+                smsIntent.setType("vnd.android-dir/mms-sms");
+                smsIntent.putExtra("address",phone);
+                smsIntent.putExtra("sms_body",message);
+                startActivity(smsIntent);
+            }
+        }
 
 
         private void setReportDialog(final String tripID){

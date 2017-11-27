@@ -34,13 +34,13 @@ public class GroupsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_groups);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         adView = (AdView)findViewById(R.id.adView);
-        intializeBannerAd();
+        //intializeBannerAd();
         setSupportActionBar(toolbar);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, new GroupsFragment()).commit();
         }
 
-        intializeGoogleAd();
+        //intializeGoogleAd();
     }
 
     @Override
@@ -78,16 +78,16 @@ public class GroupsActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        if (adView != null) {
+       /* if (adView != null) {
             adView.pause();
-        }
+        }*/
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (adView != null)
-        { adView.destroy(); }
+        /*if (adView != null)
+        { adView.destroy(); }*/
         super.onDestroy();
     }
 
@@ -102,9 +102,9 @@ public class GroupsActivity extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onResume();
         TruckApp.getInstance().trackScreenView("Groups Screen");
-        if (adView != null) {
+        /*if (adView != null) {
             adView.resume();
-        }
+        }*/
     }
 
 

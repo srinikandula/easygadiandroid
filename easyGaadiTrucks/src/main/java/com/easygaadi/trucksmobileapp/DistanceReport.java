@@ -144,7 +144,7 @@ public class DistanceReport extends AppCompatActivity implements View.OnClickLis
             //AdRequest adRequest = new AdRequest.Builder().build();
             //adView.loadAd(adRequest);
         }else{
-            adView.setVisibility(View.GONE);
+            //adView.setVisibility(View.GONE);
         }
     }
 
@@ -255,23 +255,23 @@ public class DistanceReport extends AppCompatActivity implements View.OnClickLis
     protected void onResume() {
         super.onResume();
         TruckApp.getInstance().trackScreenView("DistanceReport Screen");
-        if (adView != null) {
+        /*if (adView != null) {
             adView.resume();
-        }
+        }*/
     }
 
     @Override
     protected void onDestroy() {
-        if (adView != null)
-        { adView.destroy(); }
+        /*if (adView != null)
+        { adView.destroy(); }*/
         super.onDestroy();
     }
 
     @Override
     protected void onPause() {
-        if (adView != null) {
+        /*if (adView != null) {
             adView.pause();
-        }
+        }*/
         super.onPause();
     }
 

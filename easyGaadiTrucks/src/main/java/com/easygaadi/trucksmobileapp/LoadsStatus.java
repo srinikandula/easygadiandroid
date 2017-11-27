@@ -98,7 +98,6 @@ public class LoadsStatus extends AppCompatActivity implements OnClickListener {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_loadstatus);
-
 		context           = this;
 		detectConnection  = new ConnectionDetector(context);
 		parser            = JSONParser.getInstance();
@@ -107,7 +106,6 @@ public class LoadsStatus extends AppCompatActivity implements OnClickListener {
 		sharedPreferences = getApplicationContext().getSharedPreferences(getResources().getString(R.string.app_name), MODE_PRIVATE);
 		loadsLV  = (ListView)findViewById(R.id.statuslv);
 		offset          = 0;
-
 		repostDialog    = new Dialog(LoadsStatus.this, R.style.AppTheme);
 		repostDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		repostDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
@@ -160,7 +158,7 @@ public class LoadsStatus extends AppCompatActivity implements OnClickListener {
 		
 		
 		fetchPostedLoads(0);
-		intializeGoogleAd();
+		//intializeGoogleAd();
 
 		loadsLV.setOnScrollListener(new OnScrollListener() {
 

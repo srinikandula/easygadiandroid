@@ -273,10 +273,8 @@ public class ShareActivity extends AppCompatActivity implements GetTrucksInterfa
                         @Override
                         public View getView(int position,
                                             View convertView, ViewGroup parent) {
-                            View view = super.getView(position,
-                                    convertView, parent);
-                            TextView text = (TextView) view
-                                    .findViewById(android.R.id.text1);
+                            View view = super.getView(position,convertView, parent);
+                            TextView text = (TextView) view.findViewById(android.R.id.text1);
                             text.setTextColor(Color.BLACK);
                             return view;
                         }

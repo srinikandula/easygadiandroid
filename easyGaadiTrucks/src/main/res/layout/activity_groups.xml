@@ -32,6 +32,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/eg_banner">
+        ads:adUnitId="@string/eg_banner"
+        android:visibility="gone">
     </com.google.android.gms.ads.AdView>
 </LinearLayout>

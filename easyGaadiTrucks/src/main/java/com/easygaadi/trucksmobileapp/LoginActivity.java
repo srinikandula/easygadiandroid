@@ -273,32 +273,20 @@ public class LoginActivity extends Activity {
 						} else {
 							editor.putString("username", "");
 						}
-						editor.putString("userdata",
-								(s.getJSONObject("success")).toString());
+						editor.putString("userdata",(s.getJSONObject("success")).toString());
 
 
-						editor.putString("phone", s.getJSONObject("success")
-								.getString("contactPhone"));
-						editor.putString("accountID", s
-								.getJSONObject("success")
-								.getString("accountID"));
-						editor.putString("uid", s.getJSONObject("success")
-								.getString("uid"));
-						editor.putString("type", s.getJSONObject("success")
-								.getString("type"));
+						editor.putString("phone", s.getJSONObject("success").getString("contactPhone"));
+						editor.putString("accountID", s.getJSONObject("success").getString("accountID"));
+						editor.putString("uid", s.getJSONObject("success").getString("uid"));
+						editor.putString("type", s.getJSONObject("success").getString("type"));
 
-						editor.putInt("gps",
-								s.getJSONObject("success").getInt("gps"));
-						editor.putInt("truck", s.getJSONObject("success")
-								.getInt("truck"));
-						editor.putInt("loads", s.getJSONObject("success")
-								.getInt("loads"));
-						editor.putInt("postload", s.getJSONObject("success")
-								.getInt("postload"));
-						editor.putInt("loadstatus", s.getJSONObject("success")
-								.getInt("loadstatus"));
-						editor.putInt("orders", s.getJSONObject("success")
-								.getInt("orders"));
+						editor.putInt("gps",s.getJSONObject("success").getInt("gps"));
+						editor.putInt("truck", s.getJSONObject("success").getInt("truck"));
+						editor.putInt("loads", s.getJSONObject("success").getInt("loads"));
+						editor.putInt("postload", s.getJSONObject("success").getInt("postload"));
+						editor.putInt("loadstatus", s.getJSONObject("success").getInt("loadstatus"));
+						editor.putInt("orders", s.getJSONObject("success").getInt("orders"));
 						editor.putInt("truckavailable",s.getJSONObject("success").getInt(
 								"truckavailable"));
 						editor.putInt("distanceReport",s.getJSONObject("success").getInt(
@@ -306,27 +294,19 @@ public class LoginActivity extends Activity {
 						editor.putInt("createGroup",s.getJSONObject("success").getInt(
 								"CreateGroup"));
 
-						editor.putInt("dashboard",s.getJSONObject("success").getInt(
-								"Dashboard"));
-						editor.putInt("settings",s.getJSONObject("success").getInt(
-								"Settings"));
-						editor.putInt("shareVehicle",s.getJSONObject("success").getInt(
-								"ShareVehicle"));
+						editor.putInt("dashboard",s.getJSONObject("success").getInt("Dashboard"));
+						editor.putInt("settings",s.getJSONObject("success").getInt("Settings"));
+						editor.putInt("shareVehicle",s.getJSONObject("success").getInt("ShareVehicle"));
 
-						editor.putString("groupID",s.getJSONObject("success").getString(
-								"groupID"));
-						editor.putString("groupName",s.getJSONObject("success").getString(
-								"groupName"));
+						editor.putString("groupID",s.getJSONObject("success").getString("groupID"));
+						editor.putString("groupName",s.getJSONObject("success").getString("groupName"));
 
-						editor.putInt("buyselltrucks",s.getJSONObject("success").getInt(
-								"buyselltrucks"));
+						editor.putInt("buyselltrucks",s.getJSONObject("success").getInt("buyselltrucks"));
 						editor.putInt("egAccount",s.getInt("egAccount"));
 						editor.putInt("login", 1);
 
-						editor.putString("contactName", s.getJSONObject("success")
-								.getString("contactName"));
-						editor.putString("contactPhone", s.getJSONObject("success")
-								.getString("contactPhone"));
+						editor.putString("contactName", s.getJSONObject("success").getString("contactName"));
+						editor.putString("contactPhone", s.getJSONObject("success").getString("contactPhone"));
 						if(s.has("access_token")){
 							editor.putString("access_token",s.getString("access_token"));
 						}
@@ -690,18 +670,18 @@ public class LoginActivity extends Activity {
 					//JSONObject js = new JSONObject(s);
 					if (!s.getBoolean("status")) {
 						Toast.makeText(context, "fail",Toast.LENGTH_LONG).show();
-
 					} else {
-
 
 						SharedPreferences.Editor editor = getSharedPreferences(getResources().getString(R.string.shareP_erp), MODE_PRIVATE).edit();
 						editor.putString("token", s.getString("token"));
-						//editor.putString("role", s.getString("role"));
+						editor.putBoolean("gpsEnabled",s.getBoolean("gpsEnabled"));
+						editor.putBoolean("erpEnabled",s.getBoolean("erpEnabled"));
+						editor.putBoolean("loadEnabled",s.getBoolean("loadEnabled"));
+
 						editor.apply();
 						startActivity(new Intent(context,HomeScreenActivity.class));//HomeScreenActivity
 						finish();
-						Toast.makeText(context, s.getString("success"),
-								Toast.LENGTH_LONG).show();
+						Toast.makeText(context, s.getString("success"),Toast.LENGTH_LONG).show();
 					}
 				} catch (JSONException e) {
 					System.out.println("Exception while extracting the response:"+ e.toString());

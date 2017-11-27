@@ -92,7 +92,7 @@ public class LoadActivity extends AppCompatActivity {
 		adView = (AdView)findViewById(R.id.adView);
 		//intializeBannerAd();
 		fetchMessages();
-		intializeGoogleAd();
+		//intializeGoogleAd();
 	}
 
 	public void fetchMessages(){

@@ -91,7 +91,7 @@ public class CreateGroupActivity extends AppCompatActivity implements GetTrucksI
         pDialog.setIndeterminate(false);
 
         adView = (AdView)findViewById(R.id.adView);
-        intializeBannerAd();
+        //intializeBannerAd();
 
 
         if(getIntent().hasExtra(Constants.GROUP_ID)){
@@ -201,24 +201,24 @@ public class CreateGroupActivity extends AppCompatActivity implements GetTrucksI
         }else{
             TruckApp.getInstance().trackScreenView("CreateGroup Screen");
         }
-        if (adView != null) {
+        /*if (adView != null) {
             adView.resume();
-        }
+        }*/
 
     }
 
     @Override
     protected void onPause() {
-        if (adView != null) {
+       /* if (adView != null) {
             adView.pause();
-        }
+        }*/
         super.onPause();
     }
 
     @Override
     protected void onDestroy() {
-        if (adView != null)
-        { adView.destroy(); }
+        /*if (adView != null)
+        { adView.destroy(); }*/
         super.onDestroy();
     }
 

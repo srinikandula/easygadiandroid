@@ -195,7 +195,7 @@ public class TrucksActivity extends AppCompatActivity {
 			
 		});
 		fetchTruckTypes();
-		intializeGoogleAd();
+		//intializeGoogleAd();
 	}
 
 	private void intializeGoogleAd() {

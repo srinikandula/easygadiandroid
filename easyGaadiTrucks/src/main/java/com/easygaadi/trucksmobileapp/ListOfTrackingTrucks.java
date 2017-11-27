@@ -213,10 +213,8 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                                     long arg3) {
                 try {
-                    Intent next_in = new Intent(context,
-                            SearchDialogActivity.class);
-                    next_in.putExtra("json", trucksArray.getJSONObject(arg2)
-                            .toString());
+                    Intent next_in = new Intent(context,SearchDialogActivity.class);
+                    next_in.putExtra("json", trucksArray.getJSONObject(arg2).toString());
                     startActivity(next_in);
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
@@ -394,9 +392,7 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
                 TruckApp.checkPDialog(pDialog);
             } else {
                 TruckApp.checkPDialog(pDialog);
-                Toast.makeText(context,
-                        getResources().getString(R.string.exceptionmsg),
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(context,getResources().getString(R.string.exceptionmsg), Toast.LENGTH_LONG).show();
             }
 
         }
@@ -1153,7 +1149,7 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
                 startActivity(new Intent(context, TripsActivity.class));
                 break;
             case R.id.action_refresh:
-                intializeGoogleAd();
+               // intializeGoogleAd();
                 fetchTrucks(0);
                 break;
             case R.id.action_map:
@@ -1216,8 +1212,7 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, subject);
         sendIntent.setType("message/rfc822");
 
-        startActivity(
-                Intent.createChooser(sendIntent, "Title:"));
+        startActivity(Intent.createChooser(sendIntent, "Title:"));
         deleteFile("stack.trace");
     }
 

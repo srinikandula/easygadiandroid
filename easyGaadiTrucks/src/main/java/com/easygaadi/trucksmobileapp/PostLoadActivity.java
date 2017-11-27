@@ -162,7 +162,7 @@ public class PostLoadActivity extends AppCompatActivity implements OnClickListen
 		date_btn.setOnClickListener(this);
 
 		fetchTruckTypes();
-		intializeGoogleAd();
+		//intializeGoogleAd();
 
 		src_et.addTextChangedListener(new TextWatcher() {
 

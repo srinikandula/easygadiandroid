@@ -488,4 +488,9 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="scribe_text">Opps !! Dear Customer, You have not subscribed with respectative services.If interseted,pleaseclick below button   </string>
+    <string name="scribe">Subcription Alert</string>
+    <string name="scribe_btn">Interseted</string>
+
 </resources>

@@ -195,7 +195,9 @@
         android:textColor="@color/yellow"
         android:background="@color/white"
         android:layout_margin="5dp"
-        android:layout_above="@+id/adView"/>
+        android:layout_above="@+id/adView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
 
     <com.google.android.gms.ads.AdView
         xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -205,7 +207,8 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         ads:adSize="BANNER"
-        ads:adUnitId="@string/eg_banner">
+        ads:adUnitId="@string/eg_banner"
+        android:visibility="gone">
     </com.google.android.gms.ads.AdView>
 
 </RelativeLayout>

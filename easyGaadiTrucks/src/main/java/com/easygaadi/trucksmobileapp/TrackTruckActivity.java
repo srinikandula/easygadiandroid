@@ -179,7 +179,7 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
             playVideo.setVisibility(View.GONE);
         }
 
-        intializeGoogleAd();
+        //intializeGoogleAd();
 
 
         playVideo.setOnClickListener(new OnClickListener() {

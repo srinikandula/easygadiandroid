@@ -122,6 +122,35 @@
                             android:text="5us"
                             android:layout_weight="1"/>
                     </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_weight="1"
+                    android:visibility="invisible">
+                    <TextView
+                        android:id="@+id/whatsapp_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical"
+                        android:layout_margin="3dp"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black"
+                        android:maxLines="1"
+                        android:text="whatsapp"
+                        android:layout_weight="1"/>
+                    <TextView
+                        android:id="@+id/sms_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start|center_vertical"
+                        android:layout_margin="3dp"
+                        android:maxLines="1"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@android:color/black"
+                        android:text="sms"
+                        android:layout_weight="1"/>
+                </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>

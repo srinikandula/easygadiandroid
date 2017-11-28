@@ -70,7 +70,7 @@ public class TruckApp extends MultiDexApplication {
     ///added by ajay ///
 
     public static String BASE_URL = "http://egcrm.cloudapp.net/operations/index.php/GPSapiV3/";
-    //public static String BASE_URL = "http://192.168.1.39:3000/crm/operations/index.php/GPSapiV3/";
+    //public static String BASE_URL = "http://192.168.1.49/crm/operations/index.php/GPSapiV3/";
 
 
     public static String CHANGE_PASSWORD_URL = BASE_URL + "SetPassword";

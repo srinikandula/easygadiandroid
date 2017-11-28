@@ -464,7 +464,7 @@ public class Driver_Activity extends AppCompatActivity {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Trucks Please..");
+            pDialog.setMessage("");
             pDialog.show();
         }
 
@@ -509,22 +509,17 @@ public class Driver_Activity extends AppCompatActivity {
                                 TruckVo voData = new TruckVo();
                                 voData.set_id(partData.getString("_id"));
                                 voData.setRegistrationNo(""+partData.getString("registrationNo"));
-
                                 data.add(voData);
                             }
-                            pDialog.dismiss();
                         }
                     }
                     SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),data);
                     spin.setAdapter(customAdapter);
-
+                    pDialog.dismiss();
                     if(lookuup.length()> 0)
                     {
-
                         new GetFreshTrucks().execute();
                     }
-
-
                 } catch (Exception e) {
                     System.out.println("ex in get leads" + e.toString());
                 }
@@ -592,7 +587,7 @@ public class Driver_Activity extends AppCompatActivity {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Trucks Please..");
+            pDialog.setMessage("");
             pDialog.show();
         }
 

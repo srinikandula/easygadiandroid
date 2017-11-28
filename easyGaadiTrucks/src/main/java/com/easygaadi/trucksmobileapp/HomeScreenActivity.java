@@ -92,7 +92,7 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
 
     int PERMISSION_ALL = 1;
     String[] PERMISSIONS = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE,android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.SEND_SMS,
             android.Manifest.permission.CAMERA};
 
 
@@ -640,7 +640,8 @@ public class HomeScreenActivity extends RootActivity implements TrucksAsyncInter
             @Override
             public void onClick(View arg0) {
                     //new ChangePassword(sharedPreferences.getString("accountID", ""), sharedPreferences.getString("uid", ""), newPwd, "Changing password").execute();
-
+                subscribeDialog.dismiss();
+                subscribeDialog = null;
             }
         });
 

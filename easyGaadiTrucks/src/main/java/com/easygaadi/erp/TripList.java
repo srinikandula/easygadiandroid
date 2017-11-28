@@ -4,17 +4,24 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.LabeledIntent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Telephony;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,6 +41,7 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +53,7 @@ import com.easygaadi.models.PartyVo;
 import com.easygaadi.models.TripVo;
 import com.easygaadi.models.TruckVo;
 import com.easygaadi.trucksmobileapp.Driver_Activity;
+import com.easygaadi.trucksmobileapp.Manifest;
 import com.easygaadi.trucksmobileapp.Party_Activity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.TollActivity;
@@ -57,6 +66,7 @@ import com.easygaadi.trucksmobileapp.Trunck_Activity;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -64,6 +74,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,7 +111,12 @@ public class TripList extends Fragment {
     EditText etSearch;
     private int requestCode = 123;
     CustomAdapter partyadapter;
-    private Dialog reportDialog;
+    private Dialog reportDialog,shareDialog;
+
+
+    int PERMISSION_ALL = 1;
+    String[] PERMISSIONS = { android.Manifest.permission.SEND_SMS};
+
     public TripList() {
         // Required empty public constructor
     }
@@ -156,7 +172,7 @@ public class TripList extends Fragment {
         }else{
             Toast.makeText(getActivity(),
                     getResources().getString(R.string.internet_str),
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
 
         etSearch=(EditText)view.findViewById(R.id.etSearch);
@@ -210,7 +226,7 @@ public class TripList extends Fragment {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView tripID_tv,truckRegNo_tv,tv_lastupadate,triperName_tv,freightamt_tv,whatsapp_tv,sms_tv;
+            TextView tripID_tv,truckRegNo_tv,tv_lastupadate,triperName_tv,freightamt_tv,whatsapp_tv;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -220,7 +236,6 @@ public class TripList extends Fragment {
                 this.triperName_tv = (TextView) itemView.findViewById(R.id.triperName_tv);
                 this.freightamt_tv = (TextView) itemView.findViewById(R.id.freightamt_tv);
                 this.whatsapp_tv = (TextView) itemView.findViewById(R.id.whatsapp_tv);
-                this.sms_tv = (TextView) itemView.findViewById(R.id.sms_tv);
             }
         }
 
@@ -246,7 +261,6 @@ public class TripList extends Fragment {
             TextView triperName_tv = holder.triperName_tv;
             TextView freightamt_tv = holder.freightamt_tv;
             TextView whatsapp_tv = holder.whatsapp_tv;
-            TextView sms_tv = holder.sms_tv;
 
 
             tripID_tv.setText(Html.fromHtml("<u>"+dataSet.get(listPosition).getTripId()+"<u>"));
@@ -275,7 +289,6 @@ public class TripList extends Fragment {
             tripID_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     Intent intent = new Intent(getActivity(), TripsDetails_Activty.class);
                     intent.putExtra("hitupdate", dataSet.get(listPosition).get_id());
                     intent.putExtra("call", "truck");
@@ -287,15 +300,10 @@ public class TripList extends Fragment {
             whatsapp_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
-                    whatsappIntent.setType("text/plain");
-                    whatsappIntent.setPackage("com.whatsapp");
-                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, "The text you wanted to share");
-                    try {
-                        getContext().startActivity(whatsappIntent);
-                    } catch (android.content.ActivityNotFoundException ex) {
-                        Toast.makeText(getContext(),"Whatsapp have not been installed.",Toast.LENGTH_SHORT).show();
-                    }
+                    //sendSMS("","Riyaz");
+
+                    shareDialog("8801715086","Vech No" + " : "+""+dataSet.get(listPosition).getTruckName() +","+"\n"+
+                                "Driver Contact : " +""+dataSet.get(listPosition).getTruckName());
                 }
             });
 
@@ -352,34 +360,87 @@ public class TripList extends Fragment {
         }
 
 
-
-        private void sendSMS(Context context,String phone,String message) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) // At least KitKat
-            {
-                String defaultSmsPackageName = Telephony.Sms.getDefaultSmsPackage(context); // Need to change the build to API 19
-
-                Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                sendIntent.setType("text/plain");
-                sendIntent.putExtra(Intent.EXTRA_TEXT, message);
-
-                if (defaultSmsPackageName != null)// Can be null in case that there is no default, then the user would be able to choose
-                // any app that support this intent.
-                {
-                    sendIntent.setPackage(defaultSmsPackageName);
+        public void sendSMS(String phoneNumber, String message) {
+                Intent smsIntent;
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    smsIntent = new Intent(Intent.ACTION_SEND);
+                    smsIntent.setType("text/plain");
+                } else {
+                    smsIntent = new Intent(Intent.ACTION_VIEW);
+                    smsIntent.setType("vnd.android-dir/mms-sms");
                 }
-                startActivity(sendIntent);
-
-            }
-            else // For early versions, do what worked for you before.
-            {
-                Intent smsIntent = new Intent(android.content.Intent.ACTION_VIEW);
-                smsIntent.setType("vnd.android-dir/mms-sms");
-                smsIntent.putExtra("address",phone);
-                smsIntent.putExtra("sms_body",message);
+                smsIntent.putExtra("address", phoneNumber);
+                smsIntent.putExtra("sms_body", message);
                 startActivity(smsIntent);
-            }
+
+
         }
 
+
+
+        public void shareDialog(final String phone,final String message){
+            shareDialog= null;
+             shareDialog = new Dialog(getContext(), android.R.style.Theme_Dialog);
+            shareDialog.requestWindowFeature(1);
+            shareDialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));
+            shareDialog.setContentView(R.layout.erp_trips_share_dialog);
+            ImageView cardDiaCls = (ImageView)shareDialog.findViewById(R.id.recharge_close);
+            LinearLayout whatsappTv = (LinearLayout) shareDialog.findViewById(R.id.whatsapp_tv);
+            LinearLayout smsappTv = (LinearLayout) shareDialog.findViewById(R.id.smsappTv);
+
+            whatsappTv.setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View paramAnonymousView)
+                {
+                    Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+                    whatsappIntent.setType("text/plain");
+                    whatsappIntent.setPackage("com.whatsapp");
+                    whatsappIntent.putExtra(Intent.EXTRA_TEXT, message);
+                    try {
+                        getContext().startActivity(whatsappIntent);
+                    } catch (android.content.ActivityNotFoundException ex) {
+                        Toast.makeText(getContext(),"Whatsapp have not been installed.",Toast.LENGTH_SHORT).show();
+                    }
+                    shareDialog.dismiss();
+                }
+            });
+
+            smsappTv.setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View paramAnonymousView)
+                {
+                    if(!hasPermissions(getContext(), PERMISSIONS)){
+                        ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, PERMISSION_ALL);
+                    }else{
+                        sendSMS(phone,message);
+                    }
+
+                    shareDialog.dismiss();
+                }
+            });
+
+
+            shareDialog.show();
+            cardDiaCls.setOnClickListener(new View.OnClickListener()
+            {
+                public void onClick(View paramAnonymousView)
+                {
+                    shareDialog.dismiss();
+                }
+            });
+        }
+
+
+        public  boolean hasPermissions(Context context, String... permissions) {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context != null && permissions != null) {
+                for (String permission : permissions) {
+                    if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
 
         private void setReportDialog(final String tripID){
             String[] payment = { "Payment Type","Cheque", "Chash"  };
@@ -424,11 +485,7 @@ public class TripList extends Fragment {
                     String fromDate = fromdate_tv.getText().toString().trim();
                     String amount = amount_tv.getText().toString().trim();
                     String paymentsType = paymentType;
-                   Log.i("fromDate-->", fromDate);
-                   Log.v("fromDate-->",  fromDate);
-                   Log.e("fromDate-->",  fromDate);
-                   Log.d("fromDate-->",  fromDate);
-                    Toast.makeText(getActivity(),"--"+fromDate,Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(),"--"+fromDate,Toast.LENGTH_SHORT).show();
                     if(fromDate.contains("-")){
                         if(amount.length() > 0){
                             if(Integer.parseInt(amount) > 0){
@@ -436,7 +493,7 @@ public class TripList extends Fragment {
                                     if (detectConnection.isConnectingToInternet()) {
                                         new AddPayment(tripID,fromDate,amount,paymentsType).execute();
                                     } else {
-                                        Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(),getActivity().getResources().getString(R.string.internet_str),Toast.LENGTH_SHORT).show();
                                     }
                                 }else{
                                     Toast.makeText(getActivity(),"Please Select Payment Type",Toast.LENGTH_SHORT).show();
@@ -561,7 +618,7 @@ public class TripList extends Fragment {
 
                 try {
                     if (!result.getBoolean("status")) {
-                        Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "No records available",Toast.LENGTH_SHORT).show();
                     }else
                     {
                         JSONArray partArray = result.getJSONArray("trips");
@@ -594,7 +651,7 @@ public class TripList extends Fragment {
                             recyclerView.setAdapter(partyadapter);
                             pDialog.dismiss();
                         }else{
-                            Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(), "No records available",Toast.LENGTH_SHORT).show();
                             pDialog.dismiss();
                         }
                     }
@@ -607,7 +664,7 @@ public class TripList extends Fragment {
                 pDialog.dismiss();
                 Toast.makeText(getActivity(),
                         getResources().getString(R.string.exceptionmsg),
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -625,7 +682,7 @@ public class TripList extends Fragment {
                 }else{
                     Toast.makeText(getActivity(),
                             getResources().getString(R.string.internet_str),
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }catch (Exception e)
             {
@@ -690,7 +747,7 @@ public class TripList extends Fragment {
                 try {
                     //JSONObject js = new JSONObject(s);
                     if (!s.getBoolean("status")) {
-                        Toast.makeText(getContext(), "fail",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), "fail",Toast.LENGTH_SHORT).show();
                     } else {
                         reportDialog.dismiss();
                         Toast.makeText(getContext(), "Successfully Amount Addedd", Toast.LENGTH_SHORT).show();
@@ -699,7 +756,7 @@ public class TripList extends Fragment {
                         }else{
                             Toast.makeText(getActivity(),
                                     getResources().getString(R.string.internet_str),
-                                    Toast.LENGTH_LONG).show();
+                                    Toast.LENGTH_SHORT).show();
                         }
 
                     }
@@ -708,7 +765,7 @@ public class TripList extends Fragment {
                 }
             } else {
                 Toast.makeText(getContext(), getActivity().getResources().getString(R.string.exceptionmsg),
-                        Toast.LENGTH_LONG).show();
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -720,7 +777,7 @@ public class TripList extends Fragment {
             if (detectConnection.isConnectingToInternet()) {
                 new GetTripsList().execute();
             }else{
-                Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(),getResources().getString(R.string.internet_str),Toast.LENGTH_SHORT).show();
             }
     }
 

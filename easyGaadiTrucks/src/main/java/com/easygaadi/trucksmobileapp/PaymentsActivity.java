@@ -278,7 +278,7 @@ public class PaymentsActivity extends AppCompatActivity {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Trucks Please..");
+            pDialog.setMessage("");
             pDialog.show();
         }
 
@@ -327,11 +327,11 @@ public class PaymentsActivity extends AppCompatActivity {
                                     voData.setRegistrationNo("" + partData.getString("registrationNo"));
                                     datat.add(voData);
                                 }
-                                SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),datat,this.type);
-                                spinTruck.setAdapter(customAdapter);
-                                pDialog.dismiss();
-                                new GetAllTrucks("party").execute();
                             }
+                            SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),datat,this.type);
+                            spinTruck.setAdapter(customAdapter);
+                            pDialog.dismiss();
+                            new GetAllTrucks("party").execute();
                         }else if(this.type.equalsIgnoreCase("trips")){
                             JSONArray partArray = result.getJSONArray("trips");
                             if (partArray.length() > 0) {
@@ -342,10 +342,10 @@ public class PaymentsActivity extends AppCompatActivity {
                                     voData.setRegistrationNo("" + partData.getString("tripId"));
                                     dataTrips.add(voData);
                                 }
-                                SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataTrips,this.type);
-                                spinTrips.setAdapter(customAdapter);
-                                pDialog.dismiss();
                             }
+                            SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataTrips,this.type);
+                            spinTrips.setAdapter(customAdapter);
+                            pDialog.dismiss();
                         }else if(this.type.equalsIgnoreCase("party")){
                             JSONArray partArray = result.getJSONArray("parties");
                             if (partArray.length() > 0) {
@@ -356,11 +356,11 @@ public class PaymentsActivity extends AppCompatActivity {
                                     voData.setRegistrationNo("" + partData.getString("name"));
                                     dataP.add(voData);
                                 }
-                                SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataP,this.type);
-                                spinParties.setAdapter(customAdapter);
-                                pDialog.dismiss();
-                                new GetAllTrucks("trips").execute();
                             }
+                            SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataP,this.type);
+                            spinParties.setAdapter(customAdapter);
+                            pDialog.dismiss();
+                            new GetAllTrucks("trips").execute();
                         }
                     }
                 } catch (Exception e) {

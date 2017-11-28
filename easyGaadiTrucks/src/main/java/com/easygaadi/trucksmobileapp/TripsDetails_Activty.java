@@ -279,21 +279,59 @@ public class TripsDetails_Activty extends AppCompatActivity {
                         JSONObject tripObj = result.getJSONObject("trip");
                         ((TextView)findViewById(R.id.trip_id)).setText(tripObj.getString("tripId"));
                         ((TextView)findViewById(R.id.tripsdur)).setText(getFormatDate(tripObj.getString("updatedAt")));
-                        ((TextView)findViewById(R.id.srcloc_tv)).setText(tripObj.getString("from"));
-                        ((TextView)findViewById(R.id.destloc_tv)).setText(tripObj.getString("to"));
-                        ((TextView)findViewById(R.id.diesel_tv)).setText("Diesel "+ ""+ tripObj.getInt("dieselAmount"));
-                        ((TextView)findViewById(R.id.toll_tv)).setText("Toll "+ ""+ tripObj.getInt("tollgateAmount"));
-                        trip_feightamt.setText(""+tripObj.getInt("freightAmount"));
-                        trip_advanceamt.setText(""+tripObj.getInt("advance"));
-                        ((TextView)findViewById(R.id.trip_bal)).setText( ""+tripObj.getInt("balance"));
-                        if(tripObj.getInt("balance") >0){
-                            ((LinearLayout)findViewById(R.id.paymntLL)).setVisibility(View.VISIBLE);
+
+                        if(tripObj.has("from")) {
+                            ((TextView) findViewById(R.id.srcloc_tv)).setText(tripObj.getString("from"));
+                        }else{
+                            ((TextView) findViewById(R.id.srcloc_tv)).setText("XXXX");
+                        }
+
+                        if(tripObj.has("to")) {
+                            ((TextView) findViewById(R.id.destloc_tv)).setText(tripObj.getString("to"));
+                        }else{
+                            ((TextView) findViewById(R.id.destloc_tv)).setText("XXX");
+                        }
+
+                        if(tripObj.has("dieselAmount")) {
+                            ((TextView)findViewById(R.id.diesel_tv)).setText("Diesel "+ ""+ tripObj.getInt("dieselAmount"));
+                        }else{
+                            ((TextView) findViewById(R.id.diesel_tv)).setText("XXX");
+                        }
+
+                        if(tripObj.has("tollgateAmount")) {
+                            ((TextView)findViewById(R.id.toll_tv)).setText("Toll "+ ""+ tripObj.getInt("tollgateAmount"));
+                        }else{
+                            ((TextView) findViewById(R.id.toll_tv)).setText("XXX");
+                        }
+                        if(tripObj.has("freightAmount")) {
+                            trip_feightamt.setText(""+tripObj.getInt("freightAmount"));
+                        }else{
+                            trip_feightamt.setText("XXX");
+                        }
+
+                        if(tripObj.has("advance")) {
+                            trip_advanceamt.setText(""+tripObj.getInt("advance"));
+                        }else{
+                            trip_advanceamt.setText("XXX");
+                        }
+
+                        if(tripObj.has("balance")) {
+                            ((TextView)findViewById(R.id.trip_bal)).setText( ""+tripObj.getInt("balance"));
+                            if(tripObj.getInt("balance") >0){
+                                ((LinearLayout)findViewById(R.id.paymntLL)).setVisibility(View.VISIBLE);
+                            }
+                        }else{
+                            ((TextView)findViewById(R.id.trip_bal)).setText("XXX");
                         }
 
                         if(tripObj.has("attrs")) {
                             JSONObject attrsObj = tripObj.getJSONObject("attrs");
                             ((TextView) findViewById(R.id.truckRegNo_tv)).setText(attrsObj.getString("truckName"));
-                            ((TextView) findViewById(R.id.tripsnaam)).setText(attrsObj.getString("partyName"));
+                            if(tripObj.has("balance")) {
+                                ((TextView) findViewById(R.id.tripsnaam)).setText(attrsObj.getString("partyName"));
+                            }else{
+                                ((TextView) findViewById(R.id.tripsnaam)).setText("XXXX");
+                            }
                         }
 
 

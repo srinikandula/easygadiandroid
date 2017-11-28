@@ -357,7 +357,7 @@ public class Trunck_Activity extends AppCompatActivity {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Driver Name Please..");
+            pDialog.setMessage("");
             pDialog.show();
         }
 
@@ -381,7 +381,6 @@ public class Trunck_Activity extends AppCompatActivity {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             if (result != null) {
-
                 try {
 
                     TruckVo voDatas = new TruckVo();
@@ -410,6 +409,7 @@ public class Trunck_Activity extends AppCompatActivity {
                     }
                     SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),data);
                     spin.setAdapter(customAdapter);
+                    pDialog.dismiss();
                     if(lookuup.length()> 0)
                     {
                         new GetFreshTrucks().execute();
@@ -599,7 +599,7 @@ public class Trunck_Activity extends AppCompatActivity {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Trucks Please..");
+            pDialog.setMessage("");
             pDialog.show();
         }
 

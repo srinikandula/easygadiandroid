@@ -90,12 +90,14 @@ public class ExpenseActivity extends AppCompatActivity {
         voDatas.setRegistrationNo("Assigned Truck");
 
         datat.add(voDatas);
-
+        SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),datat,"trucks");
+        spinTruck.setAdapter(customAdapter);
         TruckVo voDatae = new TruckVo();
         voDatae.set_id("");
-        voDatae.setRegistrationNo("Select Expenses");
+        voDatae.setRegistrationNo("Select Expense Type");
         dataE.add(voDatae);
-
+        SpinnerCustomAdapter customAdapters=new SpinnerCustomAdapter(getApplicationContext(),dataE,"expenses");
+        spinExpense.setAdapter(customAdapters);
 
         if (detectCnnection.isConnectingToInternet()) {
             new GetAllTrucks("trucks").execute();
@@ -320,7 +322,7 @@ public class ExpenseActivity extends AppCompatActivity {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            pDialog.setMessage("Fetching Trucks Please..");
+            pDialog.setMessage("");
             pDialog.show();
         }
 
@@ -367,11 +369,13 @@ public class ExpenseActivity extends AppCompatActivity {
 
                                     datat.add(voData);
                                 }
+
                                 SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),datat,this.type);
                                 spinTruck.setAdapter(customAdapter);
                                 pDialog.dismiss();
-                                new GetAllTrucks("expenses").execute();
                             }
+                            new GetAllTrucks("expenses").execute();
+                            pDialog.dismiss();
                         }else if(this.type.equalsIgnoreCase("expenses")){
                             JSONArray partArray = result.getJSONArray("maintanenceCosts");
                             if (partArray.length() > 0) {
@@ -400,7 +404,6 @@ public class ExpenseActivity extends AppCompatActivity {
                                 voData.set_id("");
                                 voData.setRegistrationNo("others");
                                 dataE.add(voData);
-
                                 SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataE,this.type);
                                 spinExpense.setAdapter(customAdapter);
                                 pDialog.dismiss();

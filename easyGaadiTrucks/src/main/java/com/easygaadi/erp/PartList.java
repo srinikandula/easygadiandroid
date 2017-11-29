@@ -141,7 +141,7 @@ public class PartList extends Fragment {
 
         detectConnection = new ConnectionDetector(getActivity());
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(getActivity());
+        pDialog = CommonERP.createProgressDialog(getActivity());//new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
         if (detectConnection.isConnectingToInternet()) {
             new GetPartyList().execute();

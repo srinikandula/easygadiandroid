@@ -27,6 +27,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easygaadi.erp.CommonERP;
 import com.easygaadi.erp.PartList;
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
@@ -67,7 +68,7 @@ public class Driver_Activity extends AppCompatActivity {
         initilizationView();
         context = Driver_Activity.this;
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(context);
+        pDialog = CommonERP.createProgressDialog(context);//new ProgressDialog(context);
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);
@@ -476,7 +477,6 @@ public class Driver_Activity extends AppCompatActivity {
                 String res = parser.erpExecuteGet(context,TruckApp.truckListURL);
                 Log.e("paylist",res.toString());
                 json = new JSONObject(res);
-
             } catch (Exception e) {
                 Log.e("Login DoIN EX", e.toString());
             }

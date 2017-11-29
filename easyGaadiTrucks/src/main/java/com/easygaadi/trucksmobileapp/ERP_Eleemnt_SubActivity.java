@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easygaadi.erp.CommonERP;
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.ERPsubVo;
@@ -53,7 +54,7 @@ public class ERP_Eleemnt_SubActivity extends AppCompatActivity {
         setContentView(R.layout.activity_erp__eleemnt__sub);
         context = ERP_Eleemnt_SubActivity.this;
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(context);
+        pDialog = CommonERP.createProgressDialog(context);//new ProgressDialog(context);
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);

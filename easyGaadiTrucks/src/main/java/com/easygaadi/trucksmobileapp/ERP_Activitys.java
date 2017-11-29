@@ -1,22 +1,11 @@
 package com.easygaadi.trucksmobileapp;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
@@ -24,65 +13,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.easygaadi.erp.DriverList;
 import com.easygaadi.erp.ERP_DashBroad;
 import com.easygaadi.erp.ExpenseList;
-import com.easygaadi.erp.ExpensesList;
 import com.easygaadi.erp.MaintenanceList;
 import com.easygaadi.erp.PartList;
 import com.easygaadi.erp.PaymentsList;
 import com.easygaadi.erp.TripList;
 import com.easygaadi.erp.TruckList;
-import com.google.android.gms.ads.AdRequest;
 
-import com.easygaadi.activities.GroupsActivity;
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
-import com.easygaadi.interfaces.TrucksAsyncInterface;
-import com.easygaadi.models.GroupItemResponse;
-import com.easygaadi.network.CustomRetrofitSpiceService;
-import com.easygaadi.network.GroupItemsSpiceRequest;
-import com.easygaadi.network.SaveCardSettings;
-import com.easygaadi.utils.Constants;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
-import com.octo.android.robospice.SpiceManager;
-import com.octo.android.robospice.persistence.DurationInMillis;
-import com.octo.android.robospice.persistence.exception.SpiceException;
-import com.octo.android.robospice.request.listener.PendingRequestListener;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ERP_Activitys extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

@@ -1,16 +1,22 @@
 package com.easygaadi.erp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.easygaadi.trucksmobileapp.R;
+
+import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 /**
  * Created by ssv i3-210 on 11/6/2017.
@@ -80,5 +86,31 @@ public class CommonERP {
         }
         return diff;
     }
+
+    public static ProgressDialog createProgressDialog(Context mContext) {
+        ProgressDialog dialog = new ProgressDialog(mContext);
+        try {
+            dialog.show();
+        } catch (WindowManager.BadTokenException e) {
+
+        }
+        dialog.setCancelable(false);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        dialog.setContentView(R.layout.erp_progressdialog);
+        // dialog.setMessage(Message);
+        return dialog;
+    }
+
+    protected int getIntFromJSON(JSONObject jsonObject, String key) {
+
+        int defaultValue = 0;
+        try {
+            defaultValue = jsonObject.getInt(key);
+        } catch (Exception e) {
+            //Logger.print("While JSON Parsing, key named \"" + key + "\"  not found");
+        }
+        return defaultValue;
+    }
+
 
 }

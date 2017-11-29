@@ -42,7 +42,7 @@ import java.util.Date;
  * Created by ssv i3-210 on 11/16/2017.
  */
 
-public class ExpensesList extends Fragment {
+public class ExpensesMasterList extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -71,7 +71,7 @@ public class ExpensesList extends Fragment {
     private static ImageView addImage;
 
 
-    public ExpensesList() {
+    public ExpensesMasterList() {
         // Required empty public constructor
     }
 
@@ -288,7 +288,7 @@ public class ExpensesList extends Fragment {
 
             JSONObject json = null;
             try {
-                String res = parser.erpExecuteGet(getActivity(), TruckApp.ExpenseURL);
+                String res = parser.erpExecuteGet(getActivity(), TruckApp.ExpenseMasterURL);
                 json = new JSONObject(res);
 
             } catch (Exception e) {
@@ -325,9 +325,6 @@ public class ExpensesList extends Fragment {
                                 }else{
                                     voData.setVehicleNumber("XXXXXX");
                                 }
-
-
-
                                 data.add(voData);
                             }
 

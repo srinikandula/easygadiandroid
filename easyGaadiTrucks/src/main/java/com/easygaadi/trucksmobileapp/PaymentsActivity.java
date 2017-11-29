@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easygaadi.erp.CommonERP;
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.TruckVo;
@@ -56,7 +57,7 @@ public class PaymentsActivity extends AppCompatActivity {
 
         context = PaymentsActivity.this;
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(context);
+        pDialog = CommonERP.createProgressDialog(context);//new ProgressDialog(context);
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);

@@ -142,7 +142,7 @@ public class ExpenseMaster extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 System.out.println("" + String.valueOf(post_dict));
-                String result = parser.easyyExcutePost(context,TruckApp.ExpenseURL,String.valueOf(post_dict));
+                String result = parser.easyyExcutePost(context,TruckApp.ExpenseMasterURL,String.valueOf(post_dict));
                 res = new JSONObject(result);
 
             } catch (Exception e) {

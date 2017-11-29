@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -165,7 +166,7 @@ public class TripList extends Fragment {
 
         detectConnection = new ConnectionDetector(getActivity());
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(getActivity());
+        pDialog =  CommonERP.createProgressDialog(getActivity());
         pDialog.setCancelable(true);
         if (detectConnection.isConnectingToInternet()) {
             new GetTripsList().execute();
@@ -227,6 +228,7 @@ public class TripList extends Fragment {
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
             TextView tripID_tv,truckRegNo_tv,tv_lastupadate,triperName_tv,freightamt_tv,whatsapp_tv;
+            LinearLayout sharell;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
@@ -236,6 +238,7 @@ public class TripList extends Fragment {
                 this.triperName_tv = (TextView) itemView.findViewById(R.id.triperName_tv);
                 this.freightamt_tv = (TextView) itemView.findViewById(R.id.freightamt_tv);
                 this.whatsapp_tv = (TextView) itemView.findViewById(R.id.whatsapp_tv);
+                this.sharell = (LinearLayout) itemView.findViewById(R.id.sharell);
             }
         }
 
@@ -261,6 +264,7 @@ public class TripList extends Fragment {
             TextView triperName_tv = holder.triperName_tv;
             TextView freightamt_tv = holder.freightamt_tv;
             TextView whatsapp_tv = holder.whatsapp_tv;
+            LinearLayout sharell = holder.sharell;
 
 
             tripID_tv.setText(Html.fromHtml("<u>"+dataSet.get(listPosition).getTripId()+"<u>"));
@@ -296,14 +300,20 @@ public class TripList extends Fragment {
                 }
             });
 
+
+            if((dataSet.get(listPosition).getDriverContact()).length()>0){
+                sharell.setVisibility(View.VISIBLE);
+            }
+
             //tripID_tv
             whatsapp_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //sendSMS("","Riyaz");
 
-                    shareDialog("8801715086","Vech No" + " : "+""+dataSet.get(listPosition).getTruckName() +","+"\n"+
-                                "Driver Contact : " +""+dataSet.get(listPosition).getTruckName());
+                    shareDialog(dataSet.get(listPosition).getPartyContact(),
+                            "Vech No" + " : "+""+dataSet.get(listPosition).getTruckName() +","+"\n"+
+                                "Driver Contact : " +""+dataSet.get(listPosition).getDriverContact());
+
                 }
             });
 
@@ -369,6 +379,7 @@ public class TripList extends Fragment {
                     smsIntent = new Intent(Intent.ACTION_VIEW);
                     smsIntent.setType("vnd.android-dir/mms-sms");
                 }
+
                 smsIntent.putExtra("address", phoneNumber);
                 smsIntent.putExtra("sms_body", message);
                 startActivity(smsIntent);
@@ -637,13 +648,24 @@ public class TripList extends Fragment {
                                 }else{
                                     voData.setFreightAmount("XXXXX");
                                 }
+
+
                                 voData.setUpdatedAt(""+partData.getString("updatedAt"));
 
                                 JSONObject perObj = partData.getJSONObject("attrs");
                                 voData.setPartyName(perObj.getString("partyName"));
                                 voData.setTruckName(perObj.getString("truckName"));
+                                if(perObj.has("partyContact")){
+                                    voData.setPartyContact(""+perObj.getLong("partyContact"));
+                                }else{
+                                    voData.setPartyContact("");
+                                }
 
-
+                                if(perObj.has("mobile")){
+                                    voData.setDriverContact(""+perObj.getLong("mobile"));
+                                }else{
+                                    voData.setDriverContact("");
+                                }
                                 data.add(voData);
                             }
 
@@ -676,8 +698,8 @@ public class TripList extends Fragment {
         if(requestCode == this.requestCode){
             String addItem=data.getStringExtra("addItem");
             try {
-
                 if (detectConnection.isConnectingToInternet()) {
+                    //Toast.makeText(getContext(),     "calling", Toast.LENGTH_SHORT).show();
                     new GetTripsList().execute();
                 }else{
                     Toast.makeText(getActivity(),
@@ -799,5 +821,7 @@ public class TripList extends Fragment {
             TripList.this.refresh();
         }
     }
+
+
 
 }

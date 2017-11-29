@@ -187,7 +187,7 @@ public class MaintenanceList extends Fragment {
                     this.textViewName = (TextView) itemView.findViewById(R.id.truckRegNo_tv);
                     this.textViewDate = (TextView) itemView.findViewById(R.id.tv_lastupadate);
                     this.textViewRType = (TextView) itemView.findViewById(R.id.repairtype_tv);
-                    this.textViewRArea = (TextView) itemView.findViewById(R.id.repairarea_tv);
+                    //this.textViewRArea = (TextView) itemView.findViewById(R.id.repairarea_tv);
                     this.textViewamt = (TextView) itemView.findViewById(R.id.repairamt_tv);
                 }
             }

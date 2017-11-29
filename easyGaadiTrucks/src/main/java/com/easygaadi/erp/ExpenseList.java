@@ -122,7 +122,7 @@ public class ExpenseList extends Fragment {
 
         detectConnection = new ConnectionDetector(getActivity());
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(getActivity());
+        pDialog = CommonERP.createProgressDialog(getActivity());//new ProgressDialog(getActivity());
         pDialog.setCancelable(true);
         if (detectConnection.isConnectingToInternet()) {
             new GetMaitenaceList().execute();
@@ -184,14 +184,13 @@ public class ExpenseList extends Fragment {
 
         public class MyViewHolder extends RecyclerView.ViewHolder {
 
-            TextView textViewName,textViewDate,textViewamt,textViewRArea,textViewRType;
+            TextView textViewName,textViewDate,textViewamt,textViewRType;
 
             public MyViewHolder(View itemView) {
                 super(itemView);
                 this.textViewName = (TextView) itemView.findViewById(R.id.truckRegNo_tv);
                 this.textViewDate = (TextView) itemView.findViewById(R.id.tv_lastupadate);
                 this.textViewRType = (TextView) itemView.findViewById(R.id.repairtype_tv);
-                this.textViewRArea = (TextView) itemView.findViewById(R.id.repairarea_tv);
                 this.textViewamt = (TextView) itemView.findViewById(R.id.repairamt_tv);
             }
         }
@@ -213,13 +212,12 @@ public class ExpenseList extends Fragment {
             TextView textViewName = holder.textViewName;
             TextView textViewDate = holder.textViewDate;
             TextView textViewRType = holder.textViewRType;
-            TextView textViewRArea = holder.textViewRArea;
             TextView textViewamt = holder.textViewamt;
 
             textViewName.setText(dataSet.get(listPosition).getTruckName());
             textViewDate.setText(getFormatDate(dataSet.get(listPosition).getDate()));
-            textViewRType.setText(dataSet.get(listPosition).getDescription());
-            textViewRArea.setText(dataSet.get(listPosition).getCreatedByName());
+            textViewRType.setText(dataSet.get(listPosition).getExpenseName());
+            //textViewRArea.setText(dataSet.get(listPosition).getCreatedByName());
             textViewamt.setText(dataSet.get(listPosition).getCost());
         }
 
@@ -320,7 +318,7 @@ public class ExpenseList extends Fragment {
             try {
                 String res = parser.erpExecuteGet(getActivity(), TruckApp.ExpensesURL+"/getAllExpenses");
                 json = new JSONObject(res);
-
+                Log.v("rock",res.toString());
             } catch (Exception e) {
                 Log.e("Login DoIN EX", e.toString());
             }
@@ -336,9 +334,10 @@ public class ExpenseList extends Fragment {
                 try {
                     if (!result.getBoolean("status")) {
                         Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
+                        pDialog.dismiss();
                     }else
                     {
-                        JSONArray partArray = result.getJSONArray("maintanenceCosts");
+                        JSONArray partArray = result.getJSONArray("expenses");
                         if(partArray.length() > 0)
                         {
                             data = new ArrayList<ExpensesVo>();
@@ -355,19 +354,19 @@ public class ExpenseList extends Fragment {
                                 {
                                     voData.setExpenseName(attributes.getString("expenseName"));
                                 }else{
-                                    voData.setExpenseName("XXXXXX");
+                                    voData.setExpenseName("");
                                 }
                                 if(attributes.has("createdByName"))
                                 {
                                     voData.setCreatedByName(attributes.getString("createdByName"));
                                 }else{
-                                    voData.setCreatedByName("XXXXXX");
+                                    voData.setCreatedByName("");
                                 }
                                 if(attributes.has("truckName"))
                                 {
                                     voData.setTruckName(attributes.getString("truckName"));
                                 }else{
-                                    voData.setTruckName("XXXXXX");
+                                    voData.setTruckName("");
                                 }
                                 data.add(voData);
                             }

@@ -26,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easygaadi.erp.CommonERP;
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.TruckVo;
@@ -49,7 +50,8 @@ public class ExpenseActivity extends AppCompatActivity {
     ArrayList<TruckVo> datat,dataE;
     Spinner spinTruck,spinExpense;
     LinearLayout other_ll;
-
+    SpinnerCustomAdapters customAdapters;
+    SpinnerCustomAdapter customAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +59,7 @@ public class ExpenseActivity extends AppCompatActivity {
 
         context = ExpenseActivity.this;
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(context);
+        pDialog = CommonERP.createProgressDialog(context);//new ProgressDialog(context);
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);
@@ -87,16 +89,16 @@ public class ExpenseActivity extends AppCompatActivity {
 
         TruckVo voDatas = new TruckVo();
         voDatas.set_id("");
-        voDatas.setRegistrationNo("Assigned Truck");
+        voDatas.setRegistrationNo("Select Truck");
 
         datat.add(voDatas);
-        SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),datat,"trucks");
+         customAdapter =new SpinnerCustomAdapter(getApplicationContext(),datat,"trucks");
         spinTruck.setAdapter(customAdapter);
         TruckVo voDatae = new TruckVo();
         voDatae.set_id("");
         voDatae.setRegistrationNo("Select Expense Type");
         dataE.add(voDatae);
-        SpinnerCustomAdapter customAdapters=new SpinnerCustomAdapter(getApplicationContext(),dataE,"expenses");
+         customAdapters =new SpinnerCustomAdapters(getApplicationContext(),dataE,"expenses");
         spinExpense.setAdapter(customAdapters);
 
         if (detectCnnection.isConnectingToInternet()) {
@@ -114,7 +116,6 @@ public class ExpenseActivity extends AppCompatActivity {
                     TruckVo truck = dataE.get(position);
                     if(truck.get_id().isEmpty() && truck.getRegistrationNo().equalsIgnoreCase("others"))
                     {
-                        Toast.makeText(context, "working", Toast.LENGTH_SHORT).show();
                         other_ll.setVisibility(View.VISIBLE);
                             expensesID="";
 
@@ -201,7 +202,7 @@ public class ExpenseActivity extends AppCompatActivity {
         String maintenanceDate = maintnce_dateTV.getText().toString().trim();
         String maintenanceTrucknum = truckID;
         String maintenanceExpenseID = expensesID;
-        String maintenanceExpenseOther = "";
+        String maintenanceExpenseOther = maintnce_otherET.getText().toString().trim();
         if(other_ll.getVisibility() == View.VISIBLE ){
             maintenanceExpenseOther = maintnce_otherET.getText().toString().trim();
         }
@@ -216,7 +217,7 @@ public class ExpenseActivity extends AppCompatActivity {
                     tempStr = maintenanceExpenseOther;
                     maintenanceExpenseID = tempStr;
                 }else{
-                    tempStr = expensesID;
+                    tempStr = maintenanceExpenseID;
                 }
 
                 if(tempStr.trim().length()>0){
@@ -225,7 +226,7 @@ public class ExpenseActivity extends AppCompatActivity {
                             if(true){
                                 if(true){
                                     if (detectCnnection.isConnectingToInternet()) {
-                                        new AddMaintenance(maintenanceDate, maintenanceTrucknum,maintenanceExpenseID,maintenancCost,maintenancArea).execute();
+                                        new AddMaintenance(maintenanceDate, maintenanceTrucknum,maintenanceExpenseID,maintenancCost,maintenancArea,maintenanceExpenseOther).execute();
                                     } else {
                                         Toast.makeText(context,res.getString(R.string.internet_str),Toast.LENGTH_LONG).show();
                                     }
@@ -243,7 +244,7 @@ public class ExpenseActivity extends AppCompatActivity {
                         Toast.makeText(context, "Please Enter Payment Type", Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    Toast.makeText(context, "Please Enter Repair Description", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Please Select Expense Type", Toast.LENGTH_SHORT).show();
                 }
             }else{
                 Toast.makeText(context, "Please Asign Truck", Toast.LENGTH_SHORT).show();
@@ -337,7 +338,7 @@ public class ExpenseActivity extends AppCompatActivity {
                      res = parser.erpExecuteGet(context,TruckApp.truckListURL);
                     Log.e("truckListURL",res.toString());
                 }else if(type.equalsIgnoreCase("expenses")){
-                    res = parser.erpExecuteGet(context,TruckApp.ExpensesURL+"/getAllExpenses");
+                    res = parser.erpExecuteGet(context,TruckApp.ExpenseMasterURL);
                     Log.e("ExpensesURL",res.toString());
                 }
                 System.out.print("type"+res);
@@ -370,33 +371,33 @@ public class ExpenseActivity extends AppCompatActivity {
                                     datat.add(voData);
                                 }
 
-                                SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),datat,this.type);
+                                 customAdapter=new SpinnerCustomAdapter(getApplicationContext(),datat,this.type);
                                 spinTruck.setAdapter(customAdapter);
                                 pDialog.dismiss();
                             }
                             new GetAllTrucks("expenses").execute();
                             pDialog.dismiss();
                         }else if(this.type.equalsIgnoreCase("expenses")){
-                            JSONArray partArray = result.getJSONArray("maintanenceCosts");
+                            JSONArray partArray = result.getJSONArray("expenses");
                             if (partArray.length() > 0) {
                                 for (int i = 0; i < partArray.length(); i++) {
                                     JSONObject partData = partArray.getJSONObject(i);
                                     TruckVo voData = new TruckVo();
                                     voData.set_id(partData.getString("_id"));
                                     //voData.setRegistrationNo("" + partData.getString("expenseType"));
-                                    JSONObject attributes = partData.getJSONObject("attrs");
-                                    if(attributes.has("expenseName"))
-                                    {
-                                        voData.setRegistrationNo(attributes.getString("expenseName"));
-                                    }
+                                    //JSONObject attributes = partData.getJSONObject("attrs");
+                                   // if(attributes.has("expenseName"))
+                                   // {
+                                        voData.setRegistrationNo(partData.getString("expenseName"));
+                                    //}
                                     dataE.add(voData);
                                 }
                                 TruckVo voData = new TruckVo();
                                 voData.set_id("");
                                 voData.setRegistrationNo("others");
                                 dataE.add(voData);
-                                SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataE,this.type);
-                                spinExpense.setAdapter(customAdapter);
+                                 customAdapters=new SpinnerCustomAdapters(getApplicationContext(),dataE,this.type);
+                                spinExpense.setAdapter(customAdapters);
                                 pDialog.dismiss();
 
                             }else{
@@ -404,8 +405,8 @@ public class ExpenseActivity extends AppCompatActivity {
                                 voData.set_id("");
                                 voData.setRegistrationNo("others");
                                 dataE.add(voData);
-                                SpinnerCustomAdapter customAdapter=new SpinnerCustomAdapter(getApplicationContext(),dataE,this.type);
-                                spinExpense.setAdapter(customAdapter);
+                                 customAdapters=new SpinnerCustomAdapters(getApplicationContext(),dataE,this.type);
+                                spinExpense.setAdapter(customAdapters);
                                 pDialog.dismiss();
                             }
                         }
@@ -469,29 +470,77 @@ public class ExpenseActivity extends AppCompatActivity {
                 }
 
             }else if(this.Type.equalsIgnoreCase("expenses")){
-
                 if(i == 0){
                     expensesID = "";
                 }else{
                     expensesID  = book.get_id();
                 }
             }
+            return bookRow;
+        }
+    }
 
 
+    public class SpinnerCustomAdapters extends BaseAdapter {
+        Context mcontext;
+        ArrayList<TruckVo> dataset;
+        LayoutInflater inflter;
+        String Type;
+
+        public SpinnerCustomAdapters(Context applicationContext, ArrayList<TruckVo> dataset,String Type) {
+            this.mcontext = applicationContext;
+            this. dataset = dataset;
+            inflter = (LayoutInflater.from(applicationContext));
+            this.Type = Type;
+        }
+
+        @Override
+        public int getCount() {
+            return dataset.size();
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+            LayoutInflater inflator=LayoutInflater.from(mcontext);
+            View bookRow=inflator.inflate(R.layout.erp_spinner_item, viewGroup, false);
+            TextView names = (TextView) bookRow.findViewById(R.id.text1);
+            TruckVo book= dataset.get(i);
+            names.setText(book.getRegistrationNo());
+            //truckID  = book.get_id();
+
+
+            if(this.Type.equalsIgnoreCase("expenses")){
+                if(i == 0){
+                    expensesID = "";
+                }else{
+                    expensesID  = book.get_id();
+                }
+            }
             return bookRow;
         }
     }
 
 
     private class AddMaintenance extends AsyncTask<String, String, JSONObject> {
-        String maintenanceDate, maintenanceTrucknum,maintenanceExpensesnum,maintenanceRepair, maintenancPay, maintenancCost,maintenancArea;
+        String maintenanceDate, maintenanceTrucknum,maintenanceExpensesnum,maintenanceRepair, maintenanceExpenseOther, maintenancCost,maintenancArea;
 
-        public AddMaintenance(String maintenanceDate, String maintenanceTrucknum,String maintenanceExpensesnum,String maintenancCost,String maintenancArea) {
+        public AddMaintenance(String maintenanceDate, String maintenanceTrucknum,String maintenanceExpensesnum,String maintenancCost,String maintenancArea,String maintenanceExpenseOther) {
             this.maintenanceDate = maintenanceDate;
             this.maintenanceTrucknum=maintenanceTrucknum;
             this.maintenanceExpensesnum=maintenanceExpensesnum;
             this.maintenancCost =maintenancCost;
             this.maintenancArea=maintenancArea;
+            this.maintenanceExpenseOther=maintenanceExpenseOther;
         }
         @Override
         protected void onPreExecute() {
@@ -511,7 +560,13 @@ public class ExpenseActivity extends AppCompatActivity {
                     post_dict.put("cost", maintenancCost);
                     post_dict.put("date", maintenanceDate);
                     post_dict.put("description", maintenancArea);
-                    post_dict.put("expenseType",maintenanceExpensesnum);
+                    if(expensesID.length()>0)
+                    {
+                        post_dict.put("expenseType",maintenanceExpensesnum);
+                    }else{
+                        post_dict.put("expenseType","");
+                    }
+                    post_dict.put("expenseTypeName",maintenanceExpenseOther);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

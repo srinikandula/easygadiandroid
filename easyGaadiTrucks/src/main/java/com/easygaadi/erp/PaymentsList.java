@@ -119,7 +119,7 @@ public class PaymentsList extends Fragment {
 
         detectConnection = new ConnectionDetector(getActivity());
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(getActivity());
+        pDialog = CommonERP.createProgressDialog(getActivity());//new ProgressDialog(getActivity());
         pDialog.setCancelable(true);
         if (detectConnection.isConnectingToInternet()) {
             new GetPaymentsList().execute();

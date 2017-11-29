@@ -21,6 +21,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easygaadi.erp.CommonERP;
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.PartyVo;
@@ -55,7 +56,7 @@ public class PendingPayments_Activty extends AppCompatActivity {
         setContentView(R.layout.activity_pending_payments__activty);
         context = PendingPayments_Activty.this;
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(context);
+        pDialog = CommonERP.createProgressDialog(context);//new ProgressDialog(context);
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);
@@ -125,12 +126,8 @@ public class PendingPayments_Activty extends AppCompatActivity {
                     {
                         JSONObject totalObj = result.getJSONObject("grossAmounts");
                         ((TextView) findViewById(R.id.vfreight_amt_tv)).setText(""+totalObj.getInt("grossFreight"));
-
                         ((TextView) findViewById(R.id.vpaid_amt_tv)).setText(""+totalObj.getInt("grossExpenses"));
-
                         ((TextView) findViewById(R.id.vdue_amt_tv)).setText(""+totalObj.getInt("grossDue"));
-
-
                             JSONArray partArray = result.getJSONArray("parties");
                             if(partArray.length() > 0)
                             {
@@ -163,9 +160,6 @@ public class PendingPayments_Activty extends AppCompatActivity {
                                 Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
                                 pDialog.dismiss();
                             }
-
-
-
                     }
                 } catch (Exception e) {
                     System.out.println("ex in get leads" + e.toString());

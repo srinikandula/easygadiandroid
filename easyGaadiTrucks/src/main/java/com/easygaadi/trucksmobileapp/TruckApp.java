@@ -166,7 +166,7 @@ public class TruckApp extends MultiDexApplication {
     public static String maintenanceListURL =  ERP_URL+"maintenance";
     public static String tripsListURL =  ERP_URL+"trips";
     public static String PaymentURL =  ERP_URL+"payments";
-    public static String ExpenseURL =  ERP_URL+"expenseMaster";
+    public static String ExpenseMasterURL =  ERP_URL+"expenseMaster";
     public static String ExpensesURL =  ERP_URL+"expense";
 
 

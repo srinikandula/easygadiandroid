@@ -73,20 +73,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="#838282"
                         android:text="RepairTye"/>
-                    <TextView
-                        android:id="@+id/repairarea_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="start|center_vertical"
-                        android:layout_marginBottom="3dp"
-                        android:layout_marginEnd="3dp"
-                        android:layout_marginLeft="8dp"
-                        android:layout_marginRight="3dp"
-                        android:layout_marginStart="8dp"
-                        android:drawablePadding="3dp"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="#838282"
-                        android:text="Kukatpally"/>
+                    
                     <TextView
                         android:id="@+id/repairamt_tv"
                         android:layout_width="wrap_content"

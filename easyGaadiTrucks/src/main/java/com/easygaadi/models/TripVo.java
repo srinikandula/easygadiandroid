@@ -42,6 +42,26 @@ public class TripVo {
     String partyName;
     String fullName;
     String truckName;
+    String partyContact;
+    String DriverContact;
+
+    public String getDriverContact() {
+        return DriverContact;
+    }
+
+    public void setDriverContact(String driverContact) {
+        DriverContact = driverContact;
+    }
+
+    public String getPartyContact() {
+        return partyContact;
+    }
+
+    public void setPartyContact(String partyContact) {
+        this.partyContact = partyContact;
+    }
+
+
 
     public String get_id() {
         return _id;

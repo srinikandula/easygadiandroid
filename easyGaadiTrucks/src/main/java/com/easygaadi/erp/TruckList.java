@@ -138,7 +138,7 @@ public class TruckList extends Fragment{
 
         detectConnection = new ConnectionDetector(getActivity());
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(getActivity());
+        pDialog = CommonERP.createProgressDialog(getActivity());//new ProgressDialog(getActivity());
         pDialog.setCancelable(false);
         if (detectConnection.isConnectingToInternet()) {
             new GetBuyingTrucks().execute();
@@ -450,9 +450,6 @@ public class TruckList extends Fragment{
                         Toast.makeText(getActivity(), "No records available",Toast.LENGTH_LONG).show();
                     }else
                     {
-                        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("pase", result.toString());
-                        clipboard.setPrimaryClip(clip);
                         JSONArray partArray = result.getJSONArray("trucks");
                         if(partArray.length() > 0)
                         {

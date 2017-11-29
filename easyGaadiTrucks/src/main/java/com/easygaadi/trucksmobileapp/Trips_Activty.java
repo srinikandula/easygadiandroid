@@ -31,6 +31,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.easygaadi.erp.CommonERP;
 import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.TripLanesVo;
@@ -85,7 +86,7 @@ public class Trips_Activty extends AppCompatActivity  {
 
         context = Trips_Activty.this;
         parser = JSONParser.getInstance();
-        pDialog = new ProgressDialog(context);
+        pDialog = CommonERP.createProgressDialog(context);//new ProgressDialog(context);
         pDialog.setCancelable(true);
         res = getResources();
         progressFrame = (FrameLayout) findViewById(R.id.progressFrame);
@@ -961,7 +962,6 @@ public class Trips_Activty extends AppCompatActivity  {
                 try {
                     //JSONObject js = new JSONObject(s);
                     if (!s.getBoolean("status")) {
-
                         Toast.makeText(context,"fail",Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(context, ""+"Trips Added", Toast.LENGTH_SHORT).show();

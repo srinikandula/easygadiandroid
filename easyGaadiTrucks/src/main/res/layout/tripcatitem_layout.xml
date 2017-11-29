@@ -123,10 +123,11 @@
                             android:layout_weight="1"/>
                     </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/sharell"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="visible">
+                    android:visibility="gone">
                     <TextView
                         android:id="@+id/whatsapp_tv"
                         android:layout_width="wrap_content"

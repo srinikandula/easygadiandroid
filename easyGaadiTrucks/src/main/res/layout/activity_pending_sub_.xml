@@ -102,7 +102,7 @@
                     android:layout_marginLeft="1dp"
                     android:layout_marginRight="1dp"
                     android:layout_weight="1"
-                    android:text="Ttrip ID"
+                    android:text="Trip ID"
                     android:textAppearance="?android:attr/textAppearanceSmall"/>
                 <TextView
                     android:id="@+id/echnum_tv"

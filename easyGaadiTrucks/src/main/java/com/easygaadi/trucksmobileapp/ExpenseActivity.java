@@ -567,7 +567,6 @@ public class ExpenseActivity extends AppCompatActivity {
                         post_dict.put("expenseType","");
                     }
                     post_dict.put("expenseTypeName",maintenanceExpenseOther);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -575,7 +574,6 @@ public class ExpenseActivity extends AppCompatActivity {
                 String result="";
 
                 result = parser.easyyExcutePost(context, TruckApp.ExpensesURL+"/"+"addExpense", String.valueOf(post_dict));
-                System.out.println("addExpense-->" +result);
                 res = new JSONObject(result);
 
             } catch (Exception e) {

@@ -87,7 +87,7 @@
                     android:padding="5dp"
                     android:layout_marginLeft="1dp"
                     android:layout_marginRight="1dp"
-                    android:text="V .No"
+                    android:text="Party Name"
                     android:background="@color/white"
                     android:textAppearance="?android:attr/textAppearanceLarge"/>
                 <TextView

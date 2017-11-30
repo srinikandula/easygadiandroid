@@ -112,7 +112,7 @@ public class Driver_Activity extends AppCompatActivity {
                     //truckAssigned = spinner.getItemAtPosition(position).toString();
                     //TruckVo truckvo = (TruckVo) spinner.getItemAtPosition(position);
                     //truckAssigned = truckvo.getRegistrationNo();
-                    if(truckAssigned.equalsIgnoreCase("Assigned Truck"))
+                    if(truckAssigned.equalsIgnoreCase("Select Truck"))
                     {
                         maintnce_trunknum_lbl.setVisibility(View.INVISIBLE);
                     }else{
@@ -277,7 +277,7 @@ public class Driver_Activity extends AppCompatActivity {
                         Toast.makeText(context, "Please Enter License Number", Toast.LENGTH_SHORT).show();
                     }
                 }else{
-                    Toast.makeText(context, "Please Enter Party Name", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Please Enter Mobile Number", Toast.LENGTH_SHORT).show();
                 }
             }else{
                 Toast.makeText(context, "Please Asigned Truck", Toast.LENGTH_SHORT).show();
@@ -493,7 +493,7 @@ public class Driver_Activity extends AppCompatActivity {
 
                     TruckVo voDatas = new TruckVo();
                     voDatas.set_id("");
-                    voDatas.setRegistrationNo("Assigned Truck");
+                    voDatas.setRegistrationNo("Select Truck");
 
                     data.add(voDatas);
 

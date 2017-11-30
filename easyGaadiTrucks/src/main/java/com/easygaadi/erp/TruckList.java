@@ -248,15 +248,15 @@ public class TruckList extends Fragment{
 
             if(Build.VERSION.SDK_INT  > 16)
             {
-                textViewFitness_tv.setCompoundDrawablesRelativeWithIntrinsicBounds(getDays(dataSet.get(listPosition).getFitnessExpiry()), null, null, null );
-                textViewPermit_tv.setCompoundDrawablesRelativeWithIntrinsicBounds( getDays(dataSet.get(listPosition).getPermitExpiry()), null, null, null );
-                textViewPoll_tv.setCompoundDrawablesRelativeWithIntrinsicBounds( getDays(dataSet.get(listPosition).getPollutionExpiry()), null, null, null );
-                textViewIns_tv.setCompoundDrawablesRelativeWithIntrinsicBounds( getDays(dataSet.get(listPosition).getInsuranceExpiry()), null, null, null );
+                textViewFitness_tv.setCompoundDrawablesRelativeWithIntrinsicBounds(CommonERP.getDays(dataSet.get(listPosition).getFitnessExpiry(),getContext()), null, null, null );
+                textViewPermit_tv.setCompoundDrawablesRelativeWithIntrinsicBounds( CommonERP.getDays(dataSet.get(listPosition).getPermitExpiry(),getContext()), null, null, null );
+                textViewPoll_tv.setCompoundDrawablesRelativeWithIntrinsicBounds( CommonERP.getDays(dataSet.get(listPosition).getPollutionExpiry(),getContext()), null, null, null );
+                textViewIns_tv.setCompoundDrawablesRelativeWithIntrinsicBounds( CommonERP.getDays(dataSet.get(listPosition).getInsuranceExpiry(),getContext()), null, null, null );
             }else{
-                textViewPermit_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getPermitExpiry()), null, null, null );
-                textViewPoll_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getPollutionExpiry()), null, null, null );
-                textViewIns_tv.setCompoundDrawables( getDays(dataSet.get(listPosition).getInsuranceExpiry()), null, null, null );
-                textViewFitness_tv.setCompoundDrawables(getDays(dataSet.get(listPosition).getFitnessExpiry()), null, null, null );
+                textViewPermit_tv.setCompoundDrawables( CommonERP.getDays(dataSet.get(listPosition).getPermitExpiry(),getContext()), null, null, null );
+                textViewPoll_tv.setCompoundDrawables( CommonERP.getDays(dataSet.get(listPosition).getPollutionExpiry(),getContext()), null, null, null );
+                textViewIns_tv.setCompoundDrawables( CommonERP.getDays(dataSet.get(listPosition).getInsuranceExpiry(),getContext()), null, null, null );
+                textViewFitness_tv.setCompoundDrawables(CommonERP.getDays(dataSet.get(listPosition).getFitnessExpiry(),getContext()), null, null, null );
             }
 
 
@@ -339,47 +339,7 @@ public class TruckList extends Fragment{
     }
 
 
-    public Drawable getDays(String fdate){
 
-        Date date;
-        long diff = 0;
-        //Log.i("start date",fdate);
-        DateFormat dateFormat,formatter;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-        String newDates = null;
-        try {
-            date = dateFormat.parse(fdate);
-            formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
-            newDates = formatter.format(date);
-            //Log.i("custom date",newDates);
-            Date today = new Date();
-            diff =  date.getTime()-today.getTime()  ;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            System.out.println("err--"+e.getMessage());
-        }
-
-        //int numOfDays = (int) (diff / (1000 * 60 * 60 * 24));
-        long numOfDays = TimeUnit.DAYS.convert(diff,TimeUnit.MILLISECONDS);
-        //Log.i("numOfDays-->",""+numOfDays);
-        //System.out.println("numOfDays-->"+numOfDays);
-        if(numOfDays >  30)
-        {
-            Drawable img = getContext().getResources().getDrawable( R.drawable.orange );
-            img.setBounds( 0, 0, 60, 60 );
-            return img;
-        }else if(numOfDays < 30)
-        {
-            Drawable img = getContext().getResources().getDrawable( R.drawable.orange );
-            img.setBounds( 0, 0, 60, 60 );
-            return img;
-        }else
-        {
-            Drawable img = getContext().getResources().getDrawable( R.drawable.red );
-            img.setBounds( 0, 0, 60, 60 );
-            return img;
-        }
-    }
 
 
 
@@ -484,7 +444,6 @@ public class TruckList extends Fragment{
                                 voData.setPermitExpiry(partData.getString("permitExpiry"));
                                 voData.setInsuranceExpiry(partData.getString("insuranceExpiry"));
                                 voData.setPollutionExpiry(partData.getString("pollutionExpiry"));
-
                                 data.add(voData);
                             }
 

@@ -376,7 +376,7 @@ public class Trips_Activty extends AppCompatActivity  {
 
                         }else
                         {
-                            Toast.makeText(context, "Please Enter Load for Truck", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "Please Select Party for Trip", Toast.LENGTH_SHORT).show();
                         }
 
                     }else

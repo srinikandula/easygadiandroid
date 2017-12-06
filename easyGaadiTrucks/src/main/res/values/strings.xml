@@ -451,6 +451,7 @@
     <string name="maintnce_dur">Repair Duration</string>
     <string name="maintnce_shed">Mehanic Shed Name</string>
     <string name="maintnce_are">Area</string>
+    <string name="maintnce_expense">Expense Type</string>
 
     <!--Maintenance string-->
     <string name="truck_reg">Reg No</string>

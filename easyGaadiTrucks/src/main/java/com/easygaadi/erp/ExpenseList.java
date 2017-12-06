@@ -398,7 +398,6 @@ public class ExpenseList extends Fragment {
         //in fragment class callback
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == this.requestCode){
-            String addItem=data.getStringExtra("addItem");
             try {
                 if (detectConnection.isConnectingToInternet()) {
                     new GetMaitenaceList().execute();

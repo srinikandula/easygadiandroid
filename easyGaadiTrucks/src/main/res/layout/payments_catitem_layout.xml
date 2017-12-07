@@ -20,10 +20,8 @@
             android:layout_height="wrap_content"
             android:background="@android:color/white"
             android:orientation="vertical"
-            android:padding="4dp">
-
-
-
+            android:padding="4dp"
+            >
 
                 <LinearLayout
                     android:id="@+id/mainLayout"
@@ -76,7 +74,9 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="#838282"
                         android:text="RepairTye"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:drawableRight="@drawable/erp_editbutton"/>
 
 
                 </LinearLayout>

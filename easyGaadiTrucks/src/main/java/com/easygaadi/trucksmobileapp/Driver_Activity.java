@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -387,7 +388,9 @@ public class Driver_Activity extends AppCompatActivity {
                     post_dict.put("joiningDate", driverDOJ);
                     post_dict.put("licenseValidity", driverlicval);
                     post_dict.put("salary",Integer.parseInt(driversal));
-                    post_dict.put("_id",lookuup);
+                    if(lookuup.length()> 0) {
+                        post_dict.put("_id", lookuup);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -424,14 +427,17 @@ public class Driver_Activity extends AppCompatActivity {
                     if (!s.getBoolean("status")) {
                         Toast.makeText(context, "fail",Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
+                        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
                         Intent intent=new Intent();
                         if(lookuup.length()> 0) {
+                            Toast.makeText(context, "updated Successfully", Toast.LENGTH_SHORT).show();
                             intent.putExtra("addItem",s.getJSONObject("driver").toString());
                             intent.putExtra("updated","update");
                             setResult(123,intent);
                             finish();
                         }else{
+                            Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
                             intent.putExtra("updated","add");
                             intent.putExtra("addItem",s.getJSONObject("driver").toString());
                             setResult(123,intent);
@@ -575,12 +581,8 @@ public class Driver_Activity extends AppCompatActivity {
 
     private class GetFreshTrucks extends AsyncTask<String, String, JSONObject> {
 
-        //String uid, accountid, offset;
 
         public GetFreshTrucks() {
-            //this.uid = uid;
-            //this.accountid = accountid;
-            //this.offset = String.valueOf(offset);
         }
 
         @Override
@@ -597,7 +599,6 @@ public class Driver_Activity extends AppCompatActivity {
             JSONObject json = null;
             try {
                 String res = parser.erpExecuteGet(context,TruckApp.driverFreshURL+""+lookuup);
-                Log.e("driverFreshURL",res.toString());
                 json = new JSONObject(res);
 
             } catch (Exception e) {

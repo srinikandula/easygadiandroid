@@ -31,6 +31,7 @@ import com.easygaadi.models.ExpensesVo;
 import com.easygaadi.models.MaitenanceVo;
 import com.easygaadi.trucksmobileapp.ExpenseActivity;
 import com.easygaadi.trucksmobileapp.Maintenance_Activity;
+import com.easygaadi.trucksmobileapp.PaymentsActivity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.TruckApp;
 
@@ -219,6 +220,16 @@ public class ExpenseList extends Fragment {
             textViewRType.setText(dataSet.get(listPosition).getExpenseName());
             //textViewRArea.setText(dataSet.get(listPosition).getCreatedByName());
             textViewamt.setText(dataSet.get(listPosition).getCost());
+            textViewamt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                /*startActivity(new Intent(getActivity(), Driver_Activity.class));*/
+                    Intent intent = new Intent(getActivity(), ExpenseActivity.class);
+                    intent.putExtra("hitupdate", dataSet.get(listPosition).get_id());
+                    startActivityForResult(intent, requestCode);
+
+                }
+            });
         }
 
         @Override
@@ -295,12 +306,8 @@ public class ExpenseList extends Fragment {
 
     private class GetMaitenaceList extends AsyncTask<String, String, JSONObject> {
 
-        //String uid, accountid, offset;
 
         public GetMaitenaceList() {
-            //this.uid = uid;
-            //this.accountid = accountid;
-            //this.offset = String.valueOf(offset);
         }
 
         @Override
@@ -344,7 +351,7 @@ public class ExpenseList extends Fragment {
                             for (int i = 0; i < partArray.length(); i++) {
                                 JSONObject partData = partArray.getJSONObject(i);
                                 ExpensesVo voData = new ExpensesVo();
-
+                                voData.set_id(partData.getString("_id"));
                                 voData.setCost(""+partData.getString("cost"));
                                 voData.setDate(""+partData.getString("date"));
                                 voData.setDescription(partData.getString("description"));

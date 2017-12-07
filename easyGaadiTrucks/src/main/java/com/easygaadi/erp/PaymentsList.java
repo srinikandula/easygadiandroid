@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
@@ -25,6 +26,7 @@ import com.easygaadi.gpsapp.utilities.ConnectionDetector;
 import com.easygaadi.gpsapp.utilities.JSONParser;
 import com.easygaadi.models.MaitenanceVo;
 import com.easygaadi.models.PaymentsVo;
+import com.easygaadi.trucksmobileapp.Driver_Activity;
 import com.easygaadi.trucksmobileapp.Maintenance_Activity;
 import com.easygaadi.trucksmobileapp.PaymentsActivity;
 import com.easygaadi.trucksmobileapp.R;
@@ -158,7 +160,7 @@ public class PaymentsList extends Fragment {
                 startActivityForResult(intent, requestCode);
             }
         });
-
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         return view;
     }
 
@@ -214,6 +216,20 @@ public class PaymentsList extends Fragment {
             textViewDate.setText(getFormatDate(dataSet.get(listPosition).getDate()));
 
             textViewamt.setText(dataSet.get(listPosition).getAmount());
+
+            textViewamt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                /*startActivity(new Intent(getActivity(), Driver_Activity.class));*/
+                    Intent intent = new Intent(getActivity(), PaymentsActivity.class);
+                    intent.putExtra("hitupdate", dataSet.get(listPosition).get_id());
+                    //intent.putExtra("hitupdate", "loo");
+                    startActivityForResult(intent, requestCode);
+
+                }
+            });
+
+
         }
 
         @Override

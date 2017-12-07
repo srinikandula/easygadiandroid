@@ -84,10 +84,11 @@
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="3dp"
                         android:layout_marginStart="8dp"
-                        android:drawablePadding="3dp"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/yellowdclr"
-                        android:text="2000"/>
+                        android:text="2000"
+                        android:drawablePadding="@dimen/margin_5"
+                        android:drawableRight="@drawable/erp_editbutton"/>
 
 
                 </LinearLayout>

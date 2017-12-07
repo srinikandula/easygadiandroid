@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -35,8 +36,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class ExpenseActivity extends AppCompatActivity {
     TextView maintDatelblTV,maintnce_dateTV,maintnce_trunknum_lbl,maintnce__expense_lbl,maintnce_lbl,maintnce_other_lbl,maintnce_cost_lbl,maintnce_are_lbl;
@@ -52,6 +57,9 @@ public class ExpenseActivity extends AppCompatActivity {
     LinearLayout other_ll;
     SpinnerCustomAdapters customAdapters;
     SpinnerCustomAdapter customAdapter;
+
+    String lookuup="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,7 +108,7 @@ public class ExpenseActivity extends AppCompatActivity {
         dataE.add(voDatae);
          customAdapters =new SpinnerCustomAdapters(getApplicationContext(),dataE,"expenses");
         spinExpense.setAdapter(customAdapters);
-
+        lookuup = getIntent().getStringExtra("hitupdate");
         if (detectCnnection.isConnectingToInternet()) {
             new GetAllTrucks("trucks").execute();
         } else {
@@ -146,7 +154,7 @@ public class ExpenseActivity extends AppCompatActivity {
         spinTruck.setOnItemSelectedListener(countrySelectedListener);
     }
 
-    EditText maintnce_PTypeET,maintnce_rTypeET,maintnce_costET,maintnce_otherET,maintnce_areET;
+    EditText maintnce_costET,maintnce_otherET,maintnce_areET;
     public void initilizationView() {
         //frghtET,AdvnceET,BalnceET
         //erp_frghtamt,erp_advamt,erp_balamt
@@ -424,6 +432,12 @@ public class ExpenseActivity extends AppCompatActivity {
                                 spinExpense.setAdapter(customAdapters);
                                 pDialog.dismiss();
                             }
+
+                            if(lookuup.length()> 0)
+                            {
+                                new GetFreshExpense().execute();
+                            }
+
                         }
                     }
                 } catch (Exception e) {
@@ -577,13 +591,20 @@ public class ExpenseActivity extends AppCompatActivity {
                     post_dict.put("description", maintenancArea);
                     post_dict.put("expenseType",maintenanceExpensesnum);
                     post_dict.put("expenseName",maintenanceExpenseOther);
+                    if(lookuup.length()> 0) {
+                        post_dict.put("_id",lookuup);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 System.out.println("expense" + String.valueOf(post_dict));
                 String result="";
-
-                result = parser.easyyExcutePost(context, TruckApp.ExpensesURL+"/"+"addExpense", String.valueOf(post_dict));
+                if(lookuup.length()> 0) {
+                    result = parser.ERPexcutePut(context, TruckApp.ExpensesURL+"/updateExpense", String.valueOf(post_dict));
+                    System.out.println("edit Expense Details" );
+                }else {
+                    result = parser.easyyExcutePost(context, TruckApp.ExpensesURL + "/" + "addExpense", String.valueOf(post_dict));
+                }
                 res = new JSONObject(result);
 
             } catch (Exception e) {
@@ -596,8 +617,7 @@ public class ExpenseActivity extends AppCompatActivity {
         protected void onPostExecute(JSONObject s) {
             super.onPostExecute(s);
             // login_btn.setEnabled(true);
-            progressFrame.setVisibility(View.GONE);
-            Log.v("response","res"+s.toString());
+
             if (s != null) {
 
                 try {
@@ -605,7 +625,13 @@ public class ExpenseActivity extends AppCompatActivity {
                     if (!s.getBoolean("status")) {
                         Toast.makeText(context, "fail",Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
+                        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                        if(lookuup.length()> 0) {
+                            Toast.makeText(context, "updated Successfully", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(context, "Successfully added", Toast.LENGTH_SHORT).show();
+                        }
+                        progressFrame.setVisibility(View.GONE);
                         Intent intent=new Intent();
                        // intent.putExtra("updated","add");
                         //intent.putExtra("addItem","");//s.getJSONObject("driver").toString()
@@ -642,4 +668,98 @@ public class ExpenseActivity extends AppCompatActivity {
         // Do extra stuff here
     }
 
+    private class GetFreshExpense extends AsyncTask<String, String, JSONObject> {
+
+        public GetFreshExpense() {}
+
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            pDialog.setMessage("");
+            pDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+
+            JSONObject json = null;
+            try {
+                String res = parser.erpExecuteGet(context,TruckApp.ExpensesRecordURL+lookuup);
+                json = new JSONObject(res);
+            } catch (Exception e) {
+                Log.e("ExpenseDetails DoIN EX", e.toString());
+            }
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            if (result != null) {
+
+                try {
+                    if (!result.getBoolean("status")) {
+                        Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
+                    }else
+                    {
+
+                        JSONObject partData = result.getJSONObject("expense");
+
+                        maintnce_dateTV.setText(getDate(partData.getString("date")));
+                        maintnce_areET.setText(partData.getString("description"));
+                        maintnce_costET.setText(""+partData.getInt("cost"));
+                        if(maintnce_dateTV.getText().toString().length() >0){
+                            maintDatelblTV.setVisibility(View.VISIBLE);
+                        }
+
+                        for (int i = 0; i < datat.size(); i++) {
+                            TruckVo vo = datat.get(i);
+                            System.out.println(vo.get_id()+"riyaz"+partData.getString("vehicleNumber"));
+                            if(vo.get_id().contentEquals(partData.getString("vehicleNumber"))){
+                                spinTruck.setSelection(i);
+                                break;
+                            }
+                        }
+                        for (int i = 0; i < dataE.size(); i++) {
+                            TruckVo vo = dataE.get(i);
+                            System.out.println(vo.get_id()+"riyaz"+partData.getString("expenseType"));
+                            if(vo.get_id().contentEquals(partData.getString("expenseType"))){
+                                spinExpense.setSelection(i);
+                                break;
+                            }
+                        }
+                        pDialog.dismiss();
+                    }
+                } catch (Exception e) {
+                    System.out.println("ex GetFreshTrucks get leads" + e.toString());
+                }
+            } else {
+                pDialog.dismiss();
+                Toast.makeText(context,
+                        getResources().getString(R.string.exceptionmsg),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private String getDate(String fdate)
+    {
+        Date date;
+        String diff = "";
+        DateFormat dateFormat,formatter;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        try {
+            date = dateFormat.parse(fdate);
+            formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
+            diff = formatter.format(date);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("err--"+e.getMessage());
+        }
+        return diff;
+    }
 }

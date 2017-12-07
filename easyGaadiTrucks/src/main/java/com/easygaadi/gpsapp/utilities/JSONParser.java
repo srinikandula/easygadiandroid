@@ -388,7 +388,6 @@ public class JSONParser {
 				String restoredText = prefs.getString("token", null);
 				if (restoredText != null) {
 					erpToken = prefs.getString("token", "No name defined");//"No name defined" is the default value.
-
 				}
 				//Create connection
 				url = new URL(targetURL);

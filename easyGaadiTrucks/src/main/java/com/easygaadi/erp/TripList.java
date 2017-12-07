@@ -56,6 +56,7 @@ import com.easygaadi.models.TruckVo;
 import com.easygaadi.trucksmobileapp.Driver_Activity;
 import com.easygaadi.trucksmobileapp.Manifest;
 import com.easygaadi.trucksmobileapp.Party_Activity;
+import com.easygaadi.trucksmobileapp.PaymentsActivity;
 import com.easygaadi.trucksmobileapp.R;
 import com.easygaadi.trucksmobileapp.TollActivity;
 import com.easygaadi.trucksmobileapp.TripsDetails_Activty;
@@ -201,7 +202,12 @@ public class TripList extends Fragment {
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(getActivity(), Trips_Activty.class), requestCode);
+
+                Intent intent = new Intent(getActivity(), Trips_Activty.class);
+                intent.putExtra("hitupdate", "");
+                startActivityForResult(intent, requestCode);
+
+                //startActivityForResult(new Intent(getActivity(), .class), requestCode);
             }
         });
         return view;
@@ -293,7 +299,7 @@ public class TripList extends Fragment {
             tripID_tv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(getActivity(), TripsDetails_Activty.class);
+                    Intent intent = new Intent(getActivity(), Trips_Activty.class);
                     intent.putExtra("hitupdate", dataSet.get(listPosition).get_id());
                     intent.putExtra("call", "truck");
                     startActivityForResult(intent, requestCode);

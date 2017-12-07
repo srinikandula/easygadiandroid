@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -42,8 +43,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Trips_Activty extends AppCompatActivity  {
 
@@ -51,7 +56,7 @@ public class Trips_Activty extends AppCompatActivity  {
     String[] payment = { "Payment Type","Cheque", "Chash"  };
     String truckID="",registrationNo="",DriverID="",paymentType="",PartyID="",tripLaneName="";
     TextView tripDate,trip_lbl,trip_bookbl,trip_trunklbl,trip_lanelbl,
-            trip_drnmelbl, trip_pymtbl,trip_tonnagelbl,trip_ratelbl,trip_frghtbl,trip_remrksl;
+            trip_drnmelbl,trip_tonnagelbl,trip_ratelbl,trip_frghtbl,trip_remrksl;
     EditText trip_tonnageamtET,trip_rateET,frghtET,erp_remarkET;
     Button formLL;
      Spinner spin,drspin,bookspin,triplanespin;
@@ -61,7 +66,7 @@ public class Trips_Activty extends AppCompatActivity  {
     private ConnectionDetector detectCnnection;
     FrameLayout progressFrame;
     ProgressDialog pDialog;
-    String lookuup;
+    String lookuup="";
     ArrayList<TruckVo> datat,datad,datap;
     ArrayList<TripLanesVo> datalane;
 
@@ -79,7 +84,6 @@ public class Trips_Activty extends AppCompatActivity  {
         trip_tonnagelbl=(TextView)findViewById(R.id.trip_tonnagelbl);
         trip_ratelbl=(TextView)findViewById(R.id.trip_ratelbl);
         trip_frghtbl=(TextView)findViewById(R.id.trip_frghtbl);
-        trip_pymtbl=(TextView)findViewById(R.id.trip_pymtbl);
         trip_remrksl=(TextView)findViewById(R.id.trip_remrksl);
         initilizationView();
 
@@ -122,12 +126,7 @@ public class Trips_Activty extends AppCompatActivity  {
             Toast.makeText(context,res.getString(R.string.internet_str),Toast.LENGTH_LONG).show();
         }
 
-        Spinner payspin = (Spinner) findViewById(R.id.spnr_paymnttype);
-        //Creating the ArrayAdapter instance having the country list
-        ArrayAdapter paytypeeaa = new ArrayAdapter(this,R.layout.erp_view_spinner_item,payment);
-        paytypeeaa.setDropDownViewResource(R.layout.erp_view_spinner_item);
-        //Setting the ArrayAdapter data on the Spinner
-        payspin.setAdapter(paytypeeaa);
+
 
         tripDate = (TextView)findViewById(R.id.trip_id);
 
@@ -141,30 +140,13 @@ public class Trips_Activty extends AppCompatActivity  {
 
             @Override
             public void onItemSelected(AdapterView<?> spinner, View container,int position, long id) {
-                if(spinner.getId() == R.id.spnr_paymnttype){
-                    String selected = spinner.getItemAtPosition(position).toString();
-                    if(selected.equalsIgnoreCase("Payment Type"))
-                    {
-                        trip_pymtbl.setVisibility(View.INVISIBLE);
-
-                    }else{
-                        trip_pymtbl.setVisibility(View.VISIBLE);
-                    }
-                    if(position !=0)
-                    {
-                        paymentType=spinner.getItemAtPosition(position).toString();
-                    }else {
-                        paymentType = "";
-                    }
-
-                }else  if(spinner.getId() == R.id.spnr_trunknum){
+                if(spinner.getId() == R.id.spnr_trunknum){
                     if(position ==0)
                     {
                         trip_trunklbl.setVisibility(View.INVISIBLE);
 
                     }else{
                         trip_trunklbl.setVisibility(View.VISIBLE);
-
                         updateDriverSpinner(position);
                     }
                 }else  if(spinner.getId() == R.id.spnr_drivername){
@@ -179,13 +161,10 @@ public class Trips_Activty extends AppCompatActivity  {
                     if(position ==0)
                     {
                         trip_bookbl.setVisibility(View.INVISIBLE);
-
                     }else{
                         trip_bookbl.setVisibility(View.VISIBLE);
                         TruckVo tvo = new TruckVo();
                         tvo =  datap.get(position);
-                        Log.v("bond",tvo.get__v());
-                        System.out.print("bond===="+tvo.get__v());
                         setTripLanes(tvo.get__v());
                     }
                 }else  if(spinner.getId() == R.id.spnr_triplanes){
@@ -196,23 +175,15 @@ public class Trips_Activty extends AppCompatActivity  {
                     }else{
                         trip_lanelbl.setVisibility(View.VISIBLE);
                     }
-
-
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
 
-                if(R.id.spnr_paymnttype == arg0.getId()) {
-                    if (arg0.getSelectedItemPosition() != 0) {
-                        trip_pymtbl.setVisibility(View.VISIBLE);
-                    }
-                }
             }
         };
 
-        payspin.setOnItemSelectedListener(countrySelectedListener);
         spin.setOnItemSelectedListener(countrySelectedListener);
         drspin.setOnItemSelectedListener(countrySelectedListener);
         bookspin.setOnItemSelectedListener(countrySelectedListener);
@@ -232,7 +203,6 @@ public class Trips_Activty extends AppCompatActivity  {
         voDataLane.setTo("");
         datalane.add(voDataLane);
         if(jString !=null && !jString.isEmpty()) {
-
             try {
                 JSONArray laneArr = new JSONArray(jString);
                 if (laneArr.length() > 0) {
@@ -264,13 +234,15 @@ public class Trips_Activty extends AppCompatActivity  {
     }
 
     private void updateDriverSpinner(int  position){
-        for (int i = 0; i < datad.size(); i++) {
-            TruckVo vo = datad.get(i);
-            if((vo.get_id()).contentEquals((datat.get(position).getDriverID()))){
-                drspin.setSelection(i);
-                break;
-            }else{
-                drspin.setSelection(0);
+        if(lookuup.length() == 0) {
+            for (int i = 0; i < datad.size(); i++) {
+                TruckVo vo = datad.get(i);
+                if ((vo.get_id()).contentEquals((datat.get(position).getDriverID()))) {
+                    drspin.setSelection(i);
+                    break;
+                } else {
+                    drspin.setSelection(0);
+                }
             }
         }
     }
@@ -325,7 +297,7 @@ public class Trips_Activty extends AppCompatActivity  {
                                                 if(true){
                                                     if(true){
                                                         if(true){
-                                                            if(trippaymentType.length()>0){
+                                                            if(true){//trippaymentType.length()>0
                                                                 if (detectCnnection.isConnectingToInternet()) {
                                                                     Log.i("shaaka",
                                                                             tripDatestr +" -->"+tripTruckID+" -->"+"+ -->"+" -->"+trip_load +" -->"+tripDriverID+" -->"+tripDieselAmt+" -->"+tripTollAmt +" -->"+tripTonnageAmt+" -->"+tripRateAmt+" -->"+tripfrghtAmt +" -->"+tripAdvnceAmt+" -->"+tripBalnceAmt+" -->"+triperp_remark+" -->"+trippaymentType);
@@ -603,7 +575,6 @@ public class Trips_Activty extends AppCompatActivity  {
             if (result != null) {
 
                 try {
-
                     if (!result.getBoolean("status")) {
                         Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
                     }else
@@ -625,7 +596,6 @@ public class Trips_Activty extends AppCompatActivity  {
                                 new GetBuyingTrucks("parties").execute();
                             }else{
                                 pDialog.dismiss();
-
                             }
                         }else if(this.type.equalsIgnoreCase("truck")){
                             JSONArray partArray = result.getJSONArray("trucks");
@@ -642,8 +612,6 @@ public class Trips_Activty extends AppCompatActivity  {
                                     }else{
                                         voData.setDriverID("nothing");
                                     }
-
-
                                     datat.add(voData);
                                 }
                                 pDialog.dismiss();
@@ -675,12 +643,13 @@ public class Trips_Activty extends AppCompatActivity  {
 
                             PartySpinnerCustomAdapters customAdapter=new PartySpinnerCustomAdapters(getApplicationContext(),datap);
                             bookspin.setAdapter(customAdapter);
+                            if(lookuup.length()> 0)
+                            {
+                                new GetFreshParty().execute();
+                            }
+
                         }
-
                     }
-
-
-
                 } catch (Exception e) {
                     System.out.println("ex in truck leads" + e.toString());
                 }
@@ -826,16 +795,9 @@ public class Trips_Activty extends AppCompatActivity  {
             }else{
                 tripLaneName  = dataset.get(i).getName();
             }
-
-
-
-
             return bookRow;
         }
     }
-
-
-
 
     public class PartySpinnerCustomAdapters extends BaseAdapter {
         Context mcontext;
@@ -876,9 +838,6 @@ public class Trips_Activty extends AppCompatActivity  {
             }else{
                 PartyID  = book.get_id();
             }
-
-
-
             return bookRow;
         }
     }
@@ -932,17 +891,26 @@ public class Trips_Activty extends AppCompatActivity  {
                     post_dict.put("tonnage", Integer.parseInt(tripTonnageAmt));
                     post_dict.put("rate", Integer.parseInt(tripRateAmt));
                     post_dict.put("balance", "");
-                    post_dict.put("paymentType", trippaymentType);
+                    //post_dict.put("paymentType", trippaymentType);
                     post_dict.put("remarks", triperp_remark);
                     post_dict.put("bookedFor", PartyID);
                     post_dict.put("tripLane", tripLaneIndex);
+                    if(lookuup.length()> 0) {
+                        post_dict.put("_id", lookuup);
+                    }
 
                 } catch (JSONException e) {
                     Log.i("post_dict EX", e.toString());
                     e.printStackTrace();
                 }
-                System.out.println("post_dict" + String.valueOf(post_dict));
-                String result = parser.easyyExcutePost(context,TruckApp.tripsListURL+"/addTrip ",String.valueOf(post_dict));
+                String result="";
+                if(lookuup.length()> 0) {
+                    result = parser.ERPexcutePut(context, TruckApp.tripsListURL, String.valueOf(post_dict));
+                    System.out.println("edit Trip Details" );
+                }else {
+                    System.out.println("post_dict" + String.valueOf(post_dict));
+                     result = parser.easyyExcutePost(context, TruckApp.tripsListURL + "/addTrip ", String.valueOf(post_dict));
+                }
                 res = new JSONObject(result);
 
             } catch (Exception e) {
@@ -954,23 +922,24 @@ public class Trips_Activty extends AppCompatActivity  {
         @Override
         protected void onPostExecute(JSONObject s) {
             super.onPostExecute(s);
-            // login_btn.setEnabled(true);
-            progressFrame.setVisibility(View.GONE);
             Log.v("response","res"+s.toString());
             if (s != null) {
-
                 try {
                     //JSONObject js = new JSONObject(s);
                     if (!s.getBoolean("status")) {
                         Toast.makeText(context,"fail",Toast.LENGTH_LONG).show();
                     } else {
-                        Toast.makeText(context, ""+"Trips Added", Toast.LENGTH_SHORT).show();
-
+                        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+                        if(lookuup.length()> 0) {
+                            Toast.makeText(context, ""+"Trips Updated Successfully", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(context, ""+"Trips Added Successfully", Toast.LENGTH_SHORT).show();
+                        }
+                        progressFrame.setVisibility(View.GONE);
                         Intent intent=new Intent();
                         intent.putExtra("addItem","");
                         setResult(123,intent);
                         finish();
-
                     }
                 } catch (JSONException e) {
                     System.out.println("Exception while extracting the response:"+ e.toString());
@@ -1000,6 +969,127 @@ public class Trips_Activty extends AppCompatActivity  {
         // Do extra stuff here
     }
 
+    private class GetFreshParty extends AsyncTask<String, String, JSONObject> {
+        public GetFreshParty() {}
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+            pDialog.setMessage("");
+            pDialog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(String... params) {
+            JSONObject json = null;
+            try {
+                String res = parser.erpExecuteGet(context,TruckApp.tripsListURL+"/"+lookuup);
+                json = new JSONObject(res);
+            } catch (Exception e) {
+                Log.e("paymentsDetails DoIN EX", e.toString());
+            }
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            if (result != null) {
+
+                try {
+                    if (!result.getBoolean("status")) {
+                        Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
+                    }else
+                    {
+
+                        JSONObject partData = result.getJSONObject("trip");
+                        //trip_tonnageamtET,trip_rateET,frghtET,erp_remarkET;
+                        tripDate.setText(getDate(partData.getString("date")));
+                        //tripDate.setText(""+partData.getInt("tripLane"));
+                        trip_tonnageamtET.setText(partData.getString("tonnage"));
+                        trip_rateET.setText(""+partData.getInt("rate"));
+                        frghtET.setText(""+partData.getInt("freightAmount"));
+
+                        if(tripDate.getText().toString().length() >0){
+                            trip_lbl.setVisibility(View.VISIBLE);
+                        }
+
+                        if(partData.has("registrationNo"))
+                        for (int i = 0; i < datat.size(); i++) {
+                            TruckVo vo = datat.get(i);
+                            System.out.println(vo.get_id()+"truckr"+partData.getString("registrationNo"));
+                            if(vo.get_id().contentEquals(partData.getString("registrationNo"))){
+                                spin.setSelection(i);
+                                break;
+                            }
+                        }
+
+
+                        if(partData.has("driverId"))
+                        for (int i = 0; i < datad.size(); i++) {
+                            TruckVo vo = datad.get(i);
+                            System.out.println(vo.get_id()+"driverr"+partData.getString("driverId"));
+                            if(vo.get_id().contentEquals(partData.getString("driverId"))){
+                                drspin.setSelection(i);
+                                break;
+                            }
+                        }
+                        if(partData.has("partyId"))
+                        for (int i = 0; i < datap.size(); i++) {
+                            TruckVo vo = datap.get(i);
+                            System.out.println(vo.get_id()+"partyr"+partData.getString("partyId"));
+                            if(vo.get_id().contentEquals(partData.getString("partyId"))){
+                                bookspin.setSelection(i);
+                                break;
+                            }
+                        }
+                        if(partData.has("tripLane"))
+                            for (int i = 0; i < datalane.size(); i++) {
+                                TripLanesVo vo = datalane.get(i);
+                                System.out.println(vo.getName()+"--tripLane--"+partData.getString("tripLane"));
+                                if(vo.getName().contentEquals(partData.getString("tripLane"))){
+                                    triplanespin.setSelection(i);
+                                    break;
+                                }
+                            }
+
+
+
+                        pDialog.dismiss();
+                    }
+                } catch (Exception e) {
+                    System.out.println("ex GetFreshTrucks get leads" + e.toString());
+                }
+
+            } else {
+                pDialog.dismiss();
+                Toast.makeText(context,
+                        getResources().getString(R.string.exceptionmsg),
+                        Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    private String getDate(String fdate)
+    {
+        Date date;
+        String diff = "";
+        System.out.println("getDate--"+"getDate"+fdate);
+        DateFormat dateFormat,formatter;
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        try {
+            date = dateFormat.parse(fdate);
+            formatter = new SimpleDateFormat("yyyy-MM-dd"); //If you need time just put specific format for time like 'HH:mm:ss'
+            diff = formatter.format(date);
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+            System.out.println("err--"+e.getMessage());
+        }
+        return diff;
+    }
 
 }
 

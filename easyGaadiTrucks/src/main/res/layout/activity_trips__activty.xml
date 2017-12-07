@@ -330,33 +330,6 @@
                         android:background="@drawable/erp_etborder"
                         android:inputType="number"/>
                 </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="@dimen/margin_5"
-                    android:layout_marginRight="@dimen/margin_5">
-                    <TextView
-                        android:id="@+id/trip_pymtbl"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/padding_5"
-                        android:hint="@string/erp_paymnt_type"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textColorHint="@color/actionbar_clr"
-                        android:gravity="left"
-                        android:visibility="invisible"/>
-                    <Spinner
-                        android:id="@+id/spnr_paymnttype"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/erp_height"
-                        android:background="@drawable/erp_etborder"
-                        android:hint="@string/erp_trip_date"
-                        android:dropDownWidth="fill_parent"
-                        android:spinnerMode="dropdown"
-                        />
-                </LinearLayout>
 
             </LinearLayout>
         <LinearLayout

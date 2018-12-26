@@ -340,7 +340,7 @@ public class TrackOrderActivity extends AppCompatActivity implements OnMapReadyC
                     //odometer_tv.setText(Html.fromHtml("<b>Odometer : </b>"+jObj.getString("odometer")));
                     speed_tv.setText(Html.fromHtml("<b>Speed : </b>" + jObj.getString("speed")));
                     regno_tv.setText(Html.fromHtml("<b>Reg.No : </b>" + getIntent().getStringExtra("regno")));
-                    time_tv.setText(Html.fromHtml("<b>Date : </b>" + TruckApp.secToDate(jObj.getInt("time_in_secs"), context)));
+                    time_tv.setText(Html.fromHtml("<b>Date : </b>" + jObj.getString("timestamp")));
                     geo_latlon_tv.setText(Html.fromHtml("<b>GPS : </b>" + f.format(jObj.getDouble("latitude")) + "/" + f.format(jObj.getDouble("longitude"))));
                 } catch (Exception e) {
                     e.printStackTrace();

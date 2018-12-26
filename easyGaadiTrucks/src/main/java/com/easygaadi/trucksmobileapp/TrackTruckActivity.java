@@ -318,10 +318,10 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
     public void trackTruck() {
         if (detectCnnection.isConnectingToInternet()) {
             try {
-                if (getIntent().hasExtra("regno")) {
+                if (getIntent().hasExtra("imeiNumber")) {
                     if (googleMap != null) {
                         googleMap.clear();
-                        new TrackTruck(getIntent().getStringExtra("regno"), getIntent().getStringExtra("urlParams")).execute();
+                        new TrackTruck(getIntent().getStringExtra("imeiNumber"), getIntent().getStringExtra("urlParams")).execute();
                     } else {
                         Toast.makeText(context, getResources().getString(R.string.googlemap_str), Toast.LENGTH_LONG).show();
                     }
@@ -511,7 +511,7 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
         try {
             List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
-            if (addresses != null) {
+            if (addresses != null && addresses.size() > 0) {
                 Address returnedAddress = addresses.get(0);
                 StringBuilder strReturnedAddress = new StringBuilder("");
 
@@ -596,7 +596,7 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
                     }
                     speed_tv.setText(Html.fromHtml("<b>Speed : </b>" + jObj.getString("speed")));
                     regno_tv.setText(Html.fromHtml("<b>Reg.No : </b>" + getIntent().getStringExtra("regno")));
-                    time_tv.setText(Html.fromHtml("<b>Date : </b>" + TruckApp.secToDate(jObj.getInt("time_in_secs"), context)));
+                    time_tv.setText(Html.fromHtml("<b>Date : </b>" +  jObj.getString("timestamp")));
                     geo_latlon_tv.setText(Html.fromHtml("<b>GPS : </b>" + f.format(jObj.getDouble("latitude")) + "/" + f.format(jObj.getDouble("longitude"))));
 
                     if (getIntent().hasExtra("tripId")) {
@@ -646,10 +646,10 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
 
     private class TrackTruck extends AsyncTask<String, String, JSONObject> {
         boolean trip = false;
-        String truckregno, urlParams, tripId;
+        String imeiNumber, urlParams, tripId;
 
-        public TrackTruck(String truckregno, String urlparams) {
-            this.truckregno = truckregno;
+        public TrackTruck(String imeiNumber, String urlparams) {
+            this.imeiNumber = imeiNumber;
             this.urlParams = urlparams;
         }
 
@@ -675,26 +675,23 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
                 String url, res;
 
                 if (!trip) {
-                    url = TruckApp.TRACK_TRUCK_URL+"?truckregno="
-                            + truckregno + "&account_id=" + sharedPreferences.getString("accountID",
+                    url = TruckApp.TRACK_TRUCK_URL+"?imeiNumber="
+                            + imeiNumber + "&account_id=" + sharedPreferences.getString("accountID",
                             "no accountid ") + "&" + urlParams+"&access_token="+sharedPreferences.getString("access_token","");
                     res = parser.executeGet(url);
                     json = new JSONObject(res);
                 } else {
-                    System.out.println("trip:- " + trip + "\ttripId: " + tripId);
                     url = TruckApp.getTripSummaryURL;
                     StringBuilder builder = new StringBuilder();
                     builder.append("Trip[id]=").append(URLEncoder.encode(tripId, "UTF-8"));
                     builder.append(builder.append("&access_token=")).append(sharedPreferences.getString("access_token",""));
-                    //String urlParams = "Trip[id]=" + URLEncoder.encode(tripId, "UTF-8");
                     res = parser.excutePost(url, builder.toString());
-                    System.out.println("res:- " + res);
                     json = new JSONObject(res);
                 }
-                System.out.println("URL:" + url);
+               // System.out.println("URL:" + url);
                 //String res = parser.executeGet(url);
                 //json = new JSONObject(res);
-                System.out.println("TTURL:" + url + "\nRESULT:" + res);
+
             } catch (Exception e) {
                 Log.e("Login DoIN EX", e.toString());
             }

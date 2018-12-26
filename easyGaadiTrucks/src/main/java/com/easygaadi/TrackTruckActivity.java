@@ -196,7 +196,7 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
 
                 ab.setTitle(builder);
                 isTrip = true;
-                invalidateOptionsMenu();
+                //invalidateOptionsMenu();
             }
         }
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(TrackTruckActivity.this));
@@ -293,7 +293,6 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
                 } else if (getIntent().hasExtra("tripId")) {
                     if (googleMap != null) {
                         googleMap.clear();
-                        System.out.println(getIntent().getStringExtra("tripId") + " : " + getIntent().getBooleanExtra("istrip", false));
                         new TrackTruck(getIntent().getStringExtra("tripId"), getIntent().getBooleanExtra("istrip", false)).execute();
                     } else {
                         Toast.makeText(context, getResources().getString(R.string.googlemap_str), Toast.LENGTH_LONG).show();
@@ -535,7 +534,7 @@ public class TrackTruckActivity extends AppCompatActivity implements OnMapReadyC
                     }
                     speed_tv.setText(Html.fromHtml("<b>Speed : </b>" + jObj.getString("speed")));
                     regno_tv.setText(Html.fromHtml("<b>Reg.No : </b>" + getIntent().getStringExtra("regno")));
-                    time_tv.setText(Html.fromHtml("<b>Date : </b>" + TruckApp.secToDate(jObj.getInt("time_in_secs"), context)));
+                    time_tv.setText(Html.fromHtml("<b>Date : </b>" + jObj.getString("timestamp")));
                     geo_latlon_tv.setText(Html.fromHtml("<b>GPS : </b>" + f.format(jObj.getDouble("latitude")) + "/" + f.format(jObj.getDouble("longitude"))));
 
                     if (getIntent().hasExtra("tripId")) {

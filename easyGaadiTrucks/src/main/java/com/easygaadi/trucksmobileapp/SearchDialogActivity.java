@@ -74,6 +74,7 @@ public class SearchDialogActivity extends Activity implements OnClickListener {
 						try {
 							Intent nextIntent=new Intent(context, TrackTruckActivity.class);
 							nextIntent.putExtra("regno", truckObj.getString("truck_no"));
+							nextIntent.putExtra("imeiNumber", truckObj.getString("deviceID"));
 							nextIntent.putExtra("urlParams", params);
 							nextIntent.putExtra("vehicleType",truckObj.getString("vehicleType"));
 							startActivity(nextIntent);

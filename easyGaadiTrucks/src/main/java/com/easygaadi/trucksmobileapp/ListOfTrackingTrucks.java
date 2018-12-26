@@ -339,13 +339,16 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
 
             JSONObject json = null;
             try {
-                StringBuilder builder = new StringBuilder();
+                String res = parser.erpExecuteGet(getApplicationContext(), TruckApp.truckListURL);
+                Log.i("trucksList",res.toString());
+                json = new JSONObject(res);
+               /* StringBuilder builder = new StringBuilder();
                 builder.append("account_id=").append(URLEncoder.encode(uid, "UTF-8"))
                         .append(builder.append("&gid=").append(URLEncoder.encode(groupId, "UTF-8")))
                         .append(builder.append("&group=").append(URLEncoder.encode(groupName, "UTF-8")))
                         .append(builder.append("&access_token=")).append(sharedPreferences.getString("access_token",""));
                 String res = parser.excutePost(TruckApp.TRACK_ALL_VEHICLES_URL, builder.toString());
-                json = new JSONObject(res);
+                json = new JSONObject(res);*/
             } catch (Exception e) {
                 Log.e("Login DoIN EX", e.toString());
             }
@@ -359,11 +362,11 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
             super.onPostExecute(result);
             if (result != null) {
                 try {
-                    if (0 == result.getInt("status")) {
+                    if (!result.getBoolean("status")) {
                        Toast.makeText(context, "No records found",Toast.LENGTH_LONG).show();
-                    } else if (1 == result.getInt("status")) {
-                        trucksArray = result.getJSONArray("success");
-                        allTrucksArray = result.getJSONArray("success");
+                    } else if (result.getBoolean("status")) {
+                        trucksArray = result.getJSONArray("data");
+                        allTrucksArray = trucksArray;
                         if (trucksArray.length() == 0) {
                             Toast.makeText(context, "No records available",Toast.LENGTH_LONG).show();
                         } else {
@@ -479,36 +482,39 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
 
         private void setData(int position, ViewHolder viewholder) {
             try {
-                JSONObject jObj = trucks.getJSONObject(position);
-                viewholder.place_tv.setText(jObj.getString("address").equals("") ? "Location Unavailable" : jObj.getString("address"));
-                viewholder.truckreg_tv.setText(jObj.getString("truck_no"));
-                viewholder.speed_tv.setText(jObj.getString("speed"));
-                viewholder.meter_tv.setText(jObj.getString("odometer"));
-                viewholder.lfl_cb.setTag(position + ";" + jObj.toString());
-                //viewholder.edit_img.setTag(position + ";" + jObj.toString());
-                viewholder.edit_img.setTag(jObj.getString("deviceID"));
-                viewholder.trip_img.setTag(position + ";" + jObj.toString());
-                if (egAccountid == 1) {
-                    viewholder.contact_tv.setText(jObj.getString("contact"));
-                    viewholder.contact_tv.setVisibility(View.VISIBLE);
-                }else{
-                    viewholder.contact_tv.setVisibility(View.GONE);
+                JSONObject truck = trucks.getJSONObject(position);
+                if(truck.has("address")){
+                    viewholder.place_tv.setText(truck.getString("address"));
                 }
+                viewholder.truckreg_tv.setText(truck.getString("truck_no"));
+                viewholder.speed_tv.setText(truck.getString("speed"));
+               // viewholder.meter_tv.setText(truck.getString("totalDistance"));
+                viewholder.lfl_cb.setTag(position + ";" + truck.getString("truck_no"));
+                viewholder.meter_tv.setText(truck.getString("odometer"));
+                //viewholder.edit_img.setTag(position + ";" + jObj.toString());
+                //viewholder.edit_img.setTag(truck.getString("deviceID"));
+               // viewholder.trip_img.setTag(position + ";" + truck.toString());
+                //if (egAccountid == 1) {
+                //    viewholder.contact_tv.setText(truck.getString("contact"));
+                //    viewholder.contact_tv.setVisibility(View.VISIBLE);
+                //}else{
+                //    viewholder.contact_tv.setVisibility(View.GONE);
+                //}
 
-                if(jObj.has("momentMsg") && !jObj.getString("momentMsg").isEmpty()){
+                if(truck.has("momentMsg") && !truck.getString("momentMsg").isEmpty()){
                     viewholder.message_tv.setVisibility(View.VISIBLE);
-                    viewholder.message_tv.setText(jObj.getString("momentMsg"));
+                    viewholder.message_tv.setText(truck.getString("momentMsg"));
                 }else{
                     viewholder.message_tv.setVisibility(View.GONE);
                 }
-                if(jObj.getString("vehicleType")!=null && jObj.getString("vehicleType").equalsIgnoreCase("CR")){
+                if(truck.has("vehicleType") && truck.getString("vehicleType")!=null && truck.getString("vehicleType").equalsIgnoreCase("CR")){
                     viewholder.truckreg_tv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.tracar_icon, 0, 0);
                 }else{
                     viewholder.truckreg_tv.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.tratruck_icon, 0, 0);
                 }
-                if (jObj.getString("vehicleType") != null && jObj.getString("vehicleType").equals("TK")) {
+                if (truck.has("vehicleType") && truck.getString("vehicleType") != null && truck.getString("vehicleType").equals("TK")) {
                     viewholder.lfl_cb.setVisibility(View.VISIBLE);
-                    if (jObj.getString("lookingForLoad") != null && jObj.getString("lookingForLoad").equals("0")) {
+                    if (truck.getString("lookingForLoad") != null && truck.getString("lookingForLoad").equals("0")) {
                         viewholder.lfl_cb.setChecked(false);
                     } else {
                         viewholder.lfl_cb.setChecked(true);
@@ -516,45 +522,26 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
                 } else {
                     viewholder.lfl_cb.setVisibility(View.GONE);
                 }
-
-                viewholder.lastupdate_tv.setText(jObj.getString("date_time"));
-                String Objtime = viewholder.lastupdate_tv.getText().toString();
-
-                try {
-
-                    Date date1 = sdf.parse(Objtime);
-                    Objsec = date1.getTime();
-                    String ObjDate = String.valueOf(Objsec);
-
-                    Date date2 = sdf.parse(currentDateandTime);
-                    Curent = date2.getTime();
-                    String CurentDate = String.valueOf(Curent);
+               // Date date = new Date(2018-06-30T08:35:15.847Z);
 
 
-                } catch (Exception e) {
-                    // TODO: handle exception
-                }
-                if(jObj.has("momentStatus")){
-                    if(jObj.getString("momentStatus").equalsIgnoreCase("Running")){
+                viewholder.lastupdate_tv.setText(truck.getString("date_time"));
+                //String Objtime = viewholder.lastupdate_tv.getText().toString();
+
+                if(truck.has("momentStatus")){
+                    if(truck.getString("momentStatus").equalsIgnoreCase("Running")){
                         viewholder.GPS_Color_LL.setBackgroundColor(Color.parseColor("#456D0B"));
-                    }else if(jObj.getString("momentStatus").equalsIgnoreCase("Stop")){
+                    }else if(truck.getString("momentStatus").equalsIgnoreCase("Stop")){
                         viewholder.GPS_Color_LL.setBackgroundColor(Color.parseColor("#FF7F00"));
-                    }else if(jObj.getString("momentStatus").equalsIgnoreCase("Long Stop")){
+                    }else if(truck.getString("momentStatus").equalsIgnoreCase("Long Stop")){
                         viewholder.GPS_Color_LL.setBackgroundColor(Color.parseColor("#FF0000"));
-                    }else if(jObj.getString("momentStatus").equalsIgnoreCase("Damage")){
+                    }else if(truck.getString("momentStatus").equalsIgnoreCase("Damage")){
                         viewholder.GPS_Color_LL.setBackgroundColor(Color.parseColor("#A31919"));
                     }
                 } else {
                     viewholder.GPS_Color_LL.setBackgroundColor(Color.parseColor("#456D0B"));
                     viewholder.place_tv.setBackgroundColor(Color.parseColor("#456D0B"));
                 }
-                /*if (jObj.has("damage") && jObj.getString("damage") != null && jObj.getString("damage").equals("1")) {
-                    viewholder.GPS_Color_LL.setBackgroundColor(Color.parseColor("#A31919"));
-                } else if (jObj.has("speed") && jObj.getString("speed").trim().equals("0 Km/Hr")) {
-                    viewholder.GPS_Color_LL.setBackgroundColor(Color.parseColor("#FF7F00"));
-                } else {
-                    viewholder.GPS_Color_LL.setBackgroundColor(Color.parseColor("#456D0B"));
-                }*/
 
                 viewholder.lfl_cb.setOnClickListener(new OnClickListener() {
 
@@ -571,23 +558,16 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
                     }
                 });
                 boolean ins_time=false,fit_time=false, np_time= false;
-                if(jObj.has("insuranceExpire")){
-                     ins_time = TruckApp.checkTime(jObj.getString("insuranceExpire") + " 00:00:00");
+                if(truck.has("insuranceExpire")){
+                     ins_time = TruckApp.checkTime(truck.getString("insuranceExpire") + " 00:00:00");
+                }
+                if(truck.has("fitnessExpire")){
+                     fit_time = TruckApp.checkTime(truck.getString("fitnessExpire") + " 00:00:00");
                 }
 
-                if(jObj.has("fitnessExpire")){
-                     fit_time = TruckApp.checkTime(jObj.getString("fitnessExpire") + " 00:00:00");
+                if(truck.has("NPExpire")){
+                     np_time = TruckApp.checkTime(truck.getString("NPExpire") + " 00:00:00");
                 }
-
-                if(jObj.has("NPExpire")){
-                     np_time = TruckApp.checkTime(jObj.getString("NPExpire") + " 00:00:00");
-                }
-
-                /*if (ins_time && fit_time && np_time) {
-                    viewholder.edit_img.setImageResource(R.drawable.ic_edit_blue);
-                } else {
-                    viewholder.edit_img.setImageResource(R.drawable.ic_edit_r);
-                }*/
 
                 viewholder.edit_img.setOnClickListener(new OnClickListener() {
 
@@ -597,7 +577,6 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
                         Intent editTruck = new Intent(mContext,TruckDetailsActivity.class);
                         editTruck.putExtra("deviceID",view.getTag().toString());
                         startActivity(editTruck);
-                        /*updateTruckDialog(Integer.parseInt(array[0]), array[1]);*/
                     }
                 });
 
@@ -611,7 +590,6 @@ public class ListOfTrackingTrucks extends AppCompatActivity {
                     }
 
                 });
-
             } catch (JSONException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
